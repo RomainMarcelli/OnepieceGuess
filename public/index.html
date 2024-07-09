@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Piece Guessing Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>One Piece Guessing Game</h1>
+    <button id="startGameButton">Start Game</button>
+    <div id="gameSection" style="display:none;">
+        <form id="guessForm">
+            <label for="characterInput">Guess the character:</label>
+            <input type="text" id="characterInput" name="characterInput" autocomplete="off">
+            <div id="suggestions"></div>
+            <button type="submit">Submit Guess</button>
+        </form>
+        <div id="result"></div>
+        <div id="history"></div> <!-- Add this div to display the history of choices -->
+        <button id="restartGameButton" style="display:none;">Recommencer la partie</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

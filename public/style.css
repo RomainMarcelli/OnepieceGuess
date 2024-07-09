@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#gameSection {
+    margin-top: 20px;
+}
+
+#result, #history {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px; /* Spacing between items */
+    margin-top: 20px;
+}
+
+#history {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.result-item, .history-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 200px; /* Adjust width as needed */
+    background-color: #f9f9f9;
+}
+
+.result-item.correct, .history-item.correct {
+    background-color: #4CAF50; /* Vert */
+    color: white;
+}
+
+.result-item.incorrect, .history-item.incorrect {
+    background-color: #f44336; /* Rouge */
+    color: white;
+}
+
+.history-item {
+    background-color: #f1f1f1; /* Default background for history items */
+}
+
+.history-field {
+    margin: 3px 0;
+}
+
+.suggestion {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    padding: 8px;
+    margin: 2px 0;
+    cursor: pointer;
+}
+
+.suggestion:hover {
+    background-color: #ddd;
+}
+
+#suggestions {
+    margin-top: 10px;
+}
+
+#restartGameButton {
+    margin-top: 20px;
+}
+
+.button-container {
+    margin-top: 20px;
+    text-align: center;
+}
