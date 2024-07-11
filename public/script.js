@@ -154,7 +154,7 @@ function updateHistory() {
     history.forEach(character => {
         const div = document.createElement('div');
         div.className = `history-item ${character.correct ? 'correct' : 'incorrect'}`;
-        
+
         const fields = [
             { key: 'name', label: 'Nom' },
             { key: 'devilFruit', label: 'Fruit du Démon', categorize: true },

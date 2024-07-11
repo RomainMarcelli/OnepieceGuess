@@ -16,13 +16,6 @@ body {
     margin-top: 20px;
 }
 
-#history {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
 .result-item, .history-item {
     display: flex;
     flex-direction: column;
