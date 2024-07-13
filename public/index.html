@@ -7,9 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>One Piece Guessing Game</h1>
-    <button id="startGameButton">Start Game</button>
-    <div id="gameSection" style="display:none;">
+    <img src="./img/One-Piece-Logo.png" alt="Logo">
+    <div id="gameSection">
         <form id="guessForm">
             <label for="characterInput">Guess the character:</label>
             <input type="text" id="characterInput" name="characterInput" autocomplete="off">
@@ -17,8 +16,23 @@
             <button type="submit">Submit Guess</button>
         </form>
         <div id="resultContainer"></div>
-        <!-- <div id="history"></div> Historique sans duplication -->
+        <div id="characterImageContainer" style="display:none;">
+            <img id="characterImage" src="" alt="Character Image">
+        </div>
         <button id="restartGameButton" style="display:none;">Recommencer la partie</button>
+    </div>
+    <br>
+    <div class="all-legend">
+        <div id="legend">
+            <h2>Indicateurs de couleurs</h2>
+            <div class="legend">
+                <p><span class="legend-color correct"></span>Correct</p>
+                <p><span class="legend-color orange"></span>Partiel</p>
+                <p><span class="legend-color incorrect"></span>Incorrect</p>
+                <p><span class="legend-arrow" id="arrow-up"></span>Plus grand</p>
+                <p><span class="legend-arrow" id="arrow-down"></span>Plus petit</p>
+            </div>
+        </div>
     </div>
     <script src="../devilFruits.js"></script>
     <script src="script.js"></script>

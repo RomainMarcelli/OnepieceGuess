@@ -2,13 +2,6 @@ let selectedCharacter = null;
 const history = []; // Array to keep track of character choices
 let devilFruits = []; // Array to store devil fruits
 
-document.getElementById('startGameButton').addEventListener('click', async () => {
-    await startNewGame();
-    document.getElementById('gameSection').style.display = 'block';
-    document.getElementById('startGameButton').style.display = 'none';
-    document.getElementById('restartGameButton').style.display = 'none';
-});
-
 document.getElementById('restartGameButton').addEventListener('click', async () => {
     await startNewGame();
     resetGame();
@@ -93,57 +86,61 @@ function resetGame() {
     document.getElementById('resultContainer').innerHTML = '';
     document.getElementById('characterInput').value = '';
     document.getElementById('suggestions').innerHTML = '';
+    document.getElementById('characterImageContainer').style.display = 'none';
+    document.getElementById('characterImage').src = '';
 }
 
 function displayResult(guessedCharacter, selectedCharacter) {
     const resultContainer = document.getElementById('resultContainer');
-    
-    const resultDiv = document.createElement('div');
-    resultDiv.className = 'result';
+    resultContainer.innerHTML = ''; // Clear previous results
 
     const fields = [
         { key: 'name', label: 'Nom' },
-        { key: 'devilFruit', label: 'Fruit du Démon' },
-        { key: 'haki', label: 'Haki', categorize: true },
-        { key: 'firstArc', label: 'Premier Arc' },
-        { key: 'affiliation', label: 'Affiliation' },
-        { key: 'height', label: 'Taille' },
         { key: 'gender', label: 'Genre' },
-        { key: 'bounty', label: 'Prime' }
+        { key: 'affiliation', label: 'Affiliation' },
+        { key: 'devilFruit', label: 'Fruit du Démon' },
+        { key: 'haki', label: 'Haki' },
+        { key: 'bounty', label: 'Prime', type: 'bounty' },
+        { key: 'height', label: 'Taille', type: 'height' },
+        { key: 'firstArc', label: 'Premier Arc', type: 'firstArc' }
     ];
 
     fields.forEach(field => {
-        const div = document.createElement('div');
-        div.className = `result-item ${getResultClass(guessedCharacter, selectedCharacter, field)}`;
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'result-category';
 
+        const categoryTitle = document.createElement('h3');
+        categoryTitle.textContent = field.label;
+        categoryDiv.appendChild(categoryTitle);
+
+        const categoryHr = document.createElement('hr');
+        categoryDiv.appendChild(categoryHr);
+
+        const resultBar = document.createElement('div');
+        resultBar.className = `result-bar ${field.type || ''}`;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = `result-item ${field.type || ''} ${getResultClass(guessedCharacter, selectedCharacter, field)}`;
+        
         if (field.key === 'haki') {
-            const guessedHaki = guessedCharacter.haki ? guessedCharacter.haki.split(',').map(type => type.trim()) : [];
-            const selectedHaki = selectedCharacter.haki ? selectedCharacter.haki.split(',').map(type => type.trim()) : [];
-            const hasGuessedHaki = guessedHaki.length > 0;
-            const hasSelectedHaki = selectedHaki.length > 0;
-
-            if (!hasSelectedHaki && hasGuessedHaki) { // Le personnage n'a pas de Haki mais des Haki ont été devinés
-                div.className = 'result-item haki-highlight-red';
-            } else if (hasSelectedHaki && guessedHaki.length === selectedHaki.length && guessedHaki.every(haki => selectedHaki.includes(haki))) { // Tous les Haki ont été correctement devinés
-                div.className = 'result-item haki-highlight-green';
-            } else if (hasSelectedHaki && guessedHaki.length > 0) { // Il y a des Haki à deviner et des Haki ont été devinés
-                div.className = 'result-item haki-highlight-orange';
-            } else {
-                div.className = 'result-item'; // Par défaut si aucun Haki deviné
-            }
-
-            div.textContent = `${field.label}: ${formatHaki(guessedCharacter[field.key])}`;
+            itemDiv.textContent = formatHaki(guessedCharacter[field.key]);
         } else if (field.key === 'height' || field.key === 'bounty') {
             const comparison = compareValues(selectedCharacter[field.key], guessedCharacter[field.key]);
-            div.innerHTML = `${field.label}: ${guessedCharacter[field.key] || 'Aucun'} ${comparison}`;
+            itemDiv.innerHTML = `${guessedCharacter[field.key] || 'Aucun'} ${comparison}`;
+        } else if (field.key === 'name' && guessedCharacter.name === 'Luffy') {
+            const img = document.createElement('img');
+            img.src = './img/luffy.png';
+            img.alt = 'Luffy';
+            img.className = 'character-image';
+            itemDiv.appendChild(img);
         } else {
-            div.textContent = `${field.label}: ${guessedCharacter[field.key] || 'Aucun'}`;
+            itemDiv.textContent = guessedCharacter[field.key] || 'Aucun';
         }
 
-        resultDiv.appendChild(div);
+        resultBar.appendChild(itemDiv);
+        categoryDiv.appendChild(resultBar);
+        resultContainer.appendChild(categoryDiv);
     });
-
-    resultContainer.appendChild(resultDiv);
 
     // Show the restart button if the game is finished
     if (guessedCharacter.name === selectedCharacter.name) {
@@ -157,8 +154,6 @@ function formatHaki(haki) {
     return hakiTypes.length > 0 ? hakiTypes.join(', ') : 'Aucun';
 }
 
-
-
 function getResultClass(guessedCharacter, selectedCharacter, field) {
     if (field.key === 'haki') {
         const guessedHaki = guessedCharacter[field.key].split(',').map(type => type.trim());
@@ -171,7 +166,6 @@ function getResultClass(guessedCharacter, selectedCharacter, field) {
     }
 }
 
-
 function categorizeDevilFruit(devilFruit) {
     const fruit = devilFruits.find(f => f.name === devilFruit);
     return fruit ? fruit.type : 'Aucun';
@@ -182,9 +176,18 @@ function compareValues(correctValue, guessedValue) {
     const correctNumber = parseFloat(correctValue.replace(/[^0-9.]/g, ''));
     const guessedNumber = parseFloat(guessedValue.replace(/[^0-9.]/g, ''));
     
-    if (guessedNumber < correctNumber) return '🔼'; // Up arrow for smaller
-    if (guessedNumber > correctNumber) return '🔽'; // Down arrow for larger
-    return ''; // No arrow if equal
+    // Clear previous arrow styles
+    const resultBar = document.createElement('div');
+    
+    if (guessedNumber < correctNumber) {
+        resultBar.className = 'arrow-down'; // Apply arrow-down class
+    } else if (guessedNumber > correctNumber) {
+        resultBar.className = 'arrow-up'; // Apply arrow-up class
+    } else {
+        resultBar.className = ''; // No arrow if equal
+    }
+    
+    return resultBar.className;
 }
 
 async function fetchDevilFruits() {
@@ -231,8 +234,8 @@ function updateHistory() {
     });
 }
 
-
-// Fetch the devil fruits on page load
-document.addEventListener('DOMContentLoaded', () => {
-    fetchDevilFruits();
+// Fetch the devil fruits on page load and start a new game
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchDevilFruits();
+    await startNewGame();
 });
