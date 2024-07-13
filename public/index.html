@@ -8,12 +8,17 @@
 </head>
 <body>
     <img src="./img/One-Piece-Logo.png" alt="Logo">
+
     <div id="gameSection">
+        <div class="title">
+            <h3>Devine le personnage de One piece !</h3>
+        </div>
         <form id="guessForm">
-            <label for="characterInput">Guess the character:</label>
-            <input type="text" id="characterInput" name="characterInput" autocomplete="off">
+            <div class="search">
+                <input type="text" id="characterInput" name="characterInput" autocomplete="off" placeholder="Nom de personnage">
+                <button type="submit"><img src="img/guess.png" alt=""></button>
+            </div>
             <div id="suggestions"></div>
-            <button type="submit">Submit Guess</button>
         </form>
         <div id="resultContainer"></div>
         <div id="characterImageContainer" style="display:none;">

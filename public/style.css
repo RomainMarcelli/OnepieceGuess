@@ -15,12 +15,66 @@ body {
     margin-top: 20px;
 }
 
+.title{
+    border: 2px solid #534e41;
+    width: 38%;
+    margin: 0px auto 20px;
+    padding: 5px;
+    background: #EADFC2;
+    border-radius: 10px;
+}
+
+.title h3{
+    background-color: white;
+    /* width: 38%; */
+    /* margin: 0px auto 25px; */
+    /* height: 34%; */
+    border: 2px solid #534e41;
+    padding: 22px;
+    border-radius: 8px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.search{
+    border: 2px solid #534e41;
+    width: 31%;
+    margin: auto;
+    background: #FAF9F3;
+    padding: 10px 5px 10px 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+}
+
+input{
+    color: #534e41 !important;
+    font-weight: 700;
+    /* margin-bottom: 7px; */
+    padding: 12px 15px;
+    width: 100%;
+    /* width: 20%; */
+    /* margin-right: 84px; */
+    border: 2px solid #EBE0C5;
+}
+
+button{
+    background-color: transparent;
+    border: 0;
+}
+
+button img{
+    width: 35px;
+    height: 35px;
+}
+
 #resultContainer {
     display: flex;
     align-items: center;
     margin-top: 20px;
     width: 80%; /* Adjust width as needed */
     margin: 0 auto;
+    transition: flex-basis .1s ease;
 }
 
 .result-category {
@@ -65,6 +119,10 @@ body {
     height: 70px;
     background-color: #f9f9f9;
     justify-content: center;
+    backface-visibility: hidden; /* Hide the back face of the element */
+    transform-style: preserve-3d; /* Preserve 3D space for the flip effect */
+    transition: transform 0.6s; /* Duration of the flip animation */
+    transform: rotateY(0deg);
 }
 
 .result-item.correct {
@@ -238,54 +296,41 @@ img {
 /* Flèche vers le bas */
 .arrow-down::after {
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 1px;
+    left: 0;
     width: 100%;
+    clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
+    -webkit-clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
     height: 100%;
-    clip-path: polygon(97% 60%, 80% 60%, 80% 5%, 20% 5%, 20% 60%, 3% 60%, 50% 95%);
-    -webkit-clip-path: polygon(97% 60%, 80% 60%, 80% 5%, 20% 5%, 20% 60%, 3% 60%, 50% 95%);
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, .5);/* Red background for down arrow */
     content: "";
     z-index: -1;
-    opacity: 0.5;
-    pointer-events: none; /* Ensure clicks pass through */
+    opacity: 1;
+    transition: background-color .3s ease;
+    display: block; /* Hidden by default */
 }
 
 /* Flèche vers le haut */
 .arrow-up::after {
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 1px;
+    left: 0;
     width: 100%;
+    clip-path: polygon(97% 60%, 80% 60%, 80% 5%, 20% 5%, 20% 60%, 3% 60%, 50% 95%);
+    -webkit-clip-path: polygon(97% 60%, 80% 60%, 80% 5%, 20% 5%, 20% 60%, 3% 60%, 50% 95%);
     height: 100%;
-    clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
-    -webkit-clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, .5);/* Green background for up arrow */
     content: "";
     z-index: -1;
-    opacity: 0.5;
-    pointer-events: none; /* Ensure clicks pass through */
+    opacity: 1;
+    transition: background-color .3s ease;
+    display: block; /* Hidden by default */
 }
 
-/* Apply arrow-down background to height, bounty, and firstArc result items */
-.result-item.height::after,
-.result-item.bounty::after,
-.result-item.firstArc::after {
-    position: relative;
-}
-
-.result-item.height.arrow-down::after,
-.result-item.bounty.arrow-down::after,
-.result-item.firstArc.arrow-down::after {
-    background: rgba(255, 0, 0, 0.2); /* Red background for down arrow */
-}
-
-.result-item.height.arrow-up::after,
-.result-item.bounty.arrow-up::after,
-.result-item.firstArc.arrow-up::after {
-    background: rgba(0, 255, 0, 0.2); /* Green background for up arrow */
+/* Afficher les flèches si incorrect */
+.result-item.arrow-up::after,
+.result-item.arrow-down::after {
+    display: block; /* Show arrows if they are relevant */
 }
 
 
@@ -307,3 +352,71 @@ img {
     height: 50px;
     border-radius: 5px;
 }
+
+.result-bar {
+    position: relative;
+    perspective: 1000px; /* Perspective for the 3D effect */
+}
+
+/* Front face of the card */
+.result-item {
+    backface-visibility: hidden; /* Hide the back face of the element */
+    transform-style: preserve-3d; /* Preserve 3D space for the flip effect */
+    transition: transform 0.6s; /* Duration of the flip animation */
+    transform: rotateY(0deg);
+}
+
+/* Flip the card */
+.result-item.flip {
+    transform: rotateY(180deg); /* Rotate 180 degrees to flip */
+}
+
+/* Reset the card flip */
+.result-item.flip-in {
+    transform: rotateY(0deg); /* Rotate back to initial position */
+}
+
+
+
+.arrow-up::after {
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    width: 100%;
+    clip-path: polygon(97% 60%, 80% 60%, 80% 5%, 20% 5%, 20% 60%, 3% 60%, 50% 95%);
+    -webkit-clip-path: polygon(97% 60%, 80% 60%, 80% 5%, 20% 5%, 20% 60%, 3% 60%, 50% 95%);
+    height: 100%;
+    content: "";
+    z-index: -1;
+    opacity: 1;
+    transition: background-color .3s ease;
+    display: block;
+}
+
+.arrow-down::after{
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    width: 100%;
+    clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
+    -webkit-clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
+    height: 100%;
+    background: rgba(0, 0, 0, .5);/* Red background for down arrow */
+    content: "";
+    z-index: -1;
+    opacity: 1;
+    transition: background-color .3s ease;
+    display: block; /* Hidden by default */
+}
+
+/* Styles pour les résultats des fruits du démon */
+.result-item.correct-type {
+    background-color: #3da75e; /* Vert clair pour le type correct */
+    color: white; /* Texte vert foncé */
+}
+
+.result-item.incorrect-type {
+    background: #d53633; /* Rouge clair pour le type incorrect */
+    color: white; /* Texte rouge foncé */
+}
+

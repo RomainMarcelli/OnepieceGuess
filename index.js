@@ -1,9 +1,11 @@
 const express = require('express');
+const path = require('path'); // Ajoutez cette ligne
 const app = express();
 const port = 3000;
 
 // Middleware pour servir des fichiers statiques depuis le répertoire 'public'
 app.use(express.static('public'));
+app.use('/img', express.static(path.join(__dirname, 'public/img')));
 
 // Liste des personnages
 const characters = [
@@ -246,7 +248,6 @@ const devilFruits = [
     { name: 'Magu Magu no Mi', type: 'Logia' },
     { name: 'Hie Hie no Mi', type: 'Logia' }
 ];
-
 // Fonction pour catégoriser le fruit du démon
 function categorizeDevilFruit(devilFruit) {
     const fruit = devilFruits.find(f => f.name === devilFruit);
@@ -275,6 +276,7 @@ app.get('/api/search', (req, res) => {
 app.get('/api/devil-fruits', (req, res) => {
     res.json(devilFruits);
 });
+
 
 // Démarrer le serveur
 app.listen(port, () => {
