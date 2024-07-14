@@ -70,12 +70,20 @@ button img{
 
 #resultContainer {
     display: flex;
-    align-items: center;
     margin-top: 20px;
-    width: 80%; /* Adjust width as needed */
+    width: 80%;
     margin: 0 auto;
     transition: flex-basis .1s ease;
+    text-align: center;
+    flex-direction: column-reverse;
 }
+
+.resultat {
+    display: flex;
+    flex-direction: row; /* Affiche les éléments horizontalement */
+    gap: 10px; /* Espace entre les cases */ /* Couleur de fond des résultats */
+}
+
 
 .result-category {
     width: 100%;
@@ -90,6 +98,7 @@ button img{
     text-transform: uppercase;
     text-shadow: 1px 1px #cecece;
     color: #312e26;
+    text-align: center;
 }
 
 .result-category hr{
@@ -106,6 +115,7 @@ button img{
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
+    text-align: center;
 }
 
 .result-item {
@@ -123,6 +133,7 @@ button img{
     transform-style: preserve-3d; /* Preserve 3D space for the flip effect */
     transition: transform 0.6s; /* Duration of the flip animation */
     transform: rotateY(0deg);
+    text-align: center;
 }
 
 .result-item.correct {

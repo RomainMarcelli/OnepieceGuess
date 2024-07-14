@@ -198,28 +198,28 @@ function formatHaki(haki) {
     return hakiTypes.length > 0 ? hakiTypes.join(', ') : 'Aucun';
 }
 
-function getResultClass(guessedCharacter, selectedCharacter, field) {
-    if (field.key === 'devilFruit') {
-        const guessedType = categorizeDevilFruit(guessedCharacter[field.key]);
-        const selectedType = categorizeDevilFruit(selectedCharacter[field.key]);
+// function getResultClass(guessedCharacter, selectedCharacter, field) {
+//     if (field.key === 'devilFruit') {
+//         const guessedType = categorizeDevilFruit(guessedCharacter[field.key]);
+//         const selectedType = categorizeDevilFruit(selectedCharacter[field.key]);
 
-        if (guessedType === selectedType) {
-            // Type correct mais fruit incorrect
-            return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'correct-type';
-        } else {
-            // Type incorrect
-            return 'incorrect-type';
-        }
-    } else if (field.key === 'haki') {
-        const guessedHaki = guessedCharacter[field.key].split(',').map(type => type.trim());
-        const selectedHaki = selectedCharacter[field.key].split(',').map(type => type.trim());
-        return guessedHaki.some(haki => selectedHaki.includes(haki)) ? 'correct' : 'incorrect';
-    } else if (field.key === 'height' || field.key === 'bounty') {
-        return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'incorrect';
-    } else {
-        return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'incorrect';
-    }
-}
+//         if (guessedType === selectedType) {
+//             // Type correct mais fruit incorrect
+//             return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'correct-type';
+//         } else {
+//             // Type incorrect
+//             return 'incorrect-type';
+//         }
+//     } else if (field.key === 'haki') {
+//         const guessedHaki = guessedCharacter[field.key].split(',').map(type => type.trim());
+//         const selectedHaki = selectedCharacter[field.key].split(',').map(type => type.trim());
+//         return guessedHaki.some(haki => selectedHaki.includes(haki)) ? 'correct' : 'incorrect';
+//     } else if (field.key === 'height' || field.key === 'bounty') {
+//         return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'incorrect';
+//     } else {
+//         return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'incorrect';
+//     }
+// }
 
 
 function categorizeDevilFruit(devilFruit) {
@@ -280,7 +280,6 @@ async function displayResult(guessedCharacter, selectedCharacter) {
     const hakiImages = await fetchHakiImages();
 
     const resultContainer = document.getElementById('resultContainer');
-    resultContainer.innerHTML = ''; // Clear previous results
 
     const fields = [
         { key: 'name', label: 'Nom' },
@@ -292,6 +291,9 @@ async function displayResult(guessedCharacter, selectedCharacter) {
         { key: 'height', label: 'Taille', type: 'height' },
         { key: 'firstArc', label: 'Premier Arc', type: 'firstArc' }
     ];
+
+    const resultDiv = document.createElement('div');
+    resultDiv.className = 'resultat'; // Add a common class for each result
 
     fields.forEach((field, index) => {
         const categoryDiv = document.createElement('div');
@@ -308,7 +310,7 @@ async function displayResult(guessedCharacter, selectedCharacter) {
         resultBar.className = `result-bar ${field.type || ''}`;
         categoryDiv.appendChild(resultBar);
 
-        resultContainer.appendChild(categoryDiv);
+        resultDiv.appendChild(categoryDiv);
 
         setTimeout(() => {
             const itemDiv = document.createElement('div');
@@ -317,7 +319,6 @@ async function displayResult(guessedCharacter, selectedCharacter) {
             let comparisonClass = '';
 
             if (field.key === 'devilFruit') {
-                // Afficher le type du fruit du démon au lieu du nom
                 itemDiv.textContent = categorizeDevilFruit(guessedCharacter[field.key]);
             } else if (field.key === 'haki') {
                 itemDiv.textContent = formatHaki(guessedCharacter[field.key]);
@@ -345,11 +346,33 @@ async function displayResult(guessedCharacter, selectedCharacter) {
         }, index * 300);
     });
 
+    resultContainer.appendChild(resultDiv);
+
     if (guessedCharacter.name === selectedCharacter.name) {
         document.getElementById('restartGameButton').style.display = 'block';
     }
 }
 
+function getResultClass(guessedCharacter, selectedCharacter, field) {
+    if (field.key === 'devilFruit') {
+        const guessedType = categorizeDevilFruit(guessedCharacter[field.key]);
+        const selectedType = categorizeDevilFruit(selectedCharacter[field.key]);
+
+        if (guessedType === selectedType) {
+            return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'correct-type';
+        } else {
+            return 'incorrect-type';
+        }
+    } else if (field.key === 'haki') {
+        const guessedHaki = guessedCharacter[field.key].split(',').map(type => type.trim());
+        const selectedHaki = selectedCharacter[field.key].split(',').map(type => type.trim());
+        return guessedHaki.some(haki => selectedHaki.includes(haki)) ? 'correct' : 'incorrect';
+    } else if (field.key === 'height' || field.key === 'bounty') {
+        return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'incorrect';
+    } else {
+        return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'incorrect';
+    }
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     await fetchDevilFruits();
