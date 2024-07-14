@@ -198,29 +198,6 @@ function formatHaki(haki) {
     return hakiTypes.length > 0 ? hakiTypes.join(', ') : 'Aucun';
 }
 
-// function getResultClass(guessedCharacter, selectedCharacter, field) {
-//     if (field.key === 'devilFruit') {
-//         const guessedType = categorizeDevilFruit(guessedCharacter[field.key]);
-//         const selectedType = categorizeDevilFruit(selectedCharacter[field.key]);
-
-//         if (guessedType === selectedType) {
-//             // Type correct mais fruit incorrect
-//             return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'correct-type';
-//         } else {
-//             // Type incorrect
-//             return 'incorrect-type';
-//         }
-//     } else if (field.key === 'haki') {
-//         const guessedHaki = guessedCharacter[field.key].split(',').map(type => type.trim());
-//         const selectedHaki = selectedCharacter[field.key].split(',').map(type => type.trim());
-//         return guessedHaki.some(haki => selectedHaki.includes(haki)) ? 'correct' : 'incorrect';
-//     } else if (field.key === 'height' || field.key === 'bounty') {
-//         return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'incorrect';
-//     } else {
-//         return guessedCharacter[field.key] === selectedCharacter[field.key] ? 'correct' : 'incorrect';
-//     }
-// }
-
 
 function categorizeDevilFruit(devilFruit) {
     const fruit = devilFruits.find(f => f.name === devilFruit);
@@ -295,63 +272,134 @@ async function displayResult(guessedCharacter, selectedCharacter) {
     const resultDiv = document.createElement('div');
     resultDiv.className = 'resultat'; // Add a common class for each result
 
-    fields.forEach((field, index) => {
-        const categoryDiv = document.createElement('div');
-        categoryDiv.className = 'result-category';
+    if (guessedCharacter.name === selectedCharacter.name) {
+        resultDiv.classList.add('correct-guess'); // Ajoute la classe d'animation si le personnage est correct
+    }
 
-        const categoryTitle = document.createElement('h3');
-        categoryTitle.textContent = field.label;
-        categoryDiv.appendChild(categoryTitle);
+    const promises = fields.map((field, index) => {
+        return new Promise((resolve) => {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'result-category';
 
-        const categoryHr = document.createElement('hr');
-        categoryDiv.appendChild(categoryHr);
+            const categoryTitle = document.createElement('h3');
+            categoryTitle.textContent = field.label;
+            categoryDiv.appendChild(categoryTitle);
 
-        const resultBar = document.createElement('div');
-        resultBar.className = `result-bar ${field.type || ''}`;
-        categoryDiv.appendChild(resultBar);
+            const categoryHr = document.createElement('hr');
+            categoryDiv.appendChild(categoryHr);
 
-        resultDiv.appendChild(categoryDiv);
+            const resultBar = document.createElement('div');
+            resultBar.className = `result-bar ${field.type || ''}`;
+            categoryDiv.appendChild(resultBar);
 
-        setTimeout(() => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = `result-item ${field.type || ''} ${getResultClass(guessedCharacter, selectedCharacter, field)} flip`;
-
-            let comparisonClass = '';
-
-            if (field.key === 'devilFruit') {
-                itemDiv.textContent = categorizeDevilFruit(guessedCharacter[field.key]);
-            } else if (field.key === 'haki') {
-                itemDiv.textContent = formatHaki(guessedCharacter[field.key]);
-            } else if (field.key === 'height' || field.key === 'bounty') {
-                comparisonClass = compareValues(selectedCharacter[field.key], guessedCharacter[field.key]);
-                itemDiv.innerHTML = field.key === 'bounty' ?
-                    `<img src="/img/argent.png" alt="Bounty Icon" style="width: 15px; height: 20px; margin-right: 5px;">${formatBounty(guessedCharacter[field.key]) || 'Aucun'}` :
-                    `${guessedCharacter[field.key] || 'Aucun'}`;
-            } else if (field.key === 'firstArc') {
-                comparisonClass = compareArcs(selectedCharacter[field.key], guessedCharacter[field.key]);
-                itemDiv.textContent = guessedCharacter[field.key] || 'Aucun';
-            } else {
-                itemDiv.textContent = guessedCharacter[field.key] || 'Aucun';
-            }
-
-            if (comparisonClass) {
-                itemDiv.classList.add(comparisonClass); // Ajouter la classe de comparaison seulement si elle n'est pas vide
-            }
-
-            resultBar.appendChild(itemDiv);
+            resultDiv.appendChild(categoryDiv);
 
             setTimeout(() => {
-                itemDiv.classList.add('flip-in');
-            }, 100);
-        }, index * 300);
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `result-item ${field.type || ''} ${getResultClass(guessedCharacter, selectedCharacter, field)} flip`;
+
+                let comparisonClass = '';
+
+                if (field.key === 'name') {
+                    // Afficher l'image du personnage à la place du texte
+                    const img = document.createElement('img');
+                    img.src = getImagePath(guessedCharacter[field.key]); // Fonction à créer pour obtenir le chemin de l'image
+                    img.alt = 'Character Image';
+                    img.style.width = '100%'; // Ajustez la taille de l'image si nécessaire
+                    img.style.height = '100%';
+                    itemDiv.appendChild(img);
+                } else if (field.key === 'devilFruit') {
+                    itemDiv.textContent = categorizeDevilFruit(guessedCharacter[field.key]);
+                } else if (field.key === 'haki') {
+                    itemDiv.textContent = formatHaki(guessedCharacter[field.key]);
+                    if (guessedCharacter[field.key].length === selectedCharacter[field.key].length) {
+                        itemDiv.classList.add('correct');
+                    } else if (guessedCharacter[field.key].length > 0) {
+                        itemDiv.classList.add('partial');
+                    } else {
+                        itemDiv.classList.add('incorrect');
+                    }
+                } else if (field.key === 'height' || field.key === 'bounty') {
+                    comparisonClass = compareValues(selectedCharacter[field.key], guessedCharacter[field.key]);
+                    itemDiv.innerHTML = field.key === 'bounty' ?
+                        `<img src="/img/argent.png" alt="Bounty Icon" style="width: 15px; height: 20px; margin-right: 5px; border: 0;">${formatBounty(guessedCharacter[field.key]) || 'Aucun'}` :
+                        `${guessedCharacter[field.key] || 'Aucun'}`;
+                } else if (field.key === 'firstArc') {
+                    comparisonClass = compareArcs(selectedCharacter[field.key], guessedCharacter[field.key]);
+                    itemDiv.textContent = guessedCharacter[field.key] || 'Aucun';
+                } else {
+                    itemDiv.textContent = guessedCharacter[field.key] || 'Aucun';
+                }
+
+                if (comparisonClass) {
+                    itemDiv.classList.add(comparisonClass); // Ajouter la classe de comparaison seulement si elle n'est pas vide
+                }
+
+                resultBar.appendChild(itemDiv);
+
+                setTimeout(() => {
+                    itemDiv.classList.add('flip-in');
+                    resolve(); // Resolve the promise when the animation is done
+                }, 100);
+            }, index * 300);
+        });
     });
 
     resultContainer.appendChild(resultDiv);
 
     if (guessedCharacter.name === selectedCharacter.name) {
+        await Promise.all(promises); // Wait for all animations to complete
+        displaySuccessCard(selectedCharacter.name, history.length);
         document.getElementById('restartGameButton').style.display = 'block';
+        document.querySelector('.success-card').scrollIntoView({ behavior: 'smooth' });
     }
 }
+
+// Fonction pour obtenir le chemin de l'image en fonction du nom
+function getImagePath(characterName) {
+    // Assurez-vous que le chemin correspond à vos fichiers d'image
+    const imagePath = `img/${characterName.toLowerCase()}.png`;
+    return imagePath;
+}
+
+
+function displaySuccessCard(characterName, attempts) {
+    // Supprimer la carte de succès existante s'il y en a une
+    const existingSuccessCard = document.querySelector('.success-card');
+    if (existingSuccessCard) {
+        existingSuccessCard.remove();
+    }
+
+    const successCard = document.createElement('div');
+    successCard.className = 'success-card';
+
+    const successTitle = document.createElement('h2');
+    successTitle.textContent = 'Bravo!';
+    successCard.appendChild(successTitle);
+
+    const successMessage = document.createElement('p');
+    successMessage.innerHTML = `Tu as trouvé : <span class="character-name">${characterName}</span>`;
+    successCard.appendChild(successMessage);
+
+    const attemptsMessage = document.createElement('p');
+    attemptsMessage.textContent = `Nombre d'essais réalisés : ${attempts}`;
+    successCard.appendChild(attemptsMessage);
+
+    const restartButton = document.createElement('button');
+    restartButton.textContent = 'Recommencer la partie';
+    restartButton.addEventListener('click', () => {
+        resetGame();
+        startNewGame();
+    });
+    successCard.appendChild(restartButton);
+
+    document.body.appendChild(successCard);
+
+    // Défilement vers la carte de succès
+    successCard.scrollIntoView({ behavior: 'smooth' });
+}
+
+
 
 function getResultClass(guessedCharacter, selectedCharacter, field) {
     if (field.key === 'devilFruit') {

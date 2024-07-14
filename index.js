@@ -120,7 +120,7 @@ const characters = [
         firstArc: 'Romance Dawn' 
     },
     { 
-        name: 'Marshal D. Teach', 
+        name: 'Marshall D. Teach', 
         devilFruit: 'Yami Yami no Mi, Gura Gura no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Barbe Noire', 
@@ -204,7 +204,7 @@ const characters = [
         devilFruit: 'Magu Magu no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Marine', 
-        height: '306', 
+        height: '306 cm', 
         gender: 'Masculin', 
         bounty: '0', 
         firstArc: 'Enies Lobby' 
@@ -399,7 +399,7 @@ const characters = [
 const devilFruits = [
     { name: 'Moku Moku no Mi', type: 'Logia' },
     { name: 'Magu Magu no Mi', type: 'Logia' },
-    { name: 'Hie Hie no Mi', type: 'Logia' }
+    { name: 'Hie Hie no Mi', type: 'Logia' },
     { name: 'Mera Mera no Mi', type: 'Logia' },
     { name: 'Pika Pika no Mi', type: 'Logia' },
     { name: 'Goro Goro no Mi', type: 'Logia' },
@@ -417,7 +417,7 @@ const devilFruits = [
     { name: 'Tori Tori no Mi', type: 'Zoan' },
     { name: 'Inu Inu no Mi', type: 'Zoan' },
     { name: 'Hito Hito no Mi', type: 'Zoan' },
-    { name: 'Uo Uo no Mi', type: 'Zoan' },
+    { name: 'Uo Uo no Mi', type: 'Zoan' }
 ];
 // Fonction pour catégoriser le fruit du démon
 function categorizeDevilFruit(devilFruit) {

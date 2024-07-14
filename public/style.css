@@ -42,7 +42,7 @@ body {
     margin: auto;
     background: #FAF9F3;
     padding: 10px 5px 10px 10px;
-    border-radius: 6px;
+    border-radius: 6px 6px 0px 0px;
     display: flex;
     align-items: center;
 }
@@ -124,9 +124,9 @@ button img{
     align-items: center;
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding: 10px;
-    width: 70px;
-    height: 70px;
+    /* padding: 10px; */
+    width: 100px;
+    height: 100px;
     background-color: #f9f9f9;
     justify-content: center;
     backface-visibility: hidden; /* Hide the back face of the element */
@@ -139,8 +139,12 @@ button img{
 .result-item.correct {
     background-color: #3da75e; /* Vert */
     color: white;
-    border: 2px solid #24d475;
+    /* border: 2px solid #24d475; */
     transition: background-color .3s ease;
+}
+
+.partial {
+    background-color: #E2D764,
 }
 
 .result-item.partial {
@@ -161,22 +165,29 @@ button img{
     margin: 3px 0;
 }
 
+#suggestions {
+    margin: 0;
+    width: 32%;
+    margin: 0px auto;
+    border: 2px solid #534e41;
+   
+}
+
 .suggestion {
     background-color: #f1f1f1;
-    border: 1px solid #ddd;
-    padding: 8px;
-    margin: 2px 0;
+    padding: 15px 0;
+    /* margin: 2px 0; */
     cursor: pointer;
+    /* width: 100%; */
+    margin: 0px auto;
+    border-left: 2px solid #534e41;
+    border-right: 2px solid #534e41;
+    border-bottom: 1px solid #534e41;
 }
 
 .suggestion:hover {
     background-color: #ddd;
 }
-
-#suggestions {
-    margin-top: 10px;
-}
-
 #restartGameButton {
     margin-top: 20px;
 }
@@ -427,7 +438,77 @@ img {
 }
 
 .result-item.incorrect-type {
-    background: #d53633; /* Rouge clair pour le type incorrect */
+    background: #f44336; /* Rouge clair pour le type incorrect */
     color: white; /* Texte rouge foncé */
 }
 
+/* Styles pour la carte de succès */
+.success-card {
+    background-image: url(img/bacgroundgreen.png);
+    border-radius: 8px;
+    box-shadow: 0 3px 8pxrgba(0, 0, 0, .24);
+    padding: 1rem 3rem 3rem;
+    display: flex;
+    flex-direction: column;
+    vertical-align: center;
+    align-content: center;
+    justify-self: center;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-size: 100% 100%;
+    border: 2px solid #534e41;
+    transition: filter .2s ease;
+    width: 50%;
+    margin: 20px auto;
+}
+
+.success-card h2 {
+    color: #0a1417;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+.success-card p {
+    margin: 10px 0;
+}
+
+.success-card button {
+    background-color: #d53633;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+.success-card button:hover {
+    background-color: #45a049;
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.character-name {
+    font-size: 24px; /* Ajustez cette valeur selon vos besoins */
+    font-weight: bold; /* Vous pouvez également ajouter du gras si nécessaire */
+}
+
+.result-item img {
+    width: 64px;
+    height: 75px;
+    border-radius: 9px;
+    border: 2px solid #534e41;/* Ajustez selon vos besoins */
+}
