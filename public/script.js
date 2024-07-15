@@ -1,6 +1,7 @@
 let selectedCharacter = null;
 const history = []; // Array to keep track of character choices
 let devilFruits = []; // Array to store devil fruits
+let attempts = 0; 
 
 const arcsChronologiques = [
     "Romance Dawn",
@@ -82,6 +83,7 @@ document.getElementById('guessForm').addEventListener('submit', async (event) =>
             const guessedCharacter = allCharacters.find(character => character.name === guessedCharacterName);
 
             if (guessedCharacter) {
+                attempts++; // Incrémenter le nombre d'essais
                 guessedCharacter.correct = guessedCharacter.name === selectedCharacter.name; // Add correct property
                 history.push(guessedCharacter); // Add the guessed character to history
                 displayResult(guessedCharacter, selectedCharacter);
@@ -97,7 +99,9 @@ document.getElementById('guessForm').addEventListener('submit', async (event) =>
     }
 });
 
+
 async function startNewGame() {
+    resetGame();    
     try {
         const response = await fetch('/api/start-game');
         if (response.ok) {
@@ -113,12 +117,33 @@ async function startNewGame() {
 }
 
 function resetGame() {
+    // Réinitialiser les essais
+    attempts = 0;
+
+    // Réinitialiser les autres éléments de jeu comme le conteneur de résultats
+    const resultContainer = document.getElementById('resultContainer');
+    resultContainer.innerHTML = '';
+
+    // Supprimer la carte de succès existante s'il y en a une
+    const existingSuccessCard = document.querySelector('.success-card');
+    if (existingSuccessCard) {
+        existingSuccessCard.remove();
+    }
+
+    // Cacher le bouton de redémarrage
+    const restartGameButton = document.getElementById('restartGameButton');
+    if (restartGameButton) {
+        restartGameButton.style.display = 'none';
+    }
+
+    // Réinitialiser d'autres éléments nécessaires pour le nouveau jeu
     document.getElementById('resultContainer').innerHTML = '';
     document.getElementById('characterInput').value = '';
     document.getElementById('suggestions').innerHTML = '';
     document.getElementById('characterImageContainer').style.display = 'none';
     document.getElementById('characterImage').src = '';
 }
+
 
 // Fonction pour récupérer les images des Haki depuis le serveur
 async function fetchHakiImages() {
@@ -369,7 +394,7 @@ function getImagePath(characterName) {
     return imagePath;
 }
 
-function displaySuccessCard(characterName, attempts) {
+function displaySuccessCard(characterName) {
     // Supprimer la carte de succès existante s'il y en a une
     const existingSuccessCard = document.querySelector('.success-card');
     if (existingSuccessCard) {
@@ -404,6 +429,8 @@ function displaySuccessCard(characterName, attempts) {
     // Défilement vers la carte de succès
     successCard.scrollIntoView({ behavior: 'smooth' });
 }
+
+
 
 
 

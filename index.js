@@ -221,7 +221,7 @@ const characters = [
     },
     { 
         name: 'Rob Lucci', 
-        devilFruit: '', 
+        devilFruit: 'Neko Neko no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'CP-AIGIS0', 
         height: '212 cm', 
@@ -231,7 +231,7 @@ const characters = [
     },
     { 
         name: 'Kaku', 
-        devilFruit: '', 
+        devilFruit: 'Ushi Ushi no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'CP-AIGIS0', 
         height: '193 cm', 
@@ -241,7 +241,7 @@ const characters = [
     },
     { 
         name: 'Kalifa', 
-        devilFruit: '', 
+        devilFruit: 'Awa Awa no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'CP-AIGIS0', 
         height: '185 cm', 
@@ -251,7 +251,7 @@ const characters = [
     },
     { 
         name: 'Blueno', 
-        devilFruit: '', 
+        devilFruit: 'Doa Doa no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'CP-AIGIS0', 
         height: '258 cm', 
@@ -261,7 +261,7 @@ const characters = [
     },
     { 
         name: 'Jabra', 
-        devilFruit: '', 
+        devilFruit: 'Inu Inu no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'CP9', 
         height: '212 cm', 
@@ -271,7 +271,7 @@ const characters = [
     },
     { 
         name: 'Kinemon', 
-        devilFruit: '', 
+        devilFruit: 'Fuku Fuku no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Famille Kozuki', 
         height: '295 cm', 
@@ -281,7 +281,7 @@ const characters = [
     },
     { 
         name: 'Kozuki Momonosuke', 
-        devilFruit: '', 
+        devilFruit: 'Fruit de Kozuki Momonosuke (Fruit Artificiel)', 
         haki: 'Vision', 
         affiliation: 'Famille Kozuki', 
         height: '110 cm', 
@@ -291,7 +291,7 @@ const characters = [
     },
     { 
         name: 'Kurozumi Kanjuro', 
-        devilFruit: '', 
+        devilFruit: 'Aucun', 
         haki: 'Armement, Vision', 
         affiliation: 'Famille Kurozumi', 
         height: '347 cm', 
@@ -466,7 +466,7 @@ const characters = [
         affiliation: 'Guilde de la Croix', 
         height: '198 cm', 
         gender: 'Masculin', 
-        bounty: '3.590.000.000 Berries', 
+        bounty: '3,590,000,000 Berries', 
         firstArc: 'Baratie' 
     },
     { 
@@ -476,7 +476,7 @@ const characters = [
         affiliation: 'Armée Révolutionnaire', 
         height: '449 cm', 
         gender: 'Masculin', 
-        bounty: '100.000.000 Berries', 
+        bounty: '100,000,000 Berries', 
         firstArc: 'Impel Down' 
     },
     { 
@@ -486,7 +486,7 @@ const characters = [
         affiliation: 'Armée Révolutionnaire', 
         height: '689 cm', 
         gender: 'Masculin', 
-        bounty: '296.000.000 Berries', 
+        bounty: '296,000,000 Berries', 
         firstArc: 'Jaya' 
     },
     { 
@@ -496,7 +496,7 @@ const characters = [
         affiliation: 'Barto Club', 
         height: '220 cm', 
         gender: 'Masculin', 
-        bounty: '200.000.000 Berries', 
+        bounty: '200,000,000 Berries', 
         firstArc: 'Dressrosa' 
     },
     { 
@@ -1079,8 +1079,173 @@ const characters = [
         height: '272 cm', 
         gender: 'Masculin', 
         bounty: '0', 
-        firstArc: ' Whole Cake Island ' 
+        firstArc: 'Whole Cake Island' 
     },
+    { 
+        name: 'Kozuki Hiyori', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Famille Kozuki', 
+        height: '170 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'Wano' 
+    },
+    { 
+        name: 'Hogback', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Thriller Pirates de lécorce', 
+        height: '223 cm', 
+        gender: 'Masculin', 
+        bounty: '0', 
+        firstArc: 'Thriller Bark' 
+    },
+    { 
+        name: 'Hody Jones', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Équipage des Nouveaux Hommes-Poissons', 
+        height: '331 cm', 
+        gender: 'Masculin', 
+        bounty: '0', 
+        firstArc: 'Fishman Island' 
+    },
+    { 
+        name: 'Bellamy', 
+        devilFruit: 'Bane Bane no Mi', 
+        haki: 'Armement, Vision', 
+        affiliation: 'Équipage de Don Quichotte Doflamingo', 
+        height: '240 cm', 
+        gender: 'Masculin', 
+        bounty: '195,000,000 Berries', 
+        firstArc: 'Jaya' 
+    },
+    { 
+        name: 'Koby', 
+        devilFruit: 'Aucun', 
+        haki: 'Armement, Vision', 
+        affiliation: 'Marine', 
+        height: '167 cm', 
+        gender: 'Masculin', 
+        bounty: '0', 
+        firstArc: 'Romance Dawn' 
+    },
+    { 
+        name: 'Killer', 
+        devilFruit: 'Smile', 
+        haki: 'Armement, Vision', 
+        affiliation: 'Équipage de Kid', 
+        height: '195 cm', 
+        gender: 'Masculin', 
+        bounty: '200,000,000 Berries', 
+        firstArc: 'Sabaody Archipelago' 
+    },
+    { 
+        name: 'Koala', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Armée révolutionnaire', 
+        height: '160 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'FishMan Island' 
+    },
+    { 
+        name: 'Baggy', 
+        devilFruit: 'Bara Bara no Mi', 
+        haki: 'Aucun', 
+        affiliation: 'Guilde de la Croix', 
+        height: '192 cm', 
+        gender: 'Masculin', 
+        bounty: '3,189,000,000 Berries', 
+        firstArc: 'Orange Town' 
+    },
+    { 
+        name: 'Morgans', 
+        devilFruit: 'Bara Bara no Mi', 
+        haki: 'Aucun', 
+        affiliation: 'Document dactualité sur léconomie mondiale', 
+        height: '305 cm', 
+        gender: 'Masculin', 
+        bounty: '0', 
+        firstArc: 'Tori Tori no Mi' 
+    },
+    { 
+        name: 'Magellan', 
+        devilFruit: 'Doku Doku no Mi', 
+        haki: 'Aucun', 
+        affiliation: 'Impel Down', 
+        height: '491 cm', 
+        gender: 'Masculin', 
+        bounty: '0', 
+        firstArc: 'Impel Down' 
+    },
+    { 
+        name: 'Bell-mère', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Marine', 
+        height: '186 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'Arlong Park' 
+    },
+    { 
+        name: 'Nojiko', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Aucun', 
+        height: '170 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'Arlong Park' 
+    },
+    { 
+        name: 'Camie', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Takoyaki 8', 
+        height: '197 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'Alabasta' 
+    },
+    { 
+        name: 'Camie', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Takoyaki 8', 
+        height: '197 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'Alabasta' 
+    },
+    { 
+        name: 'Bepo', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Équipage du Heart', 
+        height: '240 cm', 
+        gender: 'Masculin', 
+        bounty: '500,000,000 Berries', 
+        firstArc: 'Sabaody Archipelago' 
+    },
+    { 
+        name: 'Benn Beckman', 
+        devilFruit: 'Aucun', 
+        haki: 'Armement', 
+        affiliation: 'Équipage du Roux', 
+        height: '206 cm', 
+        gender: 'Masculin', 
+        bounty: '0', 
+        firstArc: 'Romance Dawn' 
+    },
+
+    
+
+
+
     
 
 
@@ -1132,6 +1297,12 @@ const devilFruits = [
     { name: 'Nikyu Nikyu no Mi', type: 'Paramecia' },
     { name: 'Horu Horu no Mi', type: 'Paramecia' },
     { name: 'Noro Noro no Mi', type: 'Paramecia' },
+    { name: 'Bane Bane no Mi', type: 'Paramecia' },
+    { name: 'Doku Doku no Mi', type: 'Paramecia' },
+    { name: 'Awa Awa no Mi', type: 'Paramecia' },
+    { name: 'Doa Doa no Mi', type: 'Paramecia' },
+    { name: 'Fuku Fuku no Mi', type: 'Paramecia' },
+    { name: 'au', type: 'Paramecia' },
     { name: 'au', type: 'Paramecia' },
     { name: 'au', type: 'Paramecia' },
     { name: 'au', type: 'Paramecia' },
@@ -1147,7 +1318,15 @@ const devilFruits = [
     { name: 'Inu Inu no Mi', type: 'Zoan' },
     { name: 'Hito Hito no Mi', type: 'Zoan' },
     { name: 'Uo Uo no Mi', type: 'Zoan' },
-    { name: 'Kame Kame no Mi', type: 'Zoan' }
+    { name: 'Kame Kame no Mi', type: 'Zoan' },
+    { name: 'Tori Tori no Mi', type: 'Zoan' },
+    { name: 'Neko Neko no Mi', type: 'Zoan' },
+    { name: 'Ushi Ushi no Mi', type: 'Zoan' },
+    { name: 'Inu Inu no Mi', type: 'Zoan' },
+    { name: 'Fruit de Kozuki Momonosuke (Fruit Artificiel)', type: 'Zoan' },
+    { name: 'au', type: 'Zoan' },
+    { name: 'au', type: 'Zoan' },
+    { name: 'Smile', type: 'Zoan' }
 ];
 // Fonction pour catégoriser le fruit du démon
 function categorizeDevilFruit(devilFruit) {
