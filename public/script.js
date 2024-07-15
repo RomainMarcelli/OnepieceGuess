@@ -4,6 +4,8 @@ let devilFruits = []; // Array to store devil fruits
 
 const arcsChronologiques = [
     "Romance Dawn",
+    'Orange Town',
+    "Syrup Village",
     "Baratie",
     "Arlong Park",
     "Loguetown",
@@ -303,11 +305,16 @@ async function displayResult(guessedCharacter, selectedCharacter) {
                 if (field.key === 'name') {
                     // Afficher l'image du personnage à la place du texte
                     const img = document.createElement('img');
-                    img.src = getImagePath(guessedCharacter[field.key]); // Fonction à créer pour obtenir le chemin de l'image
+                    img.src = getImagePath(guessedCharacter[field.key]); // Fonction pour obtenir le chemin de l'image
                     img.alt = 'Character Image';
-                    img.style.width = '100%'; // Ajustez la taille de l'image si nécessaire
-                    img.style.height = '100%';
+                    img.className = 'character-image'; // Classe CSS pour le hover
                     itemDiv.appendChild(img);
+
+                    // Ajouter un élément pour afficher le nom sur hover
+                    const nameLabel = document.createElement('span');
+                    nameLabel.className = 'character-name-label';
+                    nameLabel.textContent = guessedCharacter[field.key];
+                    itemDiv.appendChild(nameLabel);
                 } else if (field.key === 'devilFruit') {
                     itemDiv.textContent = categorizeDevilFruit(guessedCharacter[field.key]);
                 } else if (field.key === 'haki') {
@@ -322,7 +329,7 @@ async function displayResult(guessedCharacter, selectedCharacter) {
                 } else if (field.key === 'height' || field.key === 'bounty') {
                     comparisonClass = compareValues(selectedCharacter[field.key], guessedCharacter[field.key]);
                     itemDiv.innerHTML = field.key === 'bounty' ?
-                        `<img src="/img/argent.png" alt="Bounty Icon" style="width: 15px; height: 20px; margin-right: 5px; border: 0;">${formatBounty(guessedCharacter[field.key]) || 'Aucun'}` :
+                        `<img src="/img/argent.png" alt="Bounty Icon" style="width: 15px; height: 20px; margin-right: 5px; border: 0px;">${formatBounty(guessedCharacter[field.key]) || 'Aucun'}` :
                         `${guessedCharacter[field.key] || 'Aucun'}`;
                 } else if (field.key === 'firstArc') {
                     comparisonClass = compareArcs(selectedCharacter[field.key], guessedCharacter[field.key]);
@@ -361,7 +368,6 @@ function getImagePath(characterName) {
     const imagePath = `img/${characterName.toLowerCase()}.png`;
     return imagePath;
 }
-
 
 function displaySuccessCard(characterName, attempts) {
     // Supprimer la carte de succès existante s'il y en a une
