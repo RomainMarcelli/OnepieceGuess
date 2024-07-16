@@ -301,7 +301,7 @@ const characters = [
     },
     { 
         name: 'Kurozumi Tama', 
-        devilFruit: '', 
+        devilFruit: 'Kibi Kibi no Mi', 
         haki: 'Aucun', 
         affiliation: 'Famille Kurozumi', 
         height: '108 cm', 
@@ -311,7 +311,7 @@ const characters = [
     },
     { 
         name: 'Diamante', 
-        devilFruit: '', 
+        devilFruit: 'Hira Hira no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Donquichote Pirates', 
         height: '525 cm', 
@@ -321,7 +321,7 @@ const characters = [
     },
     { 
         name: 'Riku Viola', 
-        devilFruit: '', 
+        devilFruit: 'Giro Giro no Mi', 
         haki: 'Aucun', 
         affiliation: 'Famille Riku', 
         height: '178 cm', 
@@ -331,7 +331,7 @@ const characters = [
     },
     { 
         name: 'Rebecca', 
-        devilFruit: '', 
+        devilFruit: 'Aucun', 
         haki: 'Vision', 
         affiliation: 'Famille Riku', 
         height: '171 cm', 
@@ -341,8 +341,8 @@ const characters = [
     },
     { 
         name: 'Kyros', 
-        devilFruit: '', 
-        haki: '', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
         affiliation: 'Famille Riku', 
         height: '298 cm', 
         gender: 'Masculin', 
@@ -351,8 +351,8 @@ const characters = [
     },
     { 
         name: 'Zeff', 
-        devilFruit: '', 
-        haki: '', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
         affiliation: 'Baratie', 
         height: '189 cm', 
         gender: 'Masculin', 
@@ -371,7 +371,7 @@ const characters = [
     },
     { 
         name: 'Marco', 
-        devilFruit: '', 
+        devilFruit: 'Tori Tori no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Barbe Blanche', 
         height: '203 cm', 
@@ -716,7 +716,7 @@ const characters = [
         affiliation: 'Straw Hat Pirates', 
         height: '176 cm', 
         gender: 'Masculin', 
-        bounty: '500.000.000 Berries', 
+        bounty: '500,000,000 Berries', 
         firstArc: 'Syrup Village' 
     },
     { 
@@ -726,7 +726,7 @@ const characters = [
         affiliation: 'Équipage aux Cent Bêtes', 
         height: '173 cm', 
         gender: 'Féminin', 
-        bounty: '400.000.000 Berries', 
+        bounty: '400,000,000 Berries', 
         firstArc: 'Wano' 
     },
     { 
@@ -736,7 +736,7 @@ const characters = [
         affiliation: 'Armada Pirate de Don Krieg', 
         height: '243 cm', 
         gender: 'Masculin', 
-        bounty: '17.000.000 Berries', 
+        bounty: '17,000,000 Berries', 
         firstArc: 'Baratie' 
     },
     { 
@@ -746,7 +746,7 @@ const characters = [
         affiliation: 'Armada Pirate de Don Krieg', 
         height: '186 cm', 
         gender: 'Masculin', 
-        bounty: '12.000.000 Berries', 
+        bounty: '12,000,000 Berries', 
         firstArc: 'Baratie' 
     },
     { 
@@ -787,7 +787,7 @@ const characters = [
         height: '389 cm', 
         gender: 'Masculin', 
         bounty: '108,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago ' 
+        firstArc: 'Sabaody Archipelago' 
     },
     { 
         name: 'Kozuki Oden', 
@@ -1388,6 +1388,11 @@ const devilFruits = [
     { name: 'Buku Buku no Mi', type: 'Paramecia' },
     { name: 'Pero Pero no Mi', type: 'Paramecia' },
     { name: 'Bisu Bisu no Mi', type: 'Paramecia' },
+    { name: 'Kibi Kibi no Mi', type: 'Paramecia' },
+    { name: 'Hira Hira no Mi', type: 'Zoan' },
+    { name: 'Giro Giro no Mi', type: 'Zoan' },
+    { name: 'au', type: 'Zoan' },
+
     // ////////////////////////////
     // ZOAN
     // ////////////////////////////

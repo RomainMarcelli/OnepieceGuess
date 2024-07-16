@@ -487,7 +487,14 @@ function displaySuccessCard(characterName) {
 }
 
 
-
+document.getElementById('restartGameButton').addEventListener('click', () => {
+    document.getElementById('characterInput').value = ''; // Effacer le texte du champ de saisie
+    const suggestionsDiv = document.getElementById('suggestions');
+    suggestionsDiv.innerHTML = ''; // Effacer les suggestions affichées
+    suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion
+    selectedCharacters = []; // Réinitialiser la liste des personnages sélectionnés
+    currentSuggestions = []; // Réinitialiser les suggestions actuelles
+});
 
 
 function getResultClass(guessedCharacter, selectedCharacter, field) {
