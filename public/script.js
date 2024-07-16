@@ -2,6 +2,7 @@ let selectedCharacter = null;
 const history = []; // Array to keep track of character choices
 let devilFruits = []; // Array to store devil fruits
 let attempts = 0; 
+  // Variable pour stocker les suggestions actuelles
 
 const arcsChronologiques = [
     "Romance Dawn",
@@ -57,20 +58,69 @@ document.getElementById('characterInput').addEventListener('input', async (event
     }
 });
 
+
+let currentSuggestions = [];
+let selectedCharacters = [];   
 function displaySuggestions(suggestions) {
+    // Mettre à jour les suggestions actuelles
+    currentSuggestions = suggestions;
+
+    // Filtrer les suggestions pour exclure les personnages déjà sélectionnés
+    const filteredSuggestions = suggestions.filter(suggestion => !selectedCharacters.includes(suggestion.name));
+
     const suggestionsDiv = document.getElementById('suggestions');
     suggestionsDiv.innerHTML = '';
-    suggestions.forEach(suggestion => {
-        const div = document.createElement('div');
-        div.textContent = suggestion.name;
-        div.className = 'suggestion';
-        div.addEventListener('click', () => {
-            document.getElementById('characterInput').value = suggestion.name;
-            suggestionsDiv.innerHTML = '';
+
+    if (filteredSuggestions.length > 0) {
+        filteredSuggestions.forEach(suggestion => {
+            const div = document.createElement('div');
+            div.textContent = suggestion.name;
+            div.className = 'suggestion';
+            div.addEventListener('click', () => {
+                document.getElementById('characterInput').value = suggestion.name; // Mettre à jour le champ de saisie avec la suggestion
+                selectedCharacters.push(suggestion.name); // Ajouter le personnage à la liste des sélectionnés
+
+                // Mettre à jour currentSuggestions après sélection
+                currentSuggestions = currentSuggestions.filter(item => item.name !== suggestion.name);
+
+                displaySuggestions(currentSuggestions); // Re-render les suggestions après sélection
+                suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion
+            });
+            suggestionsDiv.appendChild(div);
         });
-        suggestionsDiv.appendChild(div);
-    });
+        suggestionsDiv.style.display = 'block'; // Afficher la barre de suggestion si des suggestions existent
+    } else {
+        suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion si aucune suggestion
+    }
 }
+
+
+
+function removeSuggestion(name) {
+    currentSuggestions = currentSuggestions.filter(suggestion => suggestion.name !== name);
+}
+
+// Événement 'input' pour la recherche de suggestions
+document.getElementById('characterInput').addEventListener('input', async (event) => {
+    const query = event.target.value;
+    if (query.length > 0) {
+        try {
+            const response = await fetch(`/api/search?q=${query}`);
+            if (response.ok) {
+                const suggestions = await response.json();
+                displaySuggestions(suggestions); // Afficher les suggestions filtrées
+            } else {
+                console.error('Error fetching suggestions:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+        }
+    } else {
+        const suggestionsDiv = document.getElementById('suggestions');
+        suggestionsDiv.innerHTML = '';
+        suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion si le champ est vide
+    }
+});
 
 document.getElementById('guessForm').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -88,6 +138,12 @@ document.getElementById('guessForm').addEventListener('submit', async (event) =>
                 history.push(guessedCharacter); // Add the guessed character to history
                 displayResult(guessedCharacter, selectedCharacter);
                 updateHistory(); // Update the history display
+
+                // Effacer le champ de saisie après soumission
+                document.getElementById('characterInput').value = ''; // Effacer le texte du champ de saisie
+                const suggestionsDiv = document.getElementById('suggestions');
+                suggestionsDiv.innerHTML = ''; // Effacer les suggestions affichées
+                suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion
             } else {
                 alert('Character not found!');
             }

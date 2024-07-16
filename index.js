@@ -140,7 +140,7 @@ const characters = [
         firstArc: 'Sabaody Archipelago' 
     },
     { 
-        name: 'Trafalgar Law', 
+        name: 'Trafalgar D. Water Law', 
         devilFruit: 'Ope Ope no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage du Heart', 
@@ -1112,6 +1112,16 @@ const characters = [
         firstArc: 'Fishman Island' 
     },
     { 
+        name: 'Fisher Tiger', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Équipage des Pirates du Soleil', 
+        height: '520 cm', 
+        gender: 'Masculin', 
+        bounty: '230,000,000 Berries', 
+        firstArc: 'Fishman Island' 
+    },
+    { 
         name: 'Bellamy', 
         devilFruit: 'Bane Bane no Mi', 
         haki: 'Armement, Vision', 
@@ -1241,6 +1251,76 @@ const characters = [
         bounty: '0', 
         firstArc: 'Romance Dawn' 
     },
+    { 
+        name: 'Charlotte Pudding', 
+        devilFruit: 'Memo Memo no Mi', 
+        haki: 'Aucun', 
+        affiliation: 'Équipage de Big Mom', 
+        height: '166 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'Whole Cake Island' 
+    },
+    { 
+        name: 'Charlotte Brûlée', 
+        devilFruit: 'Mira Mira no Mi', 
+        haki: 'Aucun', 
+        affiliation: 'Équipage de Big Mom', 
+        height: '350 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'Whole Cake Island' 
+    },
+    { 
+        name: 'Charlotte Chiffon', 
+        devilFruit: 'Aucun', 
+        haki: 'Aucun', 
+        affiliation: 'Équipage du Fire Tank', 
+        height: '215 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'Whole Cake Island' 
+    },
+    { 
+        name: 'Charlotte Mont dOr', 
+        devilFruit: 'Buku Buku no Mi', 
+        haki: 'Aucun', 
+        affiliation: 'Équipage de Big Mom', 
+        height: '260 cm', 
+        gender: 'Masculin', 
+        bounty: '0', 
+        firstArc: 'Whole Cake Island' 
+    },
+    { 
+        name: 'Charlotte Perospero', 
+        devilFruit: 'Pero Pero no Mi', 
+        haki: 'Armement, Vision', 
+        affiliation: 'Équipage de Big Mom', 
+        height: '333 cm', 
+        gender: 'Masculin', 
+        bounty: '333,000,000 Berries', 
+        firstArc: 'Whole Cake Island' 
+    },
+    { 
+        name: 'Charlotte Katakuri', 
+        devilFruit: 'Mochi Mochi no Mi', 
+        haki: 'Rois, Armement, Vision', 
+        affiliation: 'Équipage de Big Mom', 
+        height: '509 cm', 
+        gender: 'Masculin', 
+        bounty: '1,100,000,000 Berries', 
+        firstArc: 'Whole Cake Island' 
+    },
+    { 
+        name: 'Charlotte Cracker', 
+        devilFruit: 'Bisu Bisu no Mi', 
+        haki: 'Armement, Vision', 
+        affiliation: 'Équipage de Big Mom', 
+        height: '307 cm', 
+        gender: 'Masculin', 
+        bounty: '860,000,000 Berries', 
+        firstArc: 'Whole Cake Island' 
+    },
 
     
 
@@ -1302,12 +1382,12 @@ const devilFruits = [
     { name: 'Awa Awa no Mi', type: 'Paramecia' },
     { name: 'Doa Doa no Mi', type: 'Paramecia' },
     { name: 'Fuku Fuku no Mi', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
+    { name: 'Mochi Mochi no Mi', type: 'Paramecia' },
+    { name: 'Memo Memo no Mi', type: 'Paramecia' },
+    { name: 'Mira Mira no Mi', type: 'Paramecia' },
+    { name: 'Buku Buku no Mi', type: 'Paramecia' },
+    { name: 'Pero Pero no Mi', type: 'Paramecia' },
+    { name: 'Bisu Bisu no Mi', type: 'Paramecia' },
     // ////////////////////////////
     // ZOAN
     // ////////////////////////////

@@ -170,7 +170,7 @@ button img{
     width: 32%;
     margin: 0px auto;
     border: 2px solid #534e41;
-   
+    /* display: none; */
 }
 
 .suggestion {
