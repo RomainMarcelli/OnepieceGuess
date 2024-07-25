@@ -17,23 +17,34 @@ body {
 
 .title{
     border: 2px solid #534e41;
-    width: 38%;
+    width: 32%;
     margin: 0px auto 20px;
     padding: 5px;
     background: #EADFC2;
     border-radius: 10px;
 }
 
-.title h3{
+.title .descript{
     background-color: white;
     /* width: 38%; */
     /* margin: 0px auto 25px; */
     /* height: 34%; */
     border: 2px solid #534e41;
-    padding: 22px;
+    padding: 20px;
     border-radius: 8px;
     margin: 0;
+}
+
+.title h3{
     text-transform: uppercase;
+    margin: 0;
+}
+
+.title h4{
+    color: #979797;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    margin-top: 15px;
 }
 
 .search{
@@ -113,7 +124,7 @@ button img{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 25px;
     margin-top: 10px;
     text-align: center;
 }
@@ -125,8 +136,8 @@ button img{
     border: 1px solid #ddd;
     border-radius: 5px;
     /* padding: 10px; */
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     background-color: #f9f9f9;
     justify-content: center;
     backface-visibility: hidden; /* Hide the back face of the element */
@@ -171,11 +182,14 @@ button img{
     margin: 0px auto;
     border: 2px solid #534e41;
     /* display: none; */
+    max-height: 300px; /* Ajustez cette valeur selon vos besoins */
+    overflow-y: auto; 
 }
+
 
 .suggestion {
     background-color: #f1f1f1;
-    padding: 15px 0;
+    padding: 11px 0;
     /* margin: 2px 0; */
     cursor: pointer;
     /* width: 100%; */
@@ -183,11 +197,26 @@ button img{
     border-left: 2px solid #534e41;
     border-right: 2px solid #534e41;
     border-bottom: 1px solid #534e41;
+    display: flex;
+    align-items: center;
+}
+
+.suggestion-image {
+    width: 40px; /* Ajustez la taille de l'image selon vos besoins */
+    height: 47px;
+    margin-right: 10px;
+    margin-left: 25px;/* Espace entre l'image et le texte */
+}
+
+.character-names-label{
+    font-weight: 400;
+    margin-left: 10px;
 }
 
 .suggestion:hover {
     background-color: #ddd;
 }
+
 #restartGameButton {
     margin-top: 20px;
 }

@@ -31,7 +31,9 @@ const arcsChronologiques = [
     "Dressrosa",
     "Zou",
     "Whole Cake Island",
-    "Wano"
+    "Film Red",
+    "Wano",
+    "Egg Head"
 ];
 
 document.getElementById('restartGameButton').addEventListener('click', async () => {
@@ -58,15 +60,25 @@ document.getElementById('characterInput').addEventListener('input', async (event
     }
 });
 
-
 let currentSuggestions = [];
-let selectedCharacters = [];   
+let selectedCharacters = [];
+
+function getImagePath(characterName) {
+    return `public/img/${characterName}.png`;
+}
+
 function displaySuggestions(suggestions) {
     // Mettre à jour les suggestions actuelles
     currentSuggestions = suggestions;
 
+    const input = document.getElementById('characterInput').value.trim().toLowerCase();
+
     // Filtrer les suggestions pour exclure les personnages déjà sélectionnés
-    const filteredSuggestions = suggestions.filter(suggestion => !selectedCharacters.includes(suggestion.name));
+    // et pour ne garder que ceux dont le nom commence par la lettre saisie
+    const filteredSuggestions = suggestions.filter(suggestion => 
+        !selectedCharacters.includes(suggestion.name) &&
+        suggestion.name.toLowerCase().startsWith(input)
+    );
 
     const suggestionsDiv = document.getElementById('suggestions');
     suggestionsDiv.innerHTML = '';
@@ -74,8 +86,20 @@ function displaySuggestions(suggestions) {
     if (filteredSuggestions.length > 0) {
         filteredSuggestions.forEach(suggestion => {
             const div = document.createElement('div');
-            div.textContent = suggestion.name;
             div.className = 'suggestion';
+
+            // Ajouter l'image du personnage
+            const img = document.createElement('img');
+            img.src = getImagePath(suggestion.name);
+            img.alt = 'Character Image';
+            img.className = 'suggestion-image';
+
+            // Ajouter le nom du personnage directement à droite de l'image
+            const nameLabel = document.createElement('span');
+            nameLabel.className = 'character-names-label';
+            nameLabel.textContent = suggestion.name;
+
+            // Ajouter un événement de clic
             div.addEventListener('click', () => {
                 document.getElementById('characterInput').value = suggestion.name; // Mettre à jour le champ de saisie avec la suggestion
                 selectedCharacters.push(suggestion.name); // Ajouter le personnage à la liste des sélectionnés
@@ -86,13 +110,25 @@ function displaySuggestions(suggestions) {
                 displaySuggestions(currentSuggestions); // Re-render les suggestions après sélection
                 suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion
             });
-            suggestionsDiv.appendChild(div);
+
+            div.appendChild(img); // Ajouter l'image au div
+            div.appendChild(nameLabel); // Ajouter le nom au div
+            suggestionsDiv.appendChild(div); // Ajouter le div complet à la barre de suggestion
         });
         suggestionsDiv.style.display = 'block'; // Afficher la barre de suggestion si des suggestions existent
     } else {
         suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion si aucune suggestion
     }
 }
+
+// Ajouter un écouteur d'événement pour le champ de saisie
+document.getElementById('characterInput').addEventListener('input', () => {
+    displaySuggestions(currentSuggestions);
+})
+
+
+
+
 
 
 
@@ -200,21 +236,6 @@ function resetGame() {
     document.getElementById('characterImage').src = '';
 }
 
-
-// Fonction pour récupérer les images des Haki depuis le serveur
-async function fetchHakiImages() {
-    try {
-        const response = await fetch('/api/haki-images');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching haki images:', error);
-        return {}; // Retourne un objet vide en cas d'erreur
-    }
-}
 
 function compareValues(correctValue, guessedValue) {
     if (!correctValue || !guessedValue) return '';
