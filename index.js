@@ -2043,8 +2043,8 @@ const devilFruits = [
     { name: 'Ushi Ushi no Mi', type: 'Zoan' },
     { name: 'Inu Inu no Mi', type: 'Zoan' },
     { name: 'Fruit de Kozuki Momonosuke (Fruit Artificiel)', type: 'Zoan' },
-    { name: 'Ryu Ryu no Mi, Modèle Pachycéphalosaure', type: 'Zoan' },
-    { name: 'Neko Neko no Mi, Modèle Tigre à dents de sabre', type: 'Zoan' },
+    { name: 'Ryu Ryu no Mi, Modèle: Pachycéphalosaure', type: 'Zoan' },
+    { name: 'Neko Neko no Mi, Modèle: Tigre à dents de sabre', type: 'Zoan' },
     { name: 'Ryu Ryu no Mi, Modèle: Spinosaurus', type: 'Zoan' },
     { name: 'Ryu Ryu no Mi, Modèle: Ptéranodon', type: 'Zoan' },
     { name: 'Ryu Ryu no Mi, Modèle: Brachiosaure', type: 'Zoan' },
@@ -2054,6 +2054,8 @@ const devilFruits = [
     { name: 'Tama Tama no Mi', type: 'Zoan' },
     { name: 'Hebi Hebi no Mi, Modèle: Yamata no Orochi', type: 'Zoan' },
     // { name: 'Ato Ato no Mi', type: 'Zoan' },
+    { name: 'au', type: 'Zoan' },
+    { name: 'au', type: 'Zoan' },
     { name: 'au', type: 'Zoan' },
     { name: 'Smile', type: 'Zoan' }
 ];

@@ -237,6 +237,21 @@ function resetGame() {
 }
 
 
+// Fonction pour récupérer les images des Haki depuis le serveur
+async function fetchHakiImages() {
+    try {
+        const response = await fetch('/api/haki-images');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching haki images:', error);
+        return {}; // Retourne un objet vide en cas d'erreur
+    }
+}
+
 function compareValues(correctValue, guessedValue) {
     if (!correctValue || !guessedValue) return '';
     const correctNumber = parseFloat(correctValue.replace(/[^0-9.]/g, ''));
@@ -463,6 +478,8 @@ async function displayResult(guessedCharacter, selectedCharacter) {
         document.querySelector('.success-card').scrollIntoView({ behavior: 'smooth' });
     }
 }
+
+
 
 // Fonction pour obtenir le chemin de l'image en fonction du nom
 function getImagePath(characterName) {

@@ -559,3 +559,9 @@ img {
 .result-item:hover .character-name-label {
     display: block;
 }
+
+.haki-image {
+    width: 20px; /* Ajustez la taille selon vos besoins */
+    height: 20px;
+    margin-right: 5px;
+}
