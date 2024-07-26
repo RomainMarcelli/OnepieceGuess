@@ -158,10 +158,102 @@ document.getElementById('characterInput').addEventListener('input', async (event
     }
 });
 
+function updateHintInfo() {
+    const firstArcHintInfo = document.getElementById('firstArcHintInfo');
+    const devilFruitHintInfo = document.getElementById('devilFruitHintInfo');
+    const firstArcHintImage = document.getElementById('firstArcHintImage');
+    const devilFruitHintImage = document.getElementById('devilFruitHintImage');
+    const firstArcHint = document.querySelector('#firstArcHint');
+    const devilFruitHint = document.querySelector('#devilFruitHint');
+    const firstArcHintP = document.querySelector('#firstArcHint p');
+    const devilFruitHintP = document.querySelector('#devilFruitHint p');
+
+    const attemptsForFirstArcHint = 6; // Affichage au bout de 2 essais
+    const attemptsForDevilFruitHint = 9; // Affichage au bout de 3 essais
+
+    const remainingAttemptsForFirstArcHint = Math.max(0, attemptsForFirstArcHint - attempts);
+    const remainingAttemptsForDevilFruitHint = Math.max(0, attemptsForDevilFruitHint - attempts);
+
+    if (remainingAttemptsForFirstArcHint > 0) {
+        firstArcHintInfo.textContent = `Dans ${remainingAttemptsForFirstArcHint} Essais`;
+        firstArcHintInfo.style.display = 'block';
+        // Réinitialiser le filtre si les essais ne sont pas atteints
+        firstArcHintImage.style.filter = '';
+    } else {
+        firstArcHintInfo.textContent = `Indice du premier arc : ${selectedCharacter.firstArc}`;
+        firstArcHintInfo.style.display = 'none';
+        // Appliquer le filtre après avoir atteint le nombre d'essais
+        firstArcHint.style.border = '2px solid #928157';
+        firstArcHintP.style.color = '#928157'; 
+        firstArcHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
+    }
+
+    if (remainingAttemptsForDevilFruitHint > 0) {
+        devilFruitHintInfo.textContent = `Dans ${remainingAttemptsForDevilFruitHint} Essais`;
+        devilFruitHintInfo.style.display = 'block';
+        // Réinitialiser le filtre si les essais ne sont pas atteints
+        devilFruitHintImage.style.filter = '';
+    } else {
+        devilFruitHintInfo.textContent = `Indice du fruit du démon : ${selectedCharacter.devilFruit}`;
+        devilFruitHintInfo.style.display = 'none';
+        // Appliquer le filtre après avoir atteint le nombre d'essais
+        devilFruitHint.style.border = '2px solid #928157';
+        devilFruitHintP.style.color = '#928157';
+        devilFruitHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
+    }
+}
+
+
+// Assurez-vous d'appeler cette fonction chaque fois que le nombre d'essais change
+
+
+
+function toggleHint(id) {
+    const firstArcHintDisplay = document.getElementById('firstArcHintDisplay');
+    const devilFruitHintDisplay = document.getElementById('devilFruitHintDisplay');
+
+    if (id === 'firstArcHintDisplay') {
+        if (attempts < 6) {
+            return;
+        }
+
+        if (firstArcHintDisplay.style.display === 'none' || firstArcHintDisplay.style.display === '') {
+            devilFruitHintDisplay.style.display = 'none';
+            firstArcHintDisplay.innerHTML = `Indice du premier arc : ${selectedCharacter.firstArc}`;
+            firstArcHintDisplay.style.display = 'block';
+        } else {
+            firstArcHintDisplay.style.display = 'none';
+        }
+    } else if (id === 'devilFruitHintDisplay') {
+        if (attempts < 9) {
+            return;
+        }
+
+        if (devilFruitHintDisplay.style.display === 'none' || devilFruitHintDisplay.style.display === '') {
+            firstArcHintDisplay.style.display = 'none';
+            devilFruitHintDisplay.innerHTML = `Indice du fruit du démon : ${selectedCharacter.devilFruit}`;
+            devilFruitHintDisplay.style.display = 'block';
+        } else {
+            devilFruitHintDisplay.style.display = 'none';
+        }
+    }
+}
+
+// Assurez-vous d'appeler cette fonction lorsqu'un utilisateur clique sur les indices
+
+
+// Fonction pour gérer les indices en fonction des essais
+function updateHints() {
+    // Met à jour les indices en fonction des essais
+    updateHintInfo();
+}
+
+// Écouteur d'événements pour le formulaire de soumission
 document.getElementById('guessForm').addEventListener('submit', async (event) => {
     event.preventDefault();
-
     const guessedCharacterName = document.getElementById('characterInput').value;
+    attempts++;
+    
     try {
         const response = await fetch('/api/characters');
         if (response.ok) {
@@ -169,17 +261,15 @@ document.getElementById('guessForm').addEventListener('submit', async (event) =>
             const guessedCharacter = allCharacters.find(character => character.name === guessedCharacterName);
 
             if (guessedCharacter) {
-                attempts++; // Incrémenter le nombre d'essais
-                guessedCharacter.correct = guessedCharacter.name === selectedCharacter.name; // Add correct property
-                history.push(guessedCharacter); // Add the guessed character to history
+                guessedCharacter.correct = guessedCharacter.name === selectedCharacter.name;
+                history.push(guessedCharacter);
                 displayResult(guessedCharacter, selectedCharacter);
-                updateHistory(); // Update the history display
+                updateHistory();
 
-                // Effacer le champ de saisie après soumission
-                document.getElementById('characterInput').value = ''; // Effacer le texte du champ de saisie
+                document.getElementById('characterInput').value = '';
                 const suggestionsDiv = document.getElementById('suggestions');
-                suggestionsDiv.innerHTML = ''; // Effacer les suggestions affichées
-                suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion
+                suggestionsDiv.innerHTML = '';
+                suggestionsDiv.style.display = 'none';
             } else {
                 alert('Character not found!');
             }
@@ -189,6 +279,18 @@ document.getElementById('guessForm').addEventListener('submit', async (event) =>
     } catch (error) {
         console.error('Error fetching characters:', error);
     }
+    
+    // Met à jour les indices en fonction du nombre d'essais
+    updateHints();
+});
+
+// Événements pour afficher ou cacher les indices
+document.getElementById('firstArcHint').addEventListener('click', () => {
+    toggleHint('firstArcHintDisplay');
+});
+
+document.getElementById('devilFruitHint').addEventListener('click', () => {
+    toggleHint('devilFruitHintDisplay');
 });
 
 
@@ -560,5 +662,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     await fetchDevilFruits();
     await startNewGame();
 });
-
 

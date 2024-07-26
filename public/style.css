@@ -11,20 +11,21 @@ body {
     background-attachment: fixed;
     background-position: center center;
 }
+
 #gameSection {
     margin-top: 20px;
 }
 
-.title{
+.title {
     border: 2px solid #534e41;
-    width: 32%;
+    width: 35%;
     margin: 0px auto 20px;
     padding: 5px;
     background: #EADFC2;
     border-radius: 10px;
 }
 
-.title .descript{
+.title .descript {
     background-color: white;
     /* width: 38%; */
     /* margin: 0px auto 25px; */
@@ -35,19 +36,103 @@ body {
     margin: 0;
 }
 
-.title h3{
+.title h3 {
     text-transform: uppercase;
     margin: 0;
 }
 
-.title h4{
+.title h4 {
     color: #979797;
     font-size: 1.1rem;
     margin-bottom: 0;
     margin-top: 15px;
 }
 
-.search{
+.title .descript .all_indice {
+    display: flex;
+}
+
+.title .descript .indice {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border: 2px solid #928157; */
+    border: 2px solid #cecece;
+    background: #faf9f3;
+    padding: 7px;
+    border-radius: 8px;
+    margin: 15px 20px 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    /* Ajoute une transition douce pour l'effet de grossissement */
+}
+
+.title .descript .indice:hover {
+    transform: scale(1.1);
+    /* Augmente la taille de la div à 110% lorsqu'on passe la souris dessus */
+}
+
+.title .descript .indice img {
+    width: 35px;
+    height: 35px;
+    /* filter: brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%); */
+    filter: brightness(0) saturate(100%) invert(66%) sepia(1%) saturate(437%) hue-rotate(327deg) brightness(92%) contrast(85%);
+}
+
+.title .descript .indice p {
+    font-size: .9rem;
+    /* color: #928157; */
+    color: #cecece;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    margin: 0;
+}
+
+#firstArcHintDisplay,
+#devilFruitHintDisplay {
+    position: relative;
+    row-gap: .7rem;
+    width: 100%;
+    background: #eadfc2;
+    padding: 1rem 0;
+    border-radius: 5px;
+    margin-top: 13px;
+}
+
+#firstArcHintDisplay::before {
+    left: 9%;
+    content: "";
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #eadfc2;
+}
+
+#devilFruitHintDisplay::before {
+    right: 9%;
+    content: "";
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #eadfc2;
+}
+
+#firstArcHintInfo,
+#devilFruitHintInfo {
+    font-size: .8rem;
+    color: #979797;
+    cursor: default;
+}
+
+.search {
     border: 2px solid #534e41;
     width: 31%;
     margin: auto;
@@ -58,7 +143,7 @@ body {
     align-items: center;
 }
 
-input{
+input {
     color: #534e41 !important;
     font-weight: 700;
     /* margin-bottom: 7px; */
@@ -69,12 +154,12 @@ input{
     border: 2px solid #EBE0C5;
 }
 
-button{
+button {
     background-color: transparent;
     border: 0;
 }
 
-button img{
+button img {
     width: 35px;
     height: 35px;
 }
@@ -91,8 +176,11 @@ button img{
 
 .resultat {
     display: flex;
-    flex-direction: row; /* Affiche les éléments horizontalement */
-    gap: 10px; /* Espace entre les cases */ /* Couleur de fond des résultats */
+    flex-direction: row;
+    /* Affiche les éléments horizontalement */
+    gap: 10px;
+    /* Espace entre les cases */
+    /* Couleur de fond des résultats */
 }
 
 
@@ -112,7 +200,7 @@ button img{
     text-align: center;
 }
 
-.result-category hr{
+.result-category hr {
     width: 90%;
     border-left: none;
     border-top: none;
@@ -140,15 +228,19 @@ button img{
     height: 120px;
     background-color: #f9f9f9;
     justify-content: center;
-    backface-visibility: hidden; /* Hide the back face of the element */
-    transform-style: preserve-3d; /* Preserve 3D space for the flip effect */
-    transition: transform 0.6s; /* Duration of the flip animation */
+    backface-visibility: hidden;
+    /* Hide the back face of the element */
+    transform-style: preserve-3d;
+    /* Preserve 3D space for the flip effect */
+    transition: transform 0.6s;
+    /* Duration of the flip animation */
     transform: rotateY(0deg);
     text-align: center;
 }
 
 .result-item.correct {
-    background-color: #3da75e; /* Vert */
+    background-color: #3da75e;
+    /* Vert */
     color: white;
     /* border: 2px solid #24d475; */
     transition: background-color .3s ease;
@@ -159,12 +251,14 @@ button img{
 }
 
 .result-item.partial {
-    background-color: rgba(217, 200, 39, .6980392156862745);/* Orange */
+    background-color: rgba(217, 200, 39, .6980392156862745);
+    /* Orange */
     color: white;
 }
 
 .result-item.incorrect {
-    background-color: #f44336; /* Rouge */
+    background-color: #f44336;
+    /* Rouge */
     color: white;
 }
 
@@ -182,8 +276,9 @@ button img{
     margin: 0px auto;
     border: 2px solid #534e41;
     /* display: none; */
-    max-height: 300px; /* Ajustez cette valeur selon vos besoins */
-    overflow-y: auto; 
+    max-height: 300px;
+    /* Ajustez cette valeur selon vos besoins */
+    overflow-y: auto;
 }
 
 
@@ -202,13 +297,15 @@ button img{
 }
 
 .suggestion-image {
-    width: 40px; /* Ajustez la taille de l'image selon vos besoins */
+    width: 40px;
+    /* Ajustez la taille de l'image selon vos besoins */
     height: 47px;
     margin-right: 10px;
-    margin-left: 25px;/* Espace entre l'image et le texte */
+    margin-left: 25px;
+    /* Espace entre l'image et le texte */
 }
 
-.character-names-label{
+.character-names-label {
     font-weight: 400;
     margin-left: 10px;
 }
@@ -226,7 +323,7 @@ button img{
     text-align: center;
 }
 
-.all-legend{
+.all-legend {
     border: 5px solid #eadfc2;
     border-radius: 10px;
     width: 50%;
@@ -260,15 +357,18 @@ button img{
 }
 
 .legend-color.correct {
-    background-color: #3da75e; /* Vert */
+    background-color: #3da75e;
+    /* Vert */
 }
 
 .legend-color.orange {
-    background-color: rgba(217, 200, 39, .6980392156862745); /* Orange */
+    background-color: rgba(217, 200, 39, .6980392156862745);
+    /* Orange */
 }
 
 .legend-color.incorrect {
-    background-color: #f44336; /* Rouge */
+    background-color: #f44336;
+    /* Rouge */
 }
 
 .legend-arrow {
@@ -304,7 +404,8 @@ img {
     height: 300px
 }
 
-#arrow-down, #arrow-up {
+#arrow-down,
+#arrow-up {
     width: 50px;
     height: 50px;
     margin-bottom: .4rem;
@@ -314,7 +415,7 @@ img {
     border: 1px solid #d53633;
 }
 
-#arrow-down::after{
+#arrow-down::after {
     position: absolute;
     top: 1px;
     left: 0;
@@ -329,7 +430,7 @@ img {
     transition: background-color .3s ease;
 }
 
-#arrow-up::after{
+#arrow-up::after {
     position: absolute;
     bottom: 1px;
     left: 0;
@@ -353,12 +454,14 @@ img {
     clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
     -webkit-clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
     height: 100%;
-    background: rgba(0, 0, 0, .5);/* Red background for down arrow */
+    background: rgba(0, 0, 0, .5);
+    /* Red background for down arrow */
     content: "";
     z-index: -1;
     opacity: 1;
     transition: background-color .3s ease;
-    display: block; /* Hidden by default */
+    display: block;
+    /* Hidden by default */
 }
 
 /* Flèche vers le haut */
@@ -370,18 +473,21 @@ img {
     clip-path: polygon(97% 60%, 80% 60%, 80% 5%, 20% 5%, 20% 60%, 3% 60%, 50% 95%);
     -webkit-clip-path: polygon(97% 60%, 80% 60%, 80% 5%, 20% 5%, 20% 60%, 3% 60%, 50% 95%);
     height: 100%;
-    background: rgba(0, 0, 0, .5);/* Green background for up arrow */
+    background: rgba(0, 0, 0, .5);
+    /* Green background for up arrow */
     content: "";
     z-index: -1;
     opacity: 1;
     transition: background-color .3s ease;
-    display: block; /* Hidden by default */
+    display: block;
+    /* Hidden by default */
 }
 
 /* Afficher les flèches si incorrect */
 .result-item.arrow-up::after,
 .result-item.arrow-down::after {
-    display: block; /* Show arrows if they are relevant */
+    display: block;
+    /* Show arrows if they are relevant */
 }
 
 
@@ -406,25 +512,31 @@ img {
 
 .result-bar {
     position: relative;
-    perspective: 1000px; /* Perspective for the 3D effect */
+    perspective: 1000px;
+    /* Perspective for the 3D effect */
 }
 
 /* Front face of the card */
 .result-item {
-    backface-visibility: hidden; /* Hide the back face of the element */
-    transform-style: preserve-3d; /* Preserve 3D space for the flip effect */
-    transition: transform 0.6s; /* Duration of the flip animation */
+    backface-visibility: hidden;
+    /* Hide the back face of the element */
+    transform-style: preserve-3d;
+    /* Preserve 3D space for the flip effect */
+    transition: transform 0.6s;
+    /* Duration of the flip animation */
     transform: rotateY(0deg);
 }
 
 /* Flip the card */
 .result-item.flip {
-    transform: rotateY(180deg); /* Rotate 180 degrees to flip */
+    transform: rotateY(180deg);
+    /* Rotate 180 degrees to flip */
 }
 
 /* Reset the card flip */
 .result-item.flip-in {
-    transform: rotateY(0deg); /* Rotate back to initial position */
+    transform: rotateY(0deg);
+    /* Rotate back to initial position */
 }
 
 
@@ -444,7 +556,7 @@ img {
     display: block;
 }
 
-.arrow-down::after{
+.arrow-down::after {
     position: absolute;
     bottom: 1px;
     left: 0;
@@ -452,23 +564,29 @@ img {
     clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
     -webkit-clip-path: polygon(97% 40%, 80% 40%, 80% 95%, 20% 95%, 20% 40%, 3% 40%, 50% 5%);
     height: 100%;
-    background: rgba(0, 0, 0, .5);/* Red background for down arrow */
+    background: rgba(0, 0, 0, .5);
+    /* Red background for down arrow */
     content: "";
     z-index: -1;
     opacity: 1;
     transition: background-color .3s ease;
-    display: block; /* Hidden by default */
+    display: block;
+    /* Hidden by default */
 }
 
 /* Styles pour les résultats des fruits du démon */
 .result-item.correct-type {
-    background-color: #3da75e; /* Vert clair pour le type correct */
-    color: white; /* Texte vert foncé */
+    background-color: #3da75e;
+    /* Vert clair pour le type correct */
+    color: white;
+    /* Texte vert foncé */
 }
 
 .result-item.incorrect-type {
-    background: #f44336; /* Rouge clair pour le type incorrect */
-    color: white; /* Texte rouge foncé */
+    background: #f44336;
+    /* Rouge clair pour le type incorrect */
+    color: white;
+    /* Texte rouge foncé */
 }
 
 /* Styles pour la carte de succès */
@@ -523,6 +641,7 @@ img {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -531,15 +650,18 @@ img {
 
 
 .character-name {
-    font-size: 24px; /* Ajustez cette valeur selon vos besoins */
-    font-weight: bold; /* Vous pouvez également ajouter du gras si nécessaire */
+    font-size: 24px;
+    /* Ajustez cette valeur selon vos besoins */
+    font-weight: bold;
+    /* Vous pouvez également ajouter du gras si nécessaire */
 }
 
 .result-item img {
     width: 100%;
     height: 100%;
     border-radius: 9px;
-    border: 2px solid #534e41;/* Ajustez selon vos besoins */
+    border: 2px solid #534e41;
+    /* Ajustez selon vos besoins */
 }
 
 
@@ -561,7 +683,8 @@ img {
 }
 
 .haki-image {
-    width: 20px; /* Ajustez la taille selon vos besoins */
+    width: 20px;
+    /* Ajustez la taille selon vos besoins */
     height: 20px;
     margin-right: 5px;
 }
