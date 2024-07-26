@@ -151,7 +151,14 @@ input {
     width: 100%;
     /* width: 20%; */
     /* margin-right: 84px; */
-    border: 2px solid #EBE0C5;
+    border: 3px solid #EBE0C5;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+input:focus {
+    border: 3px solid #EBE0C5; /* Maintenir la même couleur de bordure */
+    outline: none; /* Optionnel : Supprimer la bordure par défaut de l'input en focus */
 }
 
 button {
@@ -688,3 +695,139 @@ img {
     height: 20px;
     margin-right: 5px;
 }
+
+/* //////////////////////////////////////////////// */
+/* /////Jeux Fruit du démon //////////// */
+/* //////////////////////////////////////////////// */
+
+#resultFruitContainer .incorrect-guess{
+    width: 350px;
+    margin: auto;
+    background-color: #df5858;
+    border: 2px solid #ff8686;
+    background-image: url(./img/Answer.png);
+    background-size: 100% 100%;
+    margin: 10px auto;
+    padding: 0.7rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    cursor: default;
+    transition: all .2s ease-in-out;
+    flex-direction: column;
+    color: #fff;
+}
+
+.incorrect-guess img, #resultFruitContainer .correct-guess img{
+    border: 2px solid #534e41;
+    margin-bottom: 5px;
+    width: 40px;
+    height: 47px;
+    border-radius: 0;
+}
+
+#resultFruitContainer .correct-guess{
+    background-color: #35b956;
+    border: 2px solid #fff;
+    background-image: url(./img/AnswerGood.png);
+    background-size: 100% 100%;
+    padding: 0.7rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    cursor: default;
+    transition: all .2s ease-in-out;
+    flex-direction: column;
+    color: #fff;
+    width: 350px;
+    margin: auto;
+    margin-top: 10px;
+}
+
+#resultFruitContainer .correct-guess .character-name{
+    font-weight: 500;
+    font-size: 17px;
+}
+
+#resultFruitContainer .incorrect-guess .suggestion-image{
+    margin: 0;
+}
+
+#resultFruitContainer{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.success-card .character-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.success-card .character-container img{
+    width: 120px;
+    height: 120px;
+    margin-bottom: 10px;
+}
+
+#devil-fruit{
+    font-size: 25px;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+
+.progress_nav{
+    position: relative;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.background{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(./img/corde.png);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100% 25px;
+}
+
+.imagesJeu{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+}
+
+.guessPerso, .devilFruit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: transform .2s ease;
+    width: 25%;
+    height: auto;
+    /* filter: drop-shadow(0 0 10px #faf9f3); */
+}
+
+.guessPerso img, .devilFruit img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.selected {
+    filter: drop-shadow(0 0 10px #faf9f3);
+}
+

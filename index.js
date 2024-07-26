@@ -1321,7 +1321,7 @@ const characters = [
     },
     { 
         name: 'Sengoku', 
-        devilFruit: 'Hito Hito no Mi', 
+        devilFruit: 'Hito Hito no Mi, Modèle: Daibutsu', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Marine', 
         height: '278 cm', 
@@ -2054,7 +2054,7 @@ const devilFruits = [
     { name: 'Tama Tama no Mi', type: 'Zoan' },
     { name: 'Hebi Hebi no Mi, Modèle: Yamata no Orochi', type: 'Zoan' },
     // { name: 'Ato Ato no Mi', type: 'Zoan' },
-    { name: 'au', type: 'Zoan' },
+    { name: 'Hito Hito no Mi, Modèle: Daibutsu', type: 'Zoan' },
     { name: 'au', type: 'Zoan' },
     { name: 'au', type: 'Zoan' },
     { name: 'Smile', type: 'Zoan' }
@@ -2064,6 +2064,12 @@ function categorizeDevilFruit(devilFruit) {
     const fruit = devilFruits.find(f => f.name === devilFruit);
     return fruit ? fruit.type : 'Aucun';
 }
+
+app.get('/api/random-devil-fruit', (req, res) => {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    const character = characters[randomIndex];
+    res.json({ fruit: character.devilFruit, character: character.name });
+});
 
 // Route pour obtenir un personnage aléatoire
 app.get('/api/start-game', (req, res) => {
@@ -2083,11 +2089,9 @@ app.get('/api/search', (req, res) => {
     res.json(results);
 });
 
-// Route pour obtenir la liste des fruits du démon
 app.get('/api/devil-fruits', (req, res) => {
     res.json(devilFruits);
 });
-
 
 // Démarrer le serveur
 app.listen(port, () => {

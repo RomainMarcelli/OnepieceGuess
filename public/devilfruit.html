@@ -29,38 +29,38 @@
     <div id="gameSection">
         <div class="title">
             <div class="descript">
-                <h3>Devine le personnage de One piece !</h3>
-                <h4>Tape n'importe quel personnage pour commencer.</h4>
+                <h3>Quel personnage a mangé ce Fruit du Démon ?</h3>
+                <p id="devil-fruit"></p> 
                 <div class="all_indice">
-                    <div class="indice" id="firstArcHint" >
-                        <img id="firstArcHintImage" src="./img/book.png" alt="Livre indice">
-                        <p>Indice du premier arc</p>
-                        <span class="hint-info" id="firstArcHintInfo" style="display: block;"></span>
+                    <div class="indice" id="typeHint" >
+                        <img id="typeHintImage" src="./img/Type.png" alt="Type indice">
+                        <p>Indice de Type</p>
+                        <span class="hint-info" id="typeHintInfo" style="display: block;"></span>
                     </div>
-                    <div class="indice" id="devilFruitHint" >
-                        <img id="devilFruitHintImage" src="./img/fruit.png" alt="Fruit indice">
-                        <p>Indice fruit du démon</p>
-                        <span class="hint-info" id="devilFruitHintInfo" style="display: block;"></span>
+                    <div class="indice" id="traduitFruitHint" >
+                        <img id="traduitFruitHintImage" src="./img/traduit.png" alt="traduction indice">
+                        <p>Indice de nom traduit</p>
+                        <span class="hint-info" id="traduitFruitHintInfo" style="display: block;"></span>
                     </div>
                 </div>                
-                <div id="firstArcHintDisplay" style="display: none;"></div>
-                <div id="devilFruitHintDisplay" style="display:none;"></div>
+                <div id="typeHintDisplay" style="display: none;"></div>
+                <div id="traduitFruitHintDisplay" style="display:none;"></div>     
             </div>
         </div>
-        <form id="guessForm">
+        <form id="guessFruitForm">
             <div class="search">
                 <input type="text" id="characterInput" name="characterInput" autocomplete="off" placeholder="Nom de personnage">
                 <button type="submit" id="button"><img src="img/guess.png" alt=""></button>
             </div>
             <div id="suggestions"></div>
+            <div id="result"></div>
         </form>
-        <div id="resultContainer"></div>
+        <div id="resultFruitContainer"></div>
         <div id="characterImageContainer" style="display:none;">
             <img id="characterImage" src="" alt="Character Image">
         </div>
         <button id="restartGameButton" style="display:none;"></button>
 
-        <button id="goToDevilFruitGame">Deviner le Fruit du Démon</button>
     </div>
     
     <!-- Section pour l'historique des personnages -->
@@ -72,20 +72,14 @@
             <h2>Indicateurs de couleurs</h2>
             <div class="legend">
                 <p><span class="legend-color correct"></span>Correct</p>
-                <p><span class="legend-color orange"></span>Partiel</p>
+                <!-- <p><span class="legend-color orange"></span>Partiel</p> -->
                 <p><span class="legend-color incorrect"></span>Incorrect</p>
-                <p><span class="legend-arrow" id="arrow-up"></span>Plus grand</p>
-                <p><span class="legend-arrow" id="arrow-down"></span>Plus petit</p>
+                <!-- <p><span class="legend-arrow" id="arrow-up"></span>Plus grand</p> -->
+                <!-- <p><span class="legend-arrow" id="arrow-down"></span>Plus petit</p> -->
             </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('goToDevilFruitGame').addEventListener('click', function() {
-            window.location.href = 'devilfruit.html';
-        });
-    </script>
-    <!-- <script src="../devilFruits.js"></script> -->
     <script src="script.js"></script>
+    <script src="devilFruits.js"></script>
 </body>
 </html>

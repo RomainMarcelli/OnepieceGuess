@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devinez le personnage</title>
+</head>
+<body>
+    <h1>Devinez le personnage</h1>
+    <p id="devil-fruit"></p>
+    <h3>Quel personnage a mangé ce Fruit du Démon ?</h3>
+    <input type="text" id="guess" placeholder="Entrez le nom du personnage">
+    <button onclick="checkGuess()">Vérifier</button>
+    <p id="result"></p>
+
+    <script>
+        let characterName = '';
+    
+        async function fetchDevilFruit() {
+            try {
+                const response = await fetch('/api/random-devil-fruit');
+                const data = await response.json();
+                
+                // Filtrer pour éviter d'afficher "Aucun"
+                while (data.fruit === 'Aucun') {
+                    const retryResponse = await fetch('/api/random-devil-fruit');
+                    const retryData = await retryResponse.json();
+                    if (retryData.fruit !== 'Aucun') {
+                        data.fruit = retryData.fruit;
+                        data.character = retryData.character;
+                        break;
+                    }
+                }
+    
+                document.getElementById('devil-fruit').innerText = `Fruit du démon: ${data.fruit}`;
+                characterName = data.character;
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        }
+    
+        function checkGuess(event) {
+            event.preventDefault();
+            const guess = document.getElementById('characterInput').value.trim();
+            const resultElement = document.getElementById('result');
+            if (guess.toLowerCase() === characterName.toLowerCase()) {
+                resultElement.innerText = 'Correct !';
+                resultElement.style.color = 'green';
+            } else {
+                resultElement.innerText = `Incorrect. Le bon personnage était: ${characterName}`;
+                resultElement.style.color = 'red';
+            }
+        }
+    
+        function restartGame() {
+            document.getElementById('characterInput').value = '';
+            document.getElementById('result').innerText = '';
+            fetchDevilFruit();
+        }
+    
+        // Fetch a random devil fruit when the page loads
+        window.onload = fetchDevilFruit;
+    </script>
+    
+</body>
+</html>

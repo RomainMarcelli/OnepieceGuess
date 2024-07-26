@@ -36,6 +36,27 @@ const arcsChronologiques = [
     "Egg Head"
 ];
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Redirection sur clic des images
+    document.querySelector('.guessPerso img').addEventListener('click', () => {
+        window.location.href = 'index.html';
+    });
+
+    document.querySelector('.devilFruit img').addEventListener('click', () => {
+        window.location.href = 'devilfruit.html';
+    });
+
+    // Appliquer le filtre CSS sur l'image active
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    if (currentPage === 'index.html') {
+        document.querySelector('.guessPerso img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
+    } else if (currentPage === 'devilfruit.html') {
+        document.querySelector('.devilFruit img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
+    }
+});
+
+
 document.getElementById('restartGameButton').addEventListener('click', async () => {
     await startNewGame();
     resetGame();
@@ -128,10 +149,6 @@ document.getElementById('characterInput').addEventListener('input', () => {
 
 
 
-
-
-
-
 function removeSuggestion(name) {
     currentSuggestions = currentSuggestions.filter(suggestion => suggestion.name !== name);
 }
@@ -203,11 +220,6 @@ function updateHintInfo() {
     }
 }
 
-
-// Assurez-vous d'appeler cette fonction chaque fois que le nombre d'essais change
-
-
-
 function toggleHint(id) {
     const firstArcHintDisplay = document.getElementById('firstArcHintDisplay');
     const devilFruitHintDisplay = document.getElementById('devilFruitHintDisplay');
@@ -238,9 +250,6 @@ function toggleHint(id) {
         }
     }
 }
-
-// Assurez-vous d'appeler cette fonction lorsqu'un utilisateur clique sur les indices
-
 
 // Fonction pour gérer les indices en fonction des essais
 function updateHints() {
@@ -590,6 +599,7 @@ function getImagePath(characterName) {
     return imagePath;
 }
 
+
 function displaySuccessCard(characterName) {
     // Supprimer la carte de succès existante s'il y en a une
     const existingSuccessCard = document.querySelector('.success-card');
@@ -604,9 +614,27 @@ function displaySuccessCard(characterName) {
     successTitle.textContent = 'Bravo!';
     successCard.appendChild(successTitle);
 
-    const successMessage = document.createElement('p');
-    successMessage.innerHTML = `Tu as trouvé : <span class="character-name">${characterName}</span>`;
-    successCard.appendChild(successMessage);
+    // Création d'un conteneur pour le nom et l'image du personnage
+    const characterContainer = document.createElement('div');
+    characterContainer.className = 'character-container';
+
+    // Création de l'image du personnage
+    const characterImage = document.createElement('img');
+    characterImage.src = getImagePath(characterName);
+    characterImage.alt = 'Character Image';
+    characterImage.className = 'character-image';
+
+    // Création du nom du personnage
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'character-name';
+    nameSpan.textContent = characterName;
+
+    // Ajout de l'image et du nom au conteneur
+    characterContainer.appendChild(characterImage);
+    characterContainer.appendChild(nameSpan);
+
+    // Ajout du conteneur à la carte de succès
+    successCard.appendChild(characterContainer);
 
     const attemptsMessage = document.createElement('p');
     attemptsMessage.textContent = `Nombre d'essais réalisés : ${attempts}`;
@@ -615,8 +643,7 @@ function displaySuccessCard(characterName) {
     const restartButton = document.createElement('button');
     restartButton.textContent = 'Recommencer la partie';
     restartButton.addEventListener('click', () => {
-        resetGame();
-        startNewGame();
+        restartGame(); // Appel de restartGame pour réinitialiser le jeu
     });
     successCard.appendChild(restartButton);
 
@@ -625,6 +652,7 @@ function displaySuccessCard(characterName) {
     // Défilement vers la carte de succès
     successCard.scrollIntoView({ behavior: 'smooth' });
 }
+
 
 
 document.getElementById('restartGameButton').addEventListener('click', () => {
@@ -663,3 +691,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     await startNewGame();
 });
 
+
+async function fetchDevilFruit() {
+    try {
+        const response = await fetch('/api/random-devil-fruit');
+        const data = await response.json();
+        document.getElementById('devil-fruit').innerText = `Fruit du démon: ${data.fruit}`;
+        characterName = data.character;
+    } catch (error) {
+        console.error('Erreur:', error);
+    }
+}
+
+function checkGuess(event) {
+    event.preventDefault();
+    const guess = document.getElementById('characterInput').value.trim();
+    const resultElement = document.getElementById('result');
+    if (guess.toLowerCase() === characterName.toLowerCase()) {
+        resultElement.innerText = 'Correct !';
+        resultElement.style.color = 'green';
+    } else {
+        resultElement.innerText = `Incorrect. Le bon personnage était: ${characterName}`;
+        resultElement.style.color = 'red';
+    }
+}
+
+function restartGame() {
+    document.getElementById('characterInput').value = '';
+    document.getElementById('result').innerText = '';
+    fetchDevilFruit();
+}
+
+// Fetch a random devil fruit when the page loads
+window.onload = fetchDevilFruit;
