@@ -20,6 +20,17 @@ async function fetchDevilFruit() {
             }
         }
 
+        while (data.fruit === 'Smile') {
+            const retryResponse = await fetch('/api/random-devil-fruit');
+            const retryData = await retryResponse.json();
+            if (retryData.fruit !== 'Smile') {
+                data.fruit = retryData.fruit;
+                data.character = retryData.character;
+                data.type = retryData.type; // Ajout de type
+                break;
+            }
+        }
+
         document.getElementById('devil-fruit').innerText = `❝ ${data.fruit} ❞`;
         characterName = data.character;
         fruitType = data.type; // Stockage du type de fruit

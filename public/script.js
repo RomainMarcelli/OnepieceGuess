@@ -647,6 +647,13 @@ function displaySuccessCard(characterName) {
     });
     successCard.appendChild(restartButton);
 
+
+    // A voir si il faut le mettre : 
+
+    // const changeGame = document.createElement('button');
+    // changeGame.textContent = 'Jouer au fruit du démon';
+    // successCard.appendChild(changeGame);
+
     document.body.appendChild(successCard);
 
     // Défilement vers la carte de succès

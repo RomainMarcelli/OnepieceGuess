@@ -1387,7 +1387,7 @@ const characters = [
         height: '212 cm', 
         gender: 'Masculin', 
         bounty: '75,000,000 Berries', 
-        firstArc: 'Arabasta' 
+        firstArc: 'Alabasta' 
     },
     { 
         name: 'Crocodile', 
@@ -1700,16 +1700,6 @@ const characters = [
         gender: 'Féminin', 
         bounty: '0', 
         firstArc: 'Arlong Park' 
-    },
-    { 
-        name: 'Camie', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Takoyaki 8', 
-        height: '197 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Alabasta' 
     },
     { 
         name: 'Camie', 
