@@ -2049,6 +2049,45 @@ const devilFruits = [
     { name: 'au', type: 'Zoan' },
     { name: 'Smile', type: 'Zoan' }
 ];
+
+// Fruits grouped by type
+const devilFruitsByType = {
+    Logia: [
+        'Moku Moku no Mi', 'Magu Magu no Mi', 'Hie Hie no Mi', 'Mera Mera no Mi', 
+        'Pika Pika no Mi', 'Goro Goro no Mi', 'Yami Yami no Mi', 'Gasu Gasu no Mi', 
+        'Yuki Yuki no Mi', 'Suna Suna no Mi', 'Numa Numa no Mi', 'Mori Mori no Mi'
+    ],
+    Paramecia: [
+        'Gomu Gomu no Mi', 'Bara Bara no Mi', 'Hana Hana no Mi', 'Yomi Yomi no Mi', 
+        'Toshi Toshi no Mi', 'Gura Gura no Mi', 'Ope Ope no Mi', 'Jiki Jiki no Mi', 
+        'String String Fruit', 'Soru Soru no Mi', 'Supa Supa no Mi', 'Doru Doru no Mi', 
+        'Mane Mane no Mi', 'Riki Riki no Mi', 'Wara Wara no Mi', 'Ishi Ishi no Mi', 
+        'Sui Sui no Mi', 'Horo Horo no Mi', 'Mero Mero no Mi', 'Fruit Urouge', 
+        'Zushi Zushi no Mi', 'Kage Kage no Mi', 'Maki Maki no Mi', 'Nagi Nagi no Mi', 
+        'Bari Bari no Mi', 'Nikyu Nikyu no Mi', 'Horu Horu no Mi', 'Noro Noro no Mi', 
+        'Bane Bane no Mi', 'Doku Doku no Mi', 'Awa Awa no Mi', 'Doa Doa no Mi', 
+        'Fuku Fuku no Mi', 'Mochi Mochi no Mi', 'Memo Memo no Mi', 'Mira Mira no Mi', 
+        'Buku Buku no Mi', 'Pero Pero no Mi', 'Bisu Bisu no Mi', 'Kibi Kibi no Mi', 
+        'Hira Hira no Mi', 'Giro Giro no Mi', 'Netsu Netsu no Mi', 'Shibo Shibo no Mi', 
+        'Sube Sube no Mi', 'Nomi Nomi no Mi', 'Beta Beta no Mi', 'Pamu Pamu no Mi', 
+        'Guru Guru no Mi', 'Buki Buki no Mi', 'Hobi Hobi no Mi', 'Nui Nui no Mi', 
+        'Oto Oto no Mi', 'Kira Kira no Mi', 'Toki Toki no Mi', 'Uta Uta no Mi', 
+        'Juku Juku no Mi', 'Choki Choki no Mi'
+    ],
+    Zoan: [
+        'Inu Inu no Mi', 'Ryu Ryu no Mi', 'Ushi Ushi no Mi', 'Tori Tori no Mi', 
+        'Hito Hito no Mi', 'Uo Uo no Mi', 'Kame Kame no Mi', 'Neko Neko no Mi', 
+        'Fruit de Kozuki Momonosuke (Fruit Artificiel)', 'Ryu Ryu no Mi, Modèle: Pachycéphalosaure', 
+        'Neko Neko no Mi, Modèle: Tigre à dents de sabre', 'Ryu Ryu no Mi, Modèle: Spinosaurus', 
+        'Ryu Ryu no Mi, Modèle: Ptéranodon', 'Ryu Ryu no Mi, Modèle: Brachiosaure', 
+        'Zo Zo no Mi, Modèle: Mammouth', 'Ryu Ryu no Mi, Modèle: Tricératops', 
+        'Kumo Kumo no Mi, Modèle: Rosamygale Grauvogeli', 'Tama Tama no Mi', 
+        'Hebi Hebi no Mi, Modèle: Yamata no Orochi', 'Hito Hito no Mi, Modèle: Daibutsu', 
+        'Smile'
+    ]
+};
+
+
 // Fonction pour catégoriser le fruit du démon
 function categorizeDevilFruit(devilFruit) {
     const fruit = devilFruits.find(f => f.name === devilFruit);
@@ -2081,6 +2120,10 @@ app.get('/api/search', (req, res) => {
 
 app.get('/api/devil-fruits', (req, res) => {
     res.json(devilFruits);
+});
+
+app.get('/api/devilFruitsByType', (req, res) => {
+    res.json(devilFruitsByType);
 });
 
 // Démarrer le serveur

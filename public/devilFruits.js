@@ -1,5 +1,6 @@
 let characterName = '';
 let incorrectGuesses = [];
+let devilFruitsByType = null;
 // let attempts = 0;
 let fruitType = ''; // Ajout pour stocker le type de fruit
 
@@ -184,14 +185,99 @@ function restartGame() {
 
 // Fonction pour mettre à jour les indices
 function updateHintInfo() {
-    const hintInfoElement = document.getElementById('typeHintInfo'); // Élément pour afficher l'indice du type
-    if (attempts >= 4 && hintInfoElement) {
-        hintInfoElement.innerText = `Type de fruit : ${fruitType}`;
-        hintInfoElement.style.display = 'block';
-    } else if (hintInfoElement) {
-        hintInfoElement.style.display = 'none';
+    const typeHintInfo = document.getElementById('typeHintInfo');
+    const traduitFruitHintInfo = document.getElementById('traduitFruitHintInfo');
+    const typeHintImage = document.getElementById('typeHintImage');
+    const traduitFruitHintImage = document.getElementById('traduitFruitHintImage');
+    const typeHint = document.querySelector('#typeHint');
+    const traduitFruitHint = document.querySelector('#traduitFruitHint');
+    const typeHintP = document.querySelector('#typeHint p');
+    const traduitFruitHintP = document.querySelector('#traduitFruitHint p'); // Élément pour l'indice traduit
+
+    const attemptsFortypeHint = 1; // Affichage au bout de 2 essais
+    const attemptsFortraduitFruitHint = 7;
+
+    const remainingAttemptsFortypeHint = Math.max(0, attemptsFortypeHint - attempts);
+    const remainingAttemptsFortraduitFruitHint = Math.max(0, attemptsFortraduitFruitHint - attempts);
+
+    if (remainingAttemptsFortypeHint > 0) {
+        typeHintInfo.textContent = `Dans ${remainingAttemptsFortypeHint} Essais`;
+        typeHintInfo.style.display = 'block';
+        // Réinitialiser le filtre si les essais ne sont pas atteints
+        typeHintImage.style.filter = '';
+    } else {
+        typeHintInfo.textContent = `Indice de type : ${devilFruitsByType}`;
+        typeHintInfo.style.display = 'none';
+        // Appliquer le filtre après avoir atteint le nombre d'essais
+        typeHint.style.border = '2px solid #928157';
+        typeHintP.style.color = '#928157'; 
+        typeHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
+    }
+
+    if (remainingAttemptsFortraduitFruitHint > 0) {
+        traduitFruitHintInfo.textContent = `Dans ${remainingAttemptsFortraduitFruitHint} Essais`;
+        traduitFruitHintInfo.style.display = 'block';
+        // Réinitialiser le filtre si les essais ne sont pas atteints
+        traduitFruitHintImage.style.filter = '';
+    } else {
+        traduitFruitHintInfo.textContent = `Indice du fruit du démon : ${selectedCharacter.devilFruit}`;
+        traduitFruitHintInfo.style.display = 'none';
+        // Appliquer le filtre après avoir atteint le nombre d'essais
+        traduitFruitHint.style.border = '2px solid #928157';
+        traduitFruitHintP.style.color = '#928157';
+        traduitFruitHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
     }
 }
+
+
+function toggleHint(id) {
+    const typeHintDisplay = document.getElementById('typeHintDisplay');
+    const traduitFruitHintDisplay = document.getElementById('traduitFruitHintDisplay');
+
+    if (id === 'typeHintDisplay') {
+        if (attempts < 1) {
+            return;
+        }
+
+        if (typeHintDisplay.style.display === 'none' || typeHintDisplay.style.display === '') {
+            traduitFruitHintDisplay.style.display = 'none';
+            typeHintDisplay.innerHTML = `Indice de type : ${devilFruitsByType}`;
+            typeHintDisplay.style.display = 'block';
+        } else {
+            typeHintDisplay.style.display = 'none';
+        }
+    } else if (id === 'traduitFruitHintDisplay') {
+        if (attempts < 7) {
+            return;
+        }
+
+        if (traduitFruitHintDisplay.style.display === 'none' || traduitFruitHintDisplay.style.display === '') {
+            typeHintDisplay.style.display = 'none';
+            traduitFruitHintDisplay.innerHTML = `Indice du fruit du démon : ${selectedCharacter.devilFruit}`;
+            traduitFruitHintDisplay.style.display = 'block';
+        } else {
+            traduitFruitHintDisplay.style.display = 'none';
+        }
+    }
+}
+
+// Fonction pour gérer les indices en fonction des essais
+function updateHints() {
+    // Met à jour les indices en fonction des essais
+    updateHintInfo();
+}
+
+// Événements pour afficher ou cacher les indices
+document.getElementById('typeHint').addEventListener('click', () => {
+    toggleHint('typeHintDisplay');
+});
+
+document.getElementById('traduitFruitHint').addEventListener('click', () => {
+    toggleHint('traduitFruitHintDisplay');
+});
+
+
+
 
 // Fetch a random devil fruit when the page loads
 window.onload = fetchDevilFruit;
