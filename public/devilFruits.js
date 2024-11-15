@@ -1,8 +1,8 @@
 let characterName = '';
 let incorrectGuesses = [];
-let devilFruitsByType = null;
 // let attempts = 0;
 let fruitType = ''; // Ajout pour stocker le type de fruit
+let devilFruitsByType = '';
 
 async function fetchDevilFruit() {
     try {
@@ -183,8 +183,16 @@ function restartGame() {
     updateHintInfo(); // Réinitialiser l'indice lors du redémarrage du jeu
 }
 
-// Fonction pour mettre à jour les indices
-function updateHintInfo() {
+function getDevilFruitType(fruit) {
+    for (let type in devilFruitsByType) {
+        if (devilFruitsByType[type].includes(fruit)) {
+            return type;
+        }
+    }
+    return 'Type inconnu'; // In case the fruit is not found in any category
+}
+
+function updateHintInfo(attempts, selectedCharacter) {
     const typeHintInfo = document.getElementById('typeHintInfo');
     const traduitFruitHintInfo = document.getElementById('traduitFruitHintInfo');
     const typeHintImage = document.getElementById('typeHintImage');
@@ -194,11 +202,14 @@ function updateHintInfo() {
     const typeHintP = document.querySelector('#typeHint p');
     const traduitFruitHintP = document.querySelector('#traduitFruitHint p'); // Élément pour l'indice traduit
 
-    const attemptsFortypeHint = 1; // Affichage au bout de 2 essais
-    const attemptsFortraduitFruitHint = 7;
+    const attemptsFortypeHint = 1; // Affichage au bout de 1 essai
+    const attemptsFortraduitFruitHint = 7; // Affichage de l'indice traduit au bout de 7 essais
 
     const remainingAttemptsFortypeHint = Math.max(0, attemptsFortypeHint - attempts);
     const remainingAttemptsFortraduitFruitHint = Math.max(0, attemptsFortraduitFruitHint - attempts);
+
+    // Trouver le type de fruit du démon
+    const fruitType = getDevilFruitType(selectedCharacter.devilFruit);
 
     if (remainingAttemptsFortypeHint > 0) {
         typeHintInfo.textContent = `Dans ${remainingAttemptsFortypeHint} Essais`;
@@ -206,7 +217,7 @@ function updateHintInfo() {
         // Réinitialiser le filtre si les essais ne sont pas atteints
         typeHintImage.style.filter = '';
     } else {
-        typeHintInfo.textContent = `Indice de type : ${devilFruitsByType}`;
+        typeHintInfo.textContent = `Indice de type : ${fruitType}`;
         typeHintInfo.style.display = 'none';
         // Appliquer le filtre après avoir atteint le nombre d'essais
         typeHint.style.border = '2px solid #928157';
