@@ -6,7 +6,7 @@
 
 
 @media (max-width: 1075px) {
-    .result-category h3 {
+    /* .result-category h3 {
         border: none !important;
         font-size: 11px;
         font-weight: 900;
@@ -14,17 +14,29 @@
         text-shadow: 1px 1px #cecece;
         color: #312e26;
         text-align: center;
+    } */
+
+    .resultat{
+        gap: 25px;
     }
 
+    .title{
+        width: 40%;
+    }
+/* 
     .result-item {
         display: flex;
         flex-direction: column;
         align-items: center;
         border: 1px solid #ddd;
         border-radius: 5px;
-        /* padding: 10px; */
         width: 100px;
         height: 106px;
+    } */
+
+    #resultContainer {            /* Définit la largeur du conteneur */
+        overflow-x: auto;         /* Active le défilement horizontal si nécessaire */      /* Empêche le contenu de se plier à la ligne */
+        padding: 10px 0;          /* Un peu de marge en haut et en bas */
     }
 }
 
@@ -57,9 +69,17 @@
     .success-card {
         width: 67%;
     }
+
+    .legend{
+        flex-wrap: wrap
+    }
+
 }
 
 @media (max-width: 460px){
+    #legend .legend p {
+        font-size: 22px
+    }
     .progress_nav{
         width: 330px;
     }

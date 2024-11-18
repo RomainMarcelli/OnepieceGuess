@@ -183,7 +183,6 @@ function restartGame() {
     updateHintInfo(); // Réinitialiser l'indice lors du redémarrage du jeu
 }
 
-// Fonction pour mettre à jour les indices
 function updateHintInfo() {
     const typeHintInfo = document.getElementById('typeHintInfo');
     const traduitFruitHintInfo = document.getElementById('traduitFruitHintInfo');
@@ -206,7 +205,7 @@ function updateHintInfo() {
         // Réinitialiser le filtre si les essais ne sont pas atteints
         typeHintImage.style.filter = '';
     } else {
-        typeHintInfo.textContent = `Indice de type : ${devilFruitsByType}`;
+        typeHintInfo.textContent = `Indice de type : ${fruitType}`; // Remplace devilFruitsByType par fruitType
         typeHintInfo.style.display = 'none';
         // Appliquer le filtre après avoir atteint le nombre d'essais
         typeHint.style.border = '2px solid #928157';
@@ -228,6 +227,7 @@ function updateHintInfo() {
         traduitFruitHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
     }
 }
+
 
 
 function toggleHint(id) {
@@ -275,8 +275,6 @@ document.getElementById('typeHint').addEventListener('click', () => {
 document.getElementById('traduitFruitHint').addEventListener('click', () => {
     toggleHint('traduitFruitHintDisplay');
 });
-
-
 
 
 // Fetch a random devil fruit when the page loads
