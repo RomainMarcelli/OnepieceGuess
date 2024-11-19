@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Devinettes - Fruits du Démon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .game-container {
+            text-align: center;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>Devinez le Fruit du Démon</h1>
+    <input type="text" id="fruitInput" placeholder="Entrez un nom de fruit">
+    <button onclick="guessFruit()">Deviner</button>
+    <div id="message" class="message"></div>
+</div>
+
+<script>
+    // Liste des fruits du démon avec leur nom et type
+    const devilFruits = [
+        { name: "Gomu Gomu no Mi", type: "Paramecia" },
+        { name: "Mera Mera no Mi", type: "Logia" },
+        { name: "Ushi Ushi no Mi", type: "Zoan" },
+        // Ajoutez d'autres fruits ici...
+    ];
+
+    // Fruit du démon à deviner
+    const fruitToGuess = devilFruits[Math.floor(Math.random() * devilFruits.length)];
+    let attempts = 0;
+
+    // Fonction de devinette
+    function guessFruit() {
+        const userGuess = document.getElementById("fruitInput").value.trim();
+        const messageElement = document.getElementById("message");
+        attempts += 1;
+
+        // Vérifie si la réponse est correcte
+        if (userGuess.toLowerCase() === fruitToGuess.name.toLowerCase()) {
+            messageElement.innerHTML = `Bravo ! Vous avez trouvé le fruit du démon : <strong>${fruitToGuess.name}</strong>`;
+            messageElement.style.color = "green";
+        } else {
+            messageElement.innerHTML = "Incorrect, essayez encore.";
+            messageElement.style.color = "red";
+
+            // Affiche le type du fruit du démon après le premier essai
+            if (attempts === 1) {
+                messageElement.innerHTML += `<br>Indice : Le type du fruit est <strong>${fruitToGuess.type}</strong>`;
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

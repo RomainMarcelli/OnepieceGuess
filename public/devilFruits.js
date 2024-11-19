@@ -195,14 +195,10 @@ function getDevilFruitType(fruit) {
 function updateHintInfo(attempts, selectedCharacter) {
     const typeHintInfo = document.getElementById('typeHintInfo');
     const traduitFruitHintInfo = document.getElementById('traduitFruitHintInfo');
-    const typeHintImage = document.getElementById('typeHintImage');
-    const traduitFruitHintImage = document.getElementById('traduitFruitHintImage');
     const typeHint = document.querySelector('#typeHint');
     const traduitFruitHint = document.querySelector('#traduitFruitHint');
-    const typeHintP = document.querySelector('#typeHint p');
-    const traduitFruitHintP = document.querySelector('#traduitFruitHint p'); // Élément pour l'indice traduit
 
-    const attemptsFortypeHint = 1; // Affichage au bout de 1 essai
+    const attemptsFortypeHint = 1; // Affichage au bout d'un essai
     const attemptsFortraduitFruitHint = 7; // Affichage de l'indice traduit au bout de 7 essais
 
     const remainingAttemptsFortypeHint = Math.max(0, attemptsFortypeHint - attempts);
@@ -212,33 +208,23 @@ function updateHintInfo(attempts, selectedCharacter) {
     const fruitType = getDevilFruitType(selectedCharacter.devilFruit);
 
     if (remainingAttemptsFortypeHint > 0) {
-        typeHintInfo.textContent = `Dans ${remainingAttemptsFortypeHint} Essais`;
-        typeHintInfo.style.display = 'block';
-        // Réinitialiser le filtre si les essais ne sont pas atteints
-        typeHintImage.style.filter = '';
+        typeHintInfo.textContent = `Indice dans ${remainingAttemptsFortypeHint} essai(s)`;
+        typeHint.style.border = '';
     } else {
-        typeHintInfo.textContent = `Indice de type : ${fruitType}`;
-        typeHintInfo.style.display = 'none';
-        // Appliquer le filtre après avoir atteint le nombre d'essais
+        typeHintInfo.textContent = `Type du fruit : ${fruitType}`;
         typeHint.style.border = '2px solid #928157';
-        typeHintP.style.color = '#928157'; 
-        typeHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
     }
 
     if (remainingAttemptsFortraduitFruitHint > 0) {
-        traduitFruitHintInfo.textContent = `Dans ${remainingAttemptsFortraduitFruitHint} Essais`;
-        traduitFruitHintInfo.style.display = 'block';
-        // Réinitialiser le filtre si les essais ne sont pas atteints
-        traduitFruitHintImage.style.filter = '';
+        traduitFruitHintInfo.textContent = `Indice complet dans ${remainingAttemptsFortraduitFruitHint} essai(s)`;
+        traduitFruitHint.style.border = '';
     } else {
-        traduitFruitHintInfo.textContent = `Indice du fruit du démon : ${selectedCharacter.devilFruit}`;
-        traduitFruitHintInfo.style.display = 'none';
-        // Appliquer le filtre après avoir atteint le nombre d'essais
+        traduitFruitHintInfo.textContent = `Fruit : ${selectedCharacter.devilFruit}`;
         traduitFruitHint.style.border = '2px solid #928157';
-        traduitFruitHintP.style.color = '#928157';
-        traduitFruitHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
     }
 }
+
+
 
 
 function toggleHint(id) {
@@ -286,8 +272,6 @@ document.getElementById('typeHint').addEventListener('click', () => {
 document.getElementById('traduitFruitHint').addEventListener('click', () => {
     toggleHint('traduitFruitHintDisplay');
 });
-
-
 
 
 // Fetch a random devil fruit when the page loads

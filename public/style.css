@@ -385,6 +385,7 @@ button img {
     text-align: center;
     justify-content: space-around;
     position: relative;
+    width: 100%;
 }
 
 .legend-color {
