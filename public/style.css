@@ -134,8 +134,8 @@ body {
     border-bottom: 10px solid #eadfc2;
 }
 
-#typeHintDisplay ::before {
-    right: 9%;
+#typeHintDisplay::before {
+    left: 9%;
     content: "";
     position: absolute;
     top: -10px;

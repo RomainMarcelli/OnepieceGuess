@@ -7,7 +7,6 @@
     <title>One Piece Guessing Game</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
-
 </head>
 <body>
 
@@ -43,7 +42,11 @@
                         <p>Indice de nom traduit</p>
                         <span class="hint-info" id="traduitFruitHintInfo" style="display: block;"></span>
                     </div>
-                </div>                
+                </div>
+                <!-- Nouvelle section pour afficher le type -->
+                <div id="fruitTypeDisplay" style="display: none;">
+                    <strong>Type du fruit :</strong> <span id="fruitType"></span>
+                </div>         
                 <div id="typeHintDisplay" style="display: none;"></div>
                 <div id="traduitFruitHintDisplay" style="display:none;"></div>     
             </div>
@@ -61,7 +64,6 @@
             <img id="characterImage" src="" alt="Character Image">
         </div>
         <button id="restartGameButton" style="display:none;"></button>
-
     </div>
     
     <!-- Section pour l'historique des personnages -->
