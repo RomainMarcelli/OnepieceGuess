@@ -2088,11 +2088,11 @@ const devilFruitsByType = {
 };
 
 
-// Fonction pour catégoriser le fruit du démon
-function categorizeDevilFruit(devilFruit) {
-    const fruit = devilFruits.find(f => f.name === devilFruit);
-    return fruit ? fruit.type : 'Aucun';
-}
+// // Fonction pour catégoriser le fruit du démon
+// function categorizeDevilFruit(devilFruit) {
+//     const fruit = devilFruits.find(f => f.name === devilFruit);
+//     return fruit ? fruit.type : 'Aucun';
+// }
 
 app.get('/api/random-devil-fruit', (req, res) => {
     const randomIndex = Math.floor(Math.random() * characters.length);

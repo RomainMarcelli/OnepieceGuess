@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trouve le personnage One Piece</title>
+    <link rel="stylesheet" href="GuessPerso.css">
+</head>
+
+<body>
+    <div id="game-container">
+        <h1>Devinez le personnage !</h1>
+        <p id="hint">Indice : <span id="current-hint"></span></p>
+        <form id="guessForm">
+            <input type="text" id="guessInput" placeholder="Votre réponse..." list="characterSuggestions" required />
+            <datalist id="characterSuggestions"></datalist>
+            <button type="submit">Deviner</button>
+        </form>
+        <div id="result"></div>
+        <button id="restartGame" style="display: none;">Recommencer</button>
+    </div>
+    <script src="GuessPerso.js"></script>
+</body>
+
+</html>
