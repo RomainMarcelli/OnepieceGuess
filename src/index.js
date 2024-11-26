@@ -4,8 +4,13 @@ const app = express();
 const port = 3000;
 
 // Middleware pour servir des fichiers statiques depuis le répertoire 'public'
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img', express.static(path.join(__dirname, 'public/img')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public', 'Guess', 'index.html'));
+});
+
 
 // Liste des personnages
 const characters = [

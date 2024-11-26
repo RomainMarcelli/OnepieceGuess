@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelector('.devilFruit img').addEventListener('click', () => {
-        window.location.href = 'devilfruit.html';
+        window.location.href = '../DevilFruit/devilfruit.html';
     });
 
     // Appliquer le filtre CSS sur l'image active
