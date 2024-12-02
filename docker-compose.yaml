@@ -1,24 +1,15 @@
 version: '3.9'
+
 services:
   app:
-    build: .
+    build:
+      context: ./src
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
+      - ./src:/app
       - /app/node_modules
     environment:
       NODE_ENV: production
-    depends_on:
-      - mongo
-
-  mongo:
-    image: mongo
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-
-volumes:
-  mongo_data:
+    working_dir: /app
+    command: ["node", "index.js"]

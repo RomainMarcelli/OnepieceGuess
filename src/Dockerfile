@@ -1,18 +1,20 @@
-# Utiliser une image officielle de Node.js
-FROM node:16
+# Étape 1 : Utiliser une image Node.js de base
+FROM node:18
 
-# Définir le répertoire de travail à l'intérieur du conteneur
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier les fichiers de votre projet dans le conteneur
+# Copier les fichiers package.json et package-lock.json dans le conteneur
 COPY package*.json ./
-COPY . .
 
 # Installer les dépendances
 RUN npm install
 
+# Copier le reste des fichiers de l'application
+COPY . .
+
 # Exposer le port de l'application
 EXPOSE 3000
 
-# Commande par défaut pour démarrer l'application
+# Commande pour exécuter l'application
 CMD ["node", "index.js"]
