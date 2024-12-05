@@ -347,7 +347,7 @@ function updateHintInfo() {
     // const traduitFruitHint = document.querySelector('#traduitFruitHint');
     const typeHintP = document.querySelector('#typeHint p');
 
-    const attemptsFortypeHint = 1;
+    const attemptsFortypeHint = 4;
 
     const remainingAttemptsFortypeHint = Math.max(0, attemptsFortypeHint - attempts);
 

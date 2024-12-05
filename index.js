@@ -11,6 +11,7 @@ app.use('/img', express.static(path.join(__dirname, 'public/img')));
 const characters = [
     { 
         name: 'Monkey D. Luffy', 
+        aliases: ['Luffy'],
         devilFruit: 'Gomu Gomu no Mi', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Straw Hat Pirates', 
@@ -21,6 +22,7 @@ const characters = [
     },
     { 
         name: 'Roronoa Zoro', 
+        aliases: ['Zoro'],
         devilFruit: 'Aucun', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Straw Hat Pirates', 
@@ -40,7 +42,8 @@ const characters = [
         firstArc: 'Arlong Park' 
     },
     { 
-        name: 'Nico Robin', 
+        name: 'Nico Robin',
+        aliases: ['Robin'], 
         devilFruit: 'Hana Hana no Mi', 
         haki: 'Aucun', 
         affiliation: 'Straw Hat Pirates', 
@@ -61,6 +64,7 @@ const characters = [
     },
     { 
         name: 'Tony Tony Chopper', 
+        aliases: ['Chopper'],
         devilFruit: 'Hito Hito no Mi', 
         haki: 'Aucun', 
         affiliation: 'Straw Hat Pirates', 
@@ -101,6 +105,7 @@ const characters = [
     },
     { 
         name: 'Gol D. Roger', 
+        aliases: ['Roger'],
         devilFruit: 'Aucun', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Équipage des Pirates de Roger', 
@@ -121,6 +126,7 @@ const characters = [
     },
     { 
         name: 'Marshall D. Teach', 
+        aliases: ['Teach', 'Barbe Noire'], // Alias supplémentaires
         devilFruit: 'Yami Yami no Mi, Gura Gura no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Barbe Noire', 
@@ -130,7 +136,8 @@ const characters = [
         firstArc: 'Jaya' 
     },
     { 
-        name: 'Eustass Kid', 
+        name: 'Eustass Kid',
+        aliases: ['Kid'], 
         devilFruit: 'Jiki Jiki no Mi', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Kid Pirates', 
@@ -141,6 +148,7 @@ const characters = [
     },
     { 
         name: 'Trafalgar D. Water Law', 
+        aliases: ['Law'],
         devilFruit: 'Ope Ope no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage du Heart', 
@@ -151,6 +159,7 @@ const characters = [
     },
     { 
         name: 'Donquichote Doflamingo', 
+        aliases: ['Doflamingo'],
         devilFruit: 'String String Fruit', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Donquichote Pirates', 
@@ -161,6 +170,7 @@ const characters = [
     },
     { 
         name: 'Big Mom', 
+        aliases: ['BigMom'],
         devilFruit: 'Soru Soru no Mi', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Big Mom Pirates', 
@@ -231,6 +241,7 @@ const characters = [
     },
     { 
         name: 'Haguar D. Sauro', 
+        aliases: ['Sauro'],
         devilFruit: 'Aucun', 
         haki: 'Armement', 
         affiliation: 'Marine', 
@@ -321,6 +332,7 @@ const characters = [
     },
     { 
         name: 'Rob Lucci', 
+        aliases: ['Lucci'],
         devilFruit: 'Neko Neko no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'CP-AIGIS0', 
@@ -391,6 +403,7 @@ const characters = [
     },
     { 
         name: 'Kozuki Momonosuke', 
+        aliases: ['Momonosuke'],
         devilFruit: 'Fruit de Kozuki Momonosuke (Fruit Artificiel)', 
         haki: 'Vision', 
         affiliation: 'Famille Kozuki', 
@@ -401,6 +414,7 @@ const characters = [
     },
     { 
         name: 'Kurozumi Kanjuro', 
+        aliases: ['Kanuro'],
         devilFruit: 'Aucun', 
         haki: 'Armement, Vision', 
         affiliation: 'Famille Kurozumi', 
@@ -411,6 +425,7 @@ const characters = [
     },
     { 
         name: 'Kurozumi Orochi', 
+        aliases: ['Orochi'],
         devilFruit: 'Hebi Hebi no Mi, Modèle: Yamata no Orochi', 
         haki: 'Aucun', 
         affiliation: 'Famille Kurozumi', 
@@ -421,6 +436,7 @@ const characters = [
     },
     { 
         name: 'Kurozumi Tama', 
+        aliases: ['Tama'],
         devilFruit: 'Kibi Kibi no Mi', 
         haki: 'Aucun', 
         affiliation: 'Famille Kurozumi', 
@@ -440,7 +456,8 @@ const characters = [
         firstArc: 'Dressrosa' 
     },
     { 
-        name: 'Riku Viola', 
+        name: 'Riku Viola',
+        aliases: ['Viola'], 
         devilFruit: 'Giro Giro no Mi', 
         haki: 'Aucun', 
         affiliation: 'Famille Riku', 
@@ -480,7 +497,8 @@ const characters = [
         firstArc: 'Baratie' 
     },
     { 
-        name: 'Portgas D. Ace', 
+        name: 'Portgas D. Ace',
+        aliases: ['Ace'], 
         devilFruit: 'Mera Mera no Mi', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Équipage de Barbe Blanche', 
@@ -511,6 +529,7 @@ const characters = [
     },
     { 
         name: 'Little Oars Jr.', 
+        aliases: ['OarsJR'],
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Équipage de Barbe Blanche', 
@@ -530,7 +549,8 @@ const characters = [
         firstArc: 'Jaya' 
     },
     { 
-        name: 'Barbe Blanche', 
+        name: 'Barbe Blanche',
+        aliases: ['Edward NewGate'], 
         devilFruit: 'Gura Gura no Mi', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Équipage de Barbe Blanche', 
@@ -590,7 +610,8 @@ const characters = [
         firstArc: 'Post-War' 
     },
     { 
-        name: 'Ashura Doji', 
+        name: 'Ashura Doji',
+        aliases: ['Ashura'], 
         devilFruit: 'Aucun', 
         haki: 'Armement, Vision', 
         affiliation: 'Voleurs Atamayama', 
@@ -611,6 +632,7 @@ const characters = [
     },
     { 
         name: 'Dracule Mihawk', 
+        aliases: ['Mihawk'],
         devilFruit: 'Aucun', 
         haki: 'Armement, Vision', 
         affiliation: 'Guilde de la Croix', 
@@ -621,6 +643,7 @@ const characters = [
     },
     { 
         name: 'Emporio Ivankov', 
+        aliases: ['Ivankov'],
         devilFruit: 'Horu Horu no Mi', 
         haki: 'Aucun', 
         affiliation: 'Armée Révolutionnaire', 
@@ -651,6 +674,7 @@ const characters = [
     },
     { 
         name: 'Bartholomew Kuma', 
+        aliases: ['kuma'],
         devilFruit: 'Nikyu Nikyu no Mi', 
         haki: 'Armement', 
         affiliation: 'Armée Révolutionnaire', 
@@ -670,7 +694,8 @@ const characters = [
         firstArc: 'Dressrosa' 
     },
     { 
-        name: 'Vinsmoke Ichiji', 
+        name: 'Vinsmoke Ichiji',
+        aliases: ['Ichiji'], 
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Famille Vinsmoke', 
@@ -681,6 +706,7 @@ const characters = [
     },
     { 
         name: 'Vinsmoke Niji', 
+        aliases: ['Niji'],
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Famille Vinsmoke', 
@@ -691,6 +717,7 @@ const characters = [
     },
     { 
         name: 'Vinsmoke Yonji', 
+        aliases: ['Yonji'],
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Famille Vinsmoke', 
@@ -701,6 +728,7 @@ const characters = [
     },
     { 
         name: 'Vinsmoke Reiju', 
+        aliases: ['Reiju'],
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Famille Vinsmoke', 
@@ -710,7 +738,8 @@ const characters = [
         firstArc: 'Whole Cake Island' 
     },
     { 
-        name: 'Silvers Rayleigh', 
+        name: 'Silvers Rayleigh',
+        aliases: ['Rayleigh'], 
         devilFruit: 'Aucun', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Équipage des Pirates de Roger', 
@@ -721,6 +750,7 @@ const characters = [
     },
     { 
         name: 'Don Quichotte Rossinante', 
+        aliases: ['Rossinante'],
         devilFruit: 'Nagi Nagi no Mi', 
         haki: 'Aucun', 
         affiliation: 'Marine', 
@@ -731,6 +761,7 @@ const characters = [
     },
     { 
         name: 'X Drake', 
+        aliases: ['XDrake'],
         devilFruit: 'Ryu Ryu no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Marine', 
@@ -741,6 +772,7 @@ const characters = [
     },
     { 
         name: 'Monkey D. Dragon', 
+        aliases: ['Dragon'],
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Armée Révolutionnaire', 
@@ -811,6 +843,7 @@ const characters = [
     },
     { 
         name: 'Mont Blanc Noland', 
+        aliases: ['Noland'],
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Royaume de Luvneel', 
@@ -820,7 +853,8 @@ const characters = [
         firstArc: 'Skypiea' 
     },
     { 
-        name: 'Mont Blanc Cricket', 
+        name: 'Mont Blanc Cricket',
+        aliases: ['Cricket'], 
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Forces Spéciales Simiesques', 
@@ -861,6 +895,7 @@ const characters = [
     },
     { 
         name: 'Shimotsuki Ryuma', 
+        aliases: ['Ryuma'],
         devilFruit: 'Aucun', 
         haki: 'Armement', 
         affiliation: 'Thriller Pirates de lécorce', 
@@ -871,6 +906,7 @@ const characters = [
     },
     { 
         name: 'Gecko Moria', 
+        aliases: ['Moria'],
         devilFruit: 'Kage Kage no Mi', 
         haki: 'Aucun', 
         affiliation: 'Thriller Pirates de lécorce', 
@@ -991,6 +1027,7 @@ const characters = [
     },
     { 
         name: 'Kozuki Oden', 
+        aliases: ['Oden'],
         devilFruit: 'Aucun', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Famille Kozuki', 
@@ -1020,7 +1057,8 @@ const characters = [
         firstArc: 'Wano' 
     },
     { 
-        name: 'Boa Hancock', 
+        name: 'Boa Hancock',
+        aliases: ['Hancock'], 
         devilFruit: 'Mero Mero no Mi', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Kujas', 
@@ -1081,6 +1119,7 @@ const characters = [
     },
     { 
         name: 'Nefertari Vivi', 
+        aliases: ['Vivi'],
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Royaume Alabasta', 
@@ -1101,6 +1140,7 @@ const characters = [
     },
     { 
         name: 'Nefertari Cobra', 
+        aliases: ['Cobra'],
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Royaume Alabasta', 
@@ -1121,6 +1161,7 @@ const characters = [
     },
     { 
         name: 'Monkey D. Garp', 
+        aliases: ['Garp'],
         devilFruit: 'Aucun', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Marine', 
@@ -1300,7 +1341,8 @@ const characters = [
         firstArc: 'Post-War' 
     },
     { 
-        name: 'Basil Hawkins', 
+        name: 'Basil Hawkins',
+        aliases: ['Hawkins'],
         devilFruit: 'Wara Wara no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Hawkins', 
@@ -1331,6 +1373,7 @@ const characters = [
     },
     { 
         name: 'Jesus Burgess', 
+        aliases: ['Burgess'],
         devilFruit: 'Riki Riki no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Barbe Noire', 
@@ -1361,6 +1404,7 @@ const characters = [
     },
     { 
         name: 'Bentham (mr 2)', 
+        aliases: ['MR2'],
         devilFruit: 'Mane Mane no Mi', 
         haki: 'Aucun', 
         affiliation: 'Okamas', 
@@ -1371,6 +1415,7 @@ const characters = [
     },
     { 
         name: 'Galdino (mr 3)',
+        aliases: ['Mr3'],
         devilFruit: 'Doru Doru no Mi', 
         haki: 'Aucun', 
         affiliation: 'Guilde de la Croix', 
@@ -1381,6 +1426,7 @@ const characters = [
     },
     { 
         name: 'Daz Bonez (mr 1)', 
+        aliases: ['Mr1'],
         devilFruit: 'Supa Supa no Mi', 
         haki: 'Aucun', 
         affiliation: 'Guilde de la Croix', 
@@ -1421,6 +1467,7 @@ const characters = [
     },
     { 
         name: 'César Clown', 
+        aliases: ['César'],
         devilFruit: 'Gasu Gasu no Mi', 
         haki: 'Aucun', 
         affiliation: 'Royaume de Germa', 
@@ -1432,6 +1479,7 @@ const characters = [
     
     { 
         name: 'Jewelry Bonney', 
+        aliases: ['Bonney'],
         devilFruit: 'Toshi Toshi no Mi', 
         haki: 'Aucun', 
         affiliation: 'Équipage de Bonney', 
@@ -1442,7 +1490,8 @@ const characters = [
     },
 
     { 
-        name: 'Capone Bege', 
+        name: 'Capone Bege',
+        aliases: ['Bege'], 
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Équipage du Fire Tank', 
@@ -1453,6 +1502,7 @@ const characters = [
     },
     { 
         name: 'Vinsmoke Judge', 
+        aliases: ['Judge'],
         devilFruit: 'Aucun', 
         haki: 'Armement', 
         affiliation: 'Famille Vinsmoke', 
@@ -1462,7 +1512,8 @@ const characters = [
         firstArc: 'Whole Cake Island' 
     },
     { 
-        name: 'Kozuki Hiyori', 
+        name: 'Kozuki Hiyori',
+        aliases: ['Hiyori'], 
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Famille Kozuki', 
@@ -1473,6 +1524,7 @@ const characters = [
     },
     { 
         name: 'Kozuki Toki', 
+        aliases: ['Toki'],
         devilFruit: 'Toki Toki no Mi', 
         haki: 'Aucun', 
         affiliation: 'Famille Kozuki', 
@@ -1503,6 +1555,7 @@ const characters = [
     },
     { 
         name: 'Shimotsuki Yasuie', 
+        aliases: ['Yasuie'],
         devilFruit: 'Smile', 
         haki: 'Aucun', 
         affiliation: 'Pays des Wa', 
@@ -1543,6 +1596,7 @@ const characters = [
     },
     { 
         name: 'Hody Jones', 
+        aliases: ['Hody'],
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Équipage des Nouveaux Hommes-Poissons', 
@@ -1623,6 +1677,7 @@ const characters = [
     },
     { 
         name: 'Scratchmen Apoo', 
+        aliases: ['Apoo'],
         devilFruit: 'Oto Oto no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipe aux Cent Bêtes', 
@@ -1732,7 +1787,8 @@ const characters = [
         firstArc: 'Romance Dawn' 
     },
     { 
-        name: 'Lucky Roux', 
+        name: 'Lucky Roux',
+        aliases: ['Lucky'], 
         devilFruit: 'Aucun', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage du Roux', 
@@ -1742,7 +1798,8 @@ const characters = [
         firstArc: 'Romance Dawn' 
     },
     { 
-        name: 'Benn Beckman', 
+        name: 'Benn Beckman',
+        aliases: ['Beckman'], 
         devilFruit: 'Aucun', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage du Roux', 
@@ -1762,7 +1819,8 @@ const characters = [
         firstArc: 'Film Red' 
     },
     { 
-        name: 'Charlotte Pudding', 
+        name: 'Charlotte Pudding',
+        aliases: ['Pudding'], 
         devilFruit: 'Memo Memo no Mi', 
         haki: 'Aucun', 
         affiliation: 'Équipage de Big Mom', 
@@ -1773,6 +1831,7 @@ const characters = [
     },
     { 
         name: 'Charlotte Brûlée', 
+        aliases: ['Brulée'],
         devilFruit: 'Mira Mira no Mi', 
         haki: 'Aucun', 
         affiliation: 'Équipage de Big Mom', 
@@ -1783,6 +1842,7 @@ const characters = [
     },
     { 
         name: 'Charlotte Smoothie', 
+        aliases: ['Smoothie'],
         devilFruit: 'Shibo Shibo no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Big Mom', 
@@ -1792,7 +1852,8 @@ const characters = [
         firstArc: 'Whole Cake Island' 
     },
     { 
-        name: 'Charlotte Chiffon', 
+        name: 'Charlotte Chiffon',
+        aliases: ['Chiffon'], 
         devilFruit: 'Aucun', 
         haki: 'Aucun', 
         affiliation: 'Équipage du Fire Tank', 
@@ -1803,6 +1864,7 @@ const characters = [
     },
     { 
         name: 'Charlotte Mont dOr', 
+        aliases: ['Mont dor'],
         devilFruit: 'Buku Buku no Mi', 
         haki: 'Aucun', 
         affiliation: 'Équipage de Big Mom', 
@@ -1813,6 +1875,7 @@ const characters = [
     },
     { 
         name: 'Charlotte Perospero', 
+        aliases: ['Perospero'],
         devilFruit: 'Pero Pero no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Big Mom', 
@@ -1823,6 +1886,7 @@ const characters = [
     },
     { 
         name: 'Charlotte Katakuri', 
+        aliases: ['Katakuri'],
         devilFruit: 'Mochi Mochi no Mi', 
         haki: 'Rois, Armement, Vision', 
         affiliation: 'Équipage de Big Mom', 
@@ -1833,6 +1897,7 @@ const characters = [
     },
     { 
         name: 'Charlotte Oven', 
+        aliases: ['Oven'],
         devilFruit: 'Netsu Netsu no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Big Mom', 
@@ -1843,6 +1908,7 @@ const characters = [
     },
     { 
         name: 'Charlotte Cracker', 
+        aliases: ['Cracker'],
         devilFruit: 'Bisu Bisu no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Big Mom', 

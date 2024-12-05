@@ -1,0 +1,114 @@
+main {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-container {
+    text-align: center;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.game-board {
+    margin-top: 20px;
+}
+
+#letter-display {
+    font-size: 3em;
+    color: #ff4500;
+    margin-bottom: 20px;
+}
+
+#player-input {
+    width: 70%;
+    padding: 10px;
+    font-size: 1em;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+}
+
+#submit-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: #ff4500;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submit-button:hover {
+    background-color: #e03e00;
+}
+
+#feedback {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+#score {
+    margin-top: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#round-info {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #666;
+}
+
+/* Styles pour la sélection du nombre de rounds */
+#round-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#round-selection p {
+    font-size: 1.3em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.round-option {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 1em;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.round-option:hover {
+    background-color: #0056b3;
+}
+
+
+#time-taken {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #444;
+    margin-top: 20px;
+}
