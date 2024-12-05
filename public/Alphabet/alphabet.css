@@ -77,32 +77,64 @@ p {
 }
 
 /* Styles pour la sélection du nombre de rounds */
+/* Styles pour le conteneur de sélection des rounds */
 #round-selection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-color: #ffefd5;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 #round-selection p {
-    font-size: 1.3em;
+    font-size: 1.2em;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-weight: bold;
 }
 
+/* Boutons de sélection des rounds */
 .round-option {
+    margin: 10px 5px;
     padding: 10px 20px;
-    margin: 5px;
     font-size: 1em;
-    color: white;
-    background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #4caf50;
+    color: white;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .round-option:hover {
-    background-color: #0056b3;
+    transform: scale(1.1);
+    background-color: #45a049;
+}
+
+/* Checkbox de système de vie */
+label {
+    display: block;
+    margin-top: 15px;
+    font-size: 1em;
+    color: #555;
+    font-weight: bold;
+}
+
+label input {
+    margin-right: 10px;
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
@@ -111,4 +143,63 @@ p {
     font-weight: bold;
     color: #444;
     margin-top: 20px;
+}
+/* Section de sélection des vies */
+#lives-selection {
+    background-color: #ffefd5;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+    margin-top: 20px;
+}
+
+#lives-selection p {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+#lives-selection label {
+    display: block;
+    margin: 10px 0;
+    font-size: 1em;
+    color: #555;
+}
+
+#lives-selection input[type="radio"] {
+    margin-right: 10px;
+}
+
+/* Bouton Commencer la partie */
+#start-game-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    display: inline-block;
+}
+
+#start-game-button:hover {
+    transform: scale(1.1);
+    background-color: #45a049;
+}
+
+/* Animation d’apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
