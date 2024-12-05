@@ -13,6 +13,8 @@
 
 <body>
   <img class="logo_img" src="../img/One-Piece-Logo.png" alt="Logo">
+
+  <!-- Barre de Navigation entre les différents modes de Jeu -->
   <nav>
     <div class="progress_nav">
       <div class="background"></div>
@@ -27,6 +29,8 @@
       <a href="../guessPerso.html" style="position: absolute;">Nouveau mode</a>
     </div>
   </nav>
+
+  <!-- Partie -->
   <main>
     <div class="game-container">
       <h1>One Piece Guessing Game</h1>
@@ -59,6 +63,7 @@
       <div id="game" style="display: none;">
         <div class="game-board">
           <div id="letter-display"></div>
+          <div id="timer">Temps restant : 0s</div> <!-- Ajout du timer -->
           <input type="text" id="player-input" placeholder="Entrez un nom" />
           <button id="submit-button">Soumettre</button>
         </div>

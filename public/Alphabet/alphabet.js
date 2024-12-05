@@ -6,6 +6,8 @@ let currentScore = 0; // Score actuel
 let startTime; // Heure de début de la partie
 let endTime;   // Heure de fin de la partie
 let lives = 3; // Nombre de vies par défaut
+let timerInterval; // Intervalle pour le compte à rebours
+let timeLeft; // Temps restant pour le round
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -52,20 +54,75 @@ function startRound() {
         startTime = Date.now(); // Enregistrer l'heure de début de la partie
     }
 
+    // Vérifier si le jeu doit se terminer
     if (currentRound >= maxRounds || lives <= 0) {
-        endGame(); // Terminer la partie si le nombre de manches est atteint
+        endGame(); // Terminer la partie si toutes les manches ont été jouées
         return;
     }
 
-    currentLetter = getRandomLetter();
+    currentLetter = getRandomLetter(); // Nouvelle lettre aléatoire
     document.getElementById('letter-display').textContent = `${currentLetter}`;
     document.getElementById('player-input').value = ''; // Réinitialiser l'entrée utilisateur
     document.getElementById('feedback').textContent = ''; // Réinitialiser les feedbacks
     document.getElementById('round-info').textContent = `Tour : ${currentRound + 1} / ${maxRounds}`;
+    document.getElementById('score').textContent = `Score : ${currentScore}`; // Afficher le score actuel
+
+    // Configurer le timer
+    const useLives = document.querySelector('input[name="lives-option"]:checked').value === 'with-lives';
+    timeLeft = useLives ? 15 : 8; // Temps en fonction du mode choisi
+
+    updateTimerDisplay(); // Mettre à jour l'affichage initial du timer
+    startTimer(); // Démarrer le compte à rebours
 }
 
+function startTimer() {
+    clearInterval(timerInterval); // Réinitialiser tout ancien timer
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval); // Arrêter le timer
+            handleTimeout(); // Temps écoulé, gérer l'erreur
+        }
+    }, 1000); // Réduction du temps toutes les secondes
+}
+
+function updateTimerDisplay() {
+    document.getElementById('timer').textContent = `Temps restant : ${timeLeft}s`;
+}
+
+function handleTimeout() {
+    document.getElementById('feedback').textContent = 'Temps écoulé ! Mauvaise réponse.';
+    document.getElementById('feedback').style.color = 'red';
+
+    // Réduire une vie si le mode avec vies est actif
+    const useLives = document.querySelector('input[name="lives-option"]:checked').value === 'with-lives';
+    if (useLives) {
+        lives--;
+        document.getElementById('lives').textContent = `Vies restantes : ${lives}`;
+    }
+
+    // Passer à la manche suivante
+    currentRound++;
+
+    // Réinitialiser le verrou pour la prochaine manche
+    isAnswerSubmitted = false;
+
+    if (lives > 0 && currentRound < maxRounds) {
+        setTimeout(startRound, 2000); // Délai avant la manche suivante
+    } else {
+        endGame(); // Terminer la partie si plus de vies ou toutes les manches jouées
+    }
+}
 
 function checkAnswer() {
+    if (isAnswerSubmitted) {
+        return; // Empêcher les exécutions multiples
+    }
+    isAnswerSubmitted = true; // Activer le verrou
+
+    clearInterval(timerInterval); // Arrêter le timer pour éviter tout conflit
     const playerInput = document.getElementById('player-input').value.trim().toLowerCase();
 
     const validAnswers = characters.filter((character) => {
@@ -76,9 +133,7 @@ function checkAnswer() {
     });
 
     const isCorrect = validAnswers.some((character) => {
-        const nameParts = character.name.toLowerCase();
-        const aliasParts = (character.aliases || []).map((alias) => alias.toLowerCase());
-        const allValidInputs = [character.name.toLowerCase(), ...aliasParts];
+        const allValidInputs = [character.name.toLowerCase(), ...(character.aliases || []).map((alias) => alias.toLowerCase())];
         return allValidInputs.some((validInput) =>
             validInput.startsWith(currentLetter.toLowerCase()) && validInput === playerInput
         );
@@ -108,11 +163,21 @@ function checkAnswer() {
         }
     }
 
-    currentRound++;
-    document.getElementById('score').textContent = `Score : ${currentScore}`;
+    document.getElementById('score').textContent = `Score : ${currentScore}`; // Mettre à jour le score affiché
 
-    setTimeout(startRound, 2000);
+    // Passer à la manche suivante
+    currentRound++;
+
+    if (lives > 0 && currentRound < maxRounds) {
+        setTimeout(() => {
+            isAnswerSubmitted = false; // Réinitialiser le verrou pour la manche suivante
+            startRound();
+        }, 2000); // Délai avant la manche suivante
+    } else {
+        endGame(); // Terminer la partie si plus de vies ou toutes les manches jouées
+    }
 }
+
 
 
 // Fonction pour démarrer le jeu après la sélection des rounds
