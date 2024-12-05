@@ -8,6 +8,9 @@ let endTime;   // Heure de fin de la partie
 let lives = 3; // Nombre de vies par défaut
 let timerInterval; // Intervalle pour le compte à rebours
 let timeLeft; // Temps restant pour le round
+let usedLetters = []; // Stocke les lettres déjà utilisées
+let isAnswerSubmitted = false; // Verrou pour empêcher plusieurs soumissions
+let difficultyLevel = 'medium'; // Niveau par défaut
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -36,16 +39,39 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchCharacters() {
     try {
         const response = await fetch('/api/characters');
-        characters = await response.json();
+        const allCharacters = await response.json();
+
+        // Filtrer les personnages en fonction de la difficulté
+        if (difficultyLevel === 'easy') {
+            characters = allCharacters.filter(c => c.popularity > 80); // Personnages populaires
+        } else if (difficultyLevel === 'hard') {
+            characters = allCharacters.filter(c => c.popularity <= 40); // Personnages rares
+        } else {
+            characters = allCharacters; // Tous les personnages pour niveau moyen
+        }
     } catch (error) {
         console.error('Erreur lors de la récupération des personnages :', error);
     }
 }
 
-// Fonction pour choisir une lettre aléatoire
+// Fonction pour choisir une lettre aléatoire sans répétition
 function getRandomLetter() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    return alphabet[Math.floor(Math.random() * alphabet.length)];
+    let newLetter;
+
+    // Répéter jusqu'à obtenir une lettre non utilisée
+    do {
+        newLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+    } while (usedLetters.includes(newLetter));
+
+    // Ajouter la lettre à la liste des lettres utilisées
+    usedLetters.push(newLetter);
+    return newLetter;
+}
+
+// Fonction pour réinitialiser les lettres utilisées (à la fin ou au redémarrage du jeu)
+function resetUsedLetters() {
+    usedLetters = [];
 }
 
 // Fonction pour démarrer une nouvelle manche
@@ -60,20 +86,41 @@ function startRound() {
         return;
     }
 
-    currentLetter = getRandomLetter(); // Nouvelle lettre aléatoire
-    document.getElementById('letter-display').textContent = `${currentLetter}`;
-    document.getElementById('player-input').value = ''; // Réinitialiser l'entrée utilisateur
-    document.getElementById('feedback').textContent = ''; // Réinitialiser les feedbacks
-    document.getElementById('round-info').textContent = `Tour : ${currentRound + 1} / ${maxRounds}`;
-    document.getElementById('score').textContent = `Score : ${currentScore}`; // Afficher le score actuel
+    // Nouvelle lettre aléatoire
+    currentLetter = getRandomLetter();
+    document.getElementById('letter-display').textContent = currentLetter;
 
-    // Configurer le timer
-    const useLives = document.querySelector('input[name="lives-option"]:checked').value === 'with-lives';
-    timeLeft = useLives ? 15 : 8; // Temps en fonction du mode choisi
+    // Temps ajusté selon le niveau
+    if (difficultyLevel === 'easy') {
+        timeLeft = 20; // 20 secondes pour facile
+    } else if (difficultyLevel === 'hard') {
+        timeLeft = 10; // 10 secondes pour difficile
+    } else {
+        timeLeft = 15; // 15 secondes pour moyen
+    }
 
     updateTimerDisplay(); // Mettre à jour l'affichage initial du timer
     startTimer(); // Démarrer le compte à rebours
 }
+
+// Gestion de la sélection du niveau de difficulté
+document.getElementById('start-game-button').addEventListener('click', async () => {
+    difficultyLevel = document.getElementById('difficulty-level').value; // Récupérer le niveau sélectionné
+    resetUsedLetters(); // Réinitialiser les lettres utilisées
+    await fetchCharacters(); // Charger les personnages filtrés en fonction du niveau
+    document.getElementById('difficulty-selection').style.display = 'none'; // Cacher la sélection
+    document.getElementById('game').style.display = 'block'; // Afficher le jeu
+    startRound(); // Démarrer le premier tour
+});
+
+// Initialisation du jeu
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchCharacters(); // Charger les personnages pour la difficulté par défaut
+
+    // Masquer le jeu au début
+    document.getElementById('game').style.display = 'none';
+});
+
 
 function startTimer() {
     clearInterval(timerInterval); // Réinitialiser tout ancien timer
@@ -182,6 +229,7 @@ function checkAnswer() {
 
 // Fonction pour démarrer le jeu après la sélection des rounds
 function startGame(selectedRounds) {
+    resetUsedLetters(); // Réinitialiser les lettres utilisées
     maxRounds = selectedRounds;
     currentRound = 0;
     currentScore = 0;
@@ -346,6 +394,7 @@ function endGame() {
 
 // Fonction pour réinitialiser le jeu
 function resetGame(rounds) {
+    resetUsedLetters(); // Réinitialiser les lettres utilisées
     currentRound = 0;
     maxRounds = rounds;
     currentScore = 0;
@@ -357,3 +406,70 @@ function resetGame(rounds) {
     document.querySelector('.end-buttons').remove(); // Supprimer les boutons de fin de partie
     startRound(); // Démarrer une nouvelle partie
 }
+
+
+// Afficher le choix de la difficulté avec animation
+function showDifficultySelection() {
+    const difficultySelection = document.getElementById('difficulty-selection');
+    difficultySelection.style.display = 'block'; // Afficher le conteneur
+    setTimeout(() => {
+        difficultySelection.style.opacity = '1'; // Lancer la transition d'opacité
+    }, 100); // Légère attente pour s'assurer que "display: block" est appliqué
+}
+
+// Démarrage du jeu après la sélection des vies
+document.getElementById('lives-selection').addEventListener('change', () => {
+    const livesOptions = document.querySelector('input[name="lives-option"]:checked');
+    if (livesOptions) {
+        document.getElementById('lives-selection').style.animation = 'fadeOut 1s ease-in-out';
+        setTimeout(() => {
+            document.getElementById('lives-selection').style.display = 'none'; // Cacher la sélection des vies
+            showDifficultySelection(); // Lancer l'affichage de la difficulté
+        }, 1000); // Attendre la fin de l'animation
+    }
+});
+
+// Afficher le menu de sélection des vies
+document.querySelectorAll('.round-option').forEach(button => {
+    button.addEventListener('click', (event) => {
+        const selectedRounds = parseInt(event.target.getAttribute('data-rounds'), 10);
+        maxRounds = selectedRounds;
+        document.getElementById('round-selection').style.display = 'none';
+        document.getElementById('lives-selection').style.display = 'block';
+    });
+});
+
+// Afficher le menu de sélection de la difficulté
+document.querySelectorAll('input[name="lives-option"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        document.getElementById('lives-selection').style.display = 'none';
+        const difficultySelection = document.getElementById('difficulty-selection');
+        difficultySelection.style.display = 'block';
+        setTimeout(() => {
+            difficultySelection.style.opacity = '1';
+        }, 100); // Transition d'apparition
+    });
+});
+
+// Démarrer le jeu après la sélection de la difficulté
+document.getElementById('start-game-button').addEventListener('click', () => {
+    const difficulty = document.getElementById('difficulty-level').value;
+    configureDifficulty(difficulty);
+    document.getElementById('difficulty-selection').style.display = 'none';
+    document.getElementById('game').style.display = 'block';
+    startRound();
+});
+
+// Configurer les paramètres en fonction de la difficulté
+function configureDifficulty(difficulty) {
+    if (difficulty === 'easy') {
+        timeLeft = 20;
+        // Ajuster characters si nécessaire pour inclure des mots plus simples
+    } else if (difficulty === 'medium') {
+        timeLeft = 15;
+    } else if (difficulty === 'hard') {
+        timeLeft = 10;
+        // Ajuster characters pour inclure des mots plus rares
+    }
+}
+

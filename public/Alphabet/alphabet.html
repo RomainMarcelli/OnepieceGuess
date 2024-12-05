@@ -46,6 +46,7 @@
         <button class="round-option" data-rounds="25">25 rounds</button>
       </div>
 
+      <!-- Menu de sélection des vies -->
       <div id="lives-selection" style="display: none;">
         <p>Souhaitez-vous jouer avec des vies ?</p>
         <label>
@@ -56,7 +57,17 @@
           <input type="radio" name="lives-option" value="without-lives" />
           Non, jouer sans vies
         </label>
-        <button id="start-game-button" style="display: none;">Commencer la partie</button>
+      </div>
+
+      <!-- Menu de sélection de la difficulté -->
+      <div id="difficulty-selection" style="display: none; opacity: 0; transition: opacity 1s ease-in-out;">
+        <h3>Choisissez un niveau de difficulté</h3>
+        <select id="difficulty-level">
+          <option value="easy">Facile</option>
+          <option value="medium" selected>Moyen</option>
+          <option value="hard">Difficile</option>
+        </select>
+        <button id="start-game-button">Commencer</button>
       </div>
 
       <!-- Jeu -->
