@@ -224,3 +224,102 @@ label input {
     border: none;
     cursor: pointer;
 }
+
+#player-selection {
+    background-color: #f4f4f9;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#player-selection h3 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+#player-selection label {
+    font-size: 1.2em;
+    color: #555;
+    margin-right: 10px;
+}
+
+#player-selection select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+#player-selection button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#player-selection button:hover {
+    background-color: #0056b3;
+}
+
+
+#current-player {
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#scoreboard {
+    background-color: #f9f9f9;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#scoreboard h3 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+#scoreboard table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+#scoreboard th, #scoreboard td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#scoreboard th {
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+}
+
+#scoreboard tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

@@ -1,3 +1,5 @@
+// Alphabet/alphabet.js
+
 let characters = []; // Liste des personnages
 let currentLetter = ''; // Lettre actuelle
 let currentRound = 0; // Nombre de personnages devinés
@@ -11,6 +13,10 @@ let timeLeft; // Temps restant pour le round
 let usedLetters = []; // Stocke les lettres déjà utilisées
 let isAnswerSubmitted = false; // Verrou pour empêcher plusieurs soumissions
 let difficultyLevel = 'medium'; // Niveau par défaut
+let numPlayers = 1; // Par défaut, un joueur
+let currentPlayerIndex = 0; // Index du joueur actuel
+let playerScores = []; // Tableau pour les scores de chaque joueur
+let playerNames = []; // Contiendra les noms des joueurs.
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -86,9 +92,16 @@ function startRound() {
         return;
     }
 
+    // Alterner les joueurs
+    document.getElementById('current-player').textContent = `Joueur actuel : Joueur ${currentPlayerIndex + 1}`;
+
     // Nouvelle lettre aléatoire
     currentLetter = getRandomLetter();
     document.getElementById('letter-display').textContent = currentLetter;
+
+    // Réinitialiser l'entrée utilisateur
+    document.getElementById('player-input').value = '';
+    document.getElementById('feedback').textContent = '';
 
     // Temps ajusté selon le niveau
     if (difficultyLevel === 'easy') {
@@ -102,6 +115,8 @@ function startRound() {
     updateTimerDisplay(); // Mettre à jour l'affichage initial du timer
     startTimer(); // Démarrer le compte à rebours
 }
+
+
 
 // Gestion de la sélection du niveau de difficulté
 document.getElementById('start-game-button').addEventListener('click', async () => {
@@ -187,8 +202,9 @@ function checkAnswer() {
     });
 
     if (isCorrect) {
-        currentScore++;
-        document.getElementById('feedback').textContent = 'Bonne réponse !';
+        // Ajouter un point au score du joueur actuel
+        playerScores[currentPlayerIndex]++;
+        document.getElementById('feedback').textContent = `Bonne réponse ! Joueur ${currentPlayerIndex + 1} gagne un point.`;
         document.getElementById('feedback').style.color = 'green';
     } else {
         lives--; // Réduire une vie
@@ -210,7 +226,11 @@ function checkAnswer() {
         }
     }
 
-    document.getElementById('score').textContent = `Score : ${currentScore}`; // Mettre à jour le score affiché
+    // Afficher le tableau des scores mis à jour
+    updateScoreboard();
+
+    // Passer au joueur suivant
+    currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
 
     // Passer à la manche suivante
     currentRound++;
@@ -227,13 +247,20 @@ function checkAnswer() {
 
 
 
+
 // Fonction pour démarrer le jeu après la sélection des rounds
 function startGame(selectedRounds) {
     resetUsedLetters(); // Réinitialiser les lettres utilisées
     maxRounds = selectedRounds;
     currentRound = 0;
     currentScore = 0;
-    const useLives = document.getElementById('lives-checkbox').checked;
+    const useLivesInput = document.querySelector('input[name="lives-option"]:checked');
+    if (!useLivesInput) {
+        alert("Veuillez sélectionner une option pour les vies avant de continuer.");
+        return;
+    }
+    const useLives = useLivesInput.value === 'with-lives';
+
     lives = useLives ? 3 : Infinity;
     document.getElementById('lives').style.display = useLives ? 'block' : 'none';
     document.getElementById('lives').textContent = `Vies restantes : ${lives}`;
@@ -336,7 +363,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function endGame() {
     document.getElementById('letter-display').textContent = 'Partie terminée !';
-    document.getElementById('feedback').textContent = `Votre score final est de ${currentScore} sur ${maxRounds}`;
     document.getElementById('player-input').disabled = true; // Désactiver l'entrée utilisateur
     document.getElementById('submit-button').disabled = true; // Désactiver le bouton
     document.getElementById('round-info').textContent = ''; // Effacer l'information des tours
@@ -348,6 +374,29 @@ function endGame() {
     if (existingButtons) {
         existingButtons.remove();
     }
+
+    // Conteneur pour le tableau des scores
+    const scoreBoardDiv = document.createElement('div');
+    scoreBoardDiv.className = 'scoreboard';
+    scoreBoardDiv.style.marginTop = '20px';
+    scoreBoardDiv.style.textAlign = 'center';
+
+    // Titre du tableau des scores
+    const scoreBoardTitle = document.createElement('h3');
+    scoreBoardTitle.textContent = 'Tableau des scores';
+    scoreBoardDiv.appendChild(scoreBoardTitle);
+
+    // Liste des scores
+    const scoreList = document.createElement('ul');
+    playerScores.forEach((score, index) => {
+        const scoreItem = document.createElement('li');
+        scoreItem.textContent = `Joueur ${index + 1} : ${score} points`;
+        scoreList.appendChild(scoreItem);
+    });
+    scoreBoardDiv.appendChild(scoreList);
+
+    // Ajouter le tableau des scores au conteneur principal
+    gameContainer.appendChild(scoreBoardDiv);
 
     // Conteneur pour le bouton et le select
     const endButtonsDiv = document.createElement('div');
@@ -390,7 +439,13 @@ function endGame() {
 
     // Ajouter le conteneur à la fin de la partie
     gameContainer.appendChild(endButtonsDiv);
+
+    // Résumé pour un seul joueur
+    if (numPlayers === 1) {
+        document.getElementById('feedback').textContent = `Votre score final est de ${currentScore} sur ${maxRounds}`;
+    }
 }
+
 
 // Fonction pour réinitialiser le jeu
 function resetGame(rounds) {
@@ -430,14 +485,17 @@ document.getElementById('lives-selection').addEventListener('change', () => {
 });
 
 // Afficher le menu de sélection des vies
-document.querySelectorAll('.round-option').forEach(button => {
+document.querySelectorAll('.round-option').forEach((button) => {
     button.addEventListener('click', (event) => {
         const selectedRounds = parseInt(event.target.getAttribute('data-rounds'), 10);
         maxRounds = selectedRounds;
+
+        // Masquer la sélection des rounds et afficher la sélection des vies
         document.getElementById('round-selection').style.display = 'none';
         document.getElementById('lives-selection').style.display = 'block';
     });
 });
+
 
 // Afficher le menu de sélection de la difficulté
 document.querySelectorAll('input[name="lives-option"]').forEach(radio => {
@@ -472,4 +530,3 @@ function configureDifficulty(difficulty) {
         // Ajuster characters pour inclure des mots plus rares
     }
 }
-
