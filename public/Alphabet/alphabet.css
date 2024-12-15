@@ -323,3 +323,30 @@ label input {
 #scoreboard tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+
+#confirm-names-button {
+    background-color: #4CAF50; /* Vert principal */
+    color: white; /* Couleur du texte */
+    padding: 10px 20px; /* Espacement interne */
+    border: none; /* Pas de bordure */
+    border-radius: 5px; /* Coins arrondis */
+    font-size: 16px; /* Taille de la police */
+    font-weight: bold; /* Texte en gras */
+    cursor: pointer; /* Curseur pointeur */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    transition: all 0.3s ease-in-out; /* Transition pour effet de survol */
+    margin-top: 20px;
+}
+
+#confirm-names-button:hover {
+    background-color: #45a049; /* Couleur légèrement plus sombre au survol */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée */
+    transform: translateY(-2px); /* Léger déplacement vers le haut */
+}
+
+#confirm-names-button:active {
+    background-color: #39843c; /* Couleur plus foncée lors du clic */
+    transform: translateY(1px); /* Déplacement léger vers le bas */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Réduction de l'ombre */
+}

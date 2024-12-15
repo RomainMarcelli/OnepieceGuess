@@ -48,12 +48,13 @@
         <button id="confirm-players-button">Confirmer</button>
       </div>
 
+      <!-- Sélection des noms des joueurs -->
       <div id="player-names-selection" style="display: none;">
         <h3>Entrez les noms des joueurs :</h3>
         <div id="player-names-container"></div>
         <button id="confirm-names-button">Confirmer les noms</button>
-      </div>     
-      
+    </div>
+
       <div id="round-selection" style="display: none;">
         <p>Choisissez le nombre de rounds :</p>
         <button class="round-option" data-rounds="5">5 rounds</button>
@@ -62,9 +63,6 @@
         <button class="round-option" data-rounds="20">20 rounds</button>
         <button class="round-option" data-rounds="25">25 rounds</button>
       </div>
-      
-      <div id="current-player" style="margin-top: 10px; font-size: 1.2em;"></div>
-
 
       <!-- Menu de sélection des vies -->
       <div id="lives-selection" style="display: none;">
@@ -92,6 +90,7 @@
 
       <!-- Jeu -->
       <div id="game" style="display: none;">
+        <div id="current-player" style="margin-top: 10px; font-size: 1.2em;"></div>
         <div class="game-board">
           <div id="letter-display"></div>
           <div id="timer">Temps restant : 0s</div> <!-- Ajout du timer -->
@@ -109,7 +108,6 @@
   <script src="setup.js"></script>
   <script src="uiHandler.js"></script>
   <script src="gameLogic.js"></script>
-  <script src="players.js"></script>
   <!-- <script src="alphabet.js"></script> -->
 </body>
 
