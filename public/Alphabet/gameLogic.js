@@ -47,19 +47,19 @@ function startRound() {
     }
 
     // Vérifier si le jeu doit se terminer
-    if (currentRound >= maxRounds) {
-        console.log("Fin du jeu : tous les rounds ont été joués.");
-        endGame(); // Terminer la partie si toutes les manches ont été jouées
+    if (currentRound >= totalRounds) {
+        endGame();
         return;
     }
 
     // Déterminer le joueur actuel
-    const roundsPerPlayer = maxRounds / numPlayers; // Nombre total de rounds par joueur
+    currentPlayerIndex = currentRound % numPlayers; // Alterne entre les joueurs
+    const roundsPlayedByPlayer = Math.floor(currentRound / numPlayers) + 1; // Rounds joués par le joueur actuel
     const playerRoundIndex = Math.floor(currentRound / numPlayers); // Round actuel pour ce joueur
     currentPlayerIndex = currentRound % numPlayers; // Alterner entre les joueurs
 
     console.log(`Joueur actuel : ${playerNames[currentPlayerIndex]} (Index : ${currentPlayerIndex})`);
-    console.log(`Rounds joués par ${playerNames[currentPlayerIndex]} : ${playerRoundIndex + 1}/${roundsPerPlayer}`);
+    console.log(`Rounds joués par ${playerNames[currentPlayerIndex]} : ${roundsPlayedByPlayer}/${maxRounds}`);
 
     // Afficher le joueur actuel
     document.getElementById('current-player').textContent = `Joueur actuel : ${playerNames[currentPlayerIndex]}`;
@@ -106,7 +106,7 @@ function checkAnswer() {
     }
     if (!playerNames || playerNames.length === 0) {
         playerNames = Array.from({ length: numPlayers }, (_, i) => `Joueur ${i + 1}`); // Initialiser les noms par défaut
-    }
+    }    
 
     const validAnswers = characters.filter((character) => {
         const nameParts = character.name.toLowerCase().split(' ');
@@ -151,14 +151,14 @@ function checkAnswer() {
     updateScoreboard();
 
     // Passer au round suivant
-    if (currentRound < maxRounds) {
+    if (currentRound < totalRounds) {
         setTimeout(() => {
             isAnswerSubmitted = false; // Réinitialiser le verrou pour la manche suivante
             startRound();
         }, 2000); // Délai avant la manche suivante
     } else {
         endGame(); // Terminer la partie si toutes les manches jouées
-    }
+    }       
 }
 
 function endGame() {
@@ -166,6 +166,9 @@ function endGame() {
     document.getElementById('player-input').disabled = true; // Désactiver l'entrée utilisateur
     document.getElementById('submit-button').disabled = true; // Désactiver le bouton
     document.getElementById('round-info').textContent = ''; // Effacer l'information des tours
+
+    // Supprimer le message de feedback
+    document.getElementById('feedback').textContent = '';
 
     const gameContainer = document.querySelector('.game-container');
 
@@ -178,26 +181,16 @@ function endGame() {
     // Conteneur pour le tableau des scores
     const scoreBoardDiv = document.createElement('div');
     scoreBoardDiv.className = 'scoreboard';
-    scoreBoardDiv.style.marginTop = '20px';
-    scoreBoardDiv.style.textAlign = 'center';
 
     const scoreBoardTitle = document.createElement('h3');
     scoreBoardTitle.textContent = 'Tableau des scores';
     scoreBoardDiv.appendChild(scoreBoardTitle);
 
-    // Vérifier et initialiser playerScores et playerNames si nécessaire
-    if (!playerScores || playerScores.length === 0) {
-        playerScores = Array(numPlayers).fill(0);
-    }
-    if (!playerNames || playerNames.length === 0) {
-        playerNames = Array.from({ length: numPlayers }, (_, i) => `Joueur ${i + 1}`);
-    }
-
     // Liste des scores
     const scoreList = document.createElement('ul');
     playerScores.forEach((score, index) => {
         const playerName = playerNames[index] || `Joueur ${index + 1}`;
-        const validScore = isNaN(score) ? 0 : score; // Si score est NaN, remplacez par 0
+        const validScore = isNaN(score) ? 0 : score;
         const scoreItem = document.createElement('li');
         scoreItem.textContent = `${playerName} : ${validScore} points`;
         scoreList.appendChild(scoreItem);
@@ -218,22 +211,19 @@ function endGame() {
 
     // Message d'encouragement basé sur les performances
     const encouragementMessage = document.createElement('p');
+    encouragementMessage.className = 'encouragement-message';
     if (bestPlayers.length > 1) {
         encouragementMessage.textContent = `Bravo à ${bestPlayers.join(' et ')} pour le meilleur score de ${maxScore} points !`;
     } else {
         encouragementMessage.textContent = `Bravo à ${bestPlayers[0]} pour le meilleur score de ${maxScore} points !`;
     }
-    encouragementMessage.style.fontSize = '1.2em';
-    encouragementMessage.style.marginTop = '15px';
-    encouragementMessage.style.color = '#4CAF50';
     gameContainer.appendChild(encouragementMessage);
 
     // Conteneur pour les options de fin
     const endButtonsDiv = document.createElement('div');
     endButtonsDiv.className = 'end-buttons';
-    endButtonsDiv.style.marginTop = '20px';
 
-    // Select pour choisir le nombre de rounds
+    // **Ajout de l'élément `roundSelect`**
     const roundSelect = document.createElement('select');
     roundSelect.style.padding = '10px';
     roundSelect.style.borderRadius = '5px';
@@ -250,14 +240,10 @@ function endGame() {
 
     // Bouton pour recommencer
     const restartButton = document.createElement('button');
+    restartButton.className = 'end-button restart';
     restartButton.textContent = 'Recommencer';
-    restartButton.style.marginLeft = '10px';
-    restartButton.style.padding = '10px';
-    restartButton.style.borderRadius = '5px';
-    restartButton.style.backgroundColor = '#4CAF50';
-    restartButton.style.color = 'white';
-    restartButton.style.cursor = 'pointer';
 
+    // Correction : Utiliser `roundSelect` correctement ici
     restartButton.addEventListener('click', () => {
         const newRounds = parseInt(roundSelect.value, 10);
         resetGame(newRounds); // Recommence avec le nombre de rounds sélectionné
@@ -265,14 +251,8 @@ function endGame() {
 
     // Bouton pour exporter les scores
     const exportButton = document.createElement('button');
+    exportButton.className = 'end-button export';
     exportButton.textContent = 'Exporter les scores';
-    exportButton.style.marginLeft = '10px';
-    exportButton.style.padding = '10px';
-    exportButton.style.borderRadius = '5px';
-    exportButton.style.backgroundColor = '#FF5722';
-    exportButton.style.color = 'white';
-    exportButton.style.cursor = 'pointer';
-
     exportButton.addEventListener('click', () => {
         const scoreData = playerScores.map((score, index) => {
             const playerName = playerNames[index] || `Joueur ${index + 1}`;
@@ -285,17 +265,12 @@ function endGame() {
         link.click();
     });
 
-    // Ajouter les éléments de fin au conteneur
+    // Ajouter le sélecteur et les boutons au conteneur
     endButtonsDiv.appendChild(roundSelect);
     endButtonsDiv.appendChild(restartButton);
     endButtonsDiv.appendChild(exportButton);
 
     gameContainer.appendChild(endButtonsDiv);
-
-    // Résumé pour un seul joueur
-    if (numPlayers === 1) {
-        document.getElementById('feedback').textContent = `Votre score final est de ${currentScore} sur ${maxRounds}`;
-    }
 }
 
 function resetGame(rounds) {
@@ -304,13 +279,44 @@ function resetGame(rounds) {
     maxRounds = rounds;
     currentScore = 0;
     lives = 3; // Réinitialiser les vies
-    document.getElementById('lives').textContent = `Vies restantes : ${lives}`;
+
+    // Réinitialiser l'affichage des vies
+    const livesElement = document.getElementById('lives');
+    if (livesElement) {
+        livesElement.textContent = `Vies restantes : ${lives}`;
+    }
+
+    // Réactiver les champs utilisateur
     document.getElementById('player-input').disabled = false; // Réactiver l'entrée utilisateur
     document.getElementById('submit-button').disabled = false; // Réactiver le bouton
-    document.getElementById('score').textContent = `Score : 0`;
-    document.querySelector('.end-buttons').remove(); // Supprimer les boutons de fin de partie
+
+    // Réinitialiser le score si l'élément existe
+    const scoreElement = document.getElementById('score');
+    if (scoreElement) {
+        scoreElement.textContent = `Score : 0`;
+    }
+
+    // Supprimer les anciens éléments du tableau des scores
+    const existingScoreboard = document.querySelector('.scoreboard');
+    if (existingScoreboard) {
+        existingScoreboard.remove();
+    }
+
+    // Supprimer le message d'encouragement
+    const encouragementMessage = document.querySelector('.encouragement-message');
+    if (encouragementMessage) {
+        encouragementMessage.remove();
+    }
+
+    // Supprimer les boutons de fin de partie si présents
+    const endButtons = document.querySelector('.end-buttons');
+    if (endButtons) {
+        endButtons.remove();
+    }
+
     startRound(); // Démarrer une nouvelle partie
 }
+
 
 
 function startGame(selectedRounds) {

@@ -1,10 +1,9 @@
-// setup.js
-
 // Variables globales
 let characters = [];
 let currentLetter = '';
 let currentRound = 0;
-let maxRounds = 10;
+let maxRounds = 10; // Rounds par joueur (dynamique)
+let totalRounds = 10; // Total des rounds (dynamique)
 let currentScore = 0;
 let startTime;
 let endTime;
@@ -18,7 +17,6 @@ let numPlayers = 1;
 let currentPlayerIndex = 0;
 let playerScores = [];
 let playerNames = [];
-
 
 // Gestion de la navigation entre les modes de jeu
 document.addEventListener('DOMContentLoaded', () => {
@@ -41,15 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // Afficher le menu de sélection des vies
 document.querySelectorAll('.round-option').forEach((button) => {
     button.addEventListener('click', (event) => {
-        const selectedRounds = parseInt(event.target.getAttribute('data-rounds'), 10);
-        maxRounds = selectedRounds;
+        const roundsPerPlayer = parseInt(event.target.getAttribute('data-rounds'), 10);
+        totalRounds = numPlayers * roundsPerPlayer; // Total des rounds pour tous les joueurs
+        maxRounds = roundsPerPlayer; // Rounds par joueur
+
+        console.log(`Nombre total de rounds : ${totalRounds} (${roundsPerPlayer} par joueur)`);
 
         // Masquer la sélection des rounds et afficher la sélection des vies
         document.getElementById('round-selection').style.display = 'none';
         document.getElementById('lives-selection').style.display = 'block';
     });
 });
-
 
 // Afficher le menu de sélection de la difficulté
 document.querySelectorAll('input[name="lives-option"]').forEach(radio => {
@@ -76,16 +76,14 @@ document.getElementById('start-game-button').addEventListener('click', () => {
 function configureDifficulty(difficulty) {
     if (difficulty === 'easy') {
         timeLeft = 20;
-        // Ajuster characters si nécessaire pour inclure des mots plus simples
     } else if (difficulty === 'medium') {
         timeLeft = 15;
     } else if (difficulty === 'hard') {
         timeLeft = 10;
-        // Ajuster characters pour inclure des mots plus rares
     }
 }
 
-
+// Afficher les champs pour entrer les noms des joueurs
 function showPlayerNameInputs() {
     const playerNamesContainer = document.getElementById('player-names-container');
     playerNamesContainer.innerHTML = ''; // Réinitialiser le conteneur
@@ -99,29 +97,25 @@ function showPlayerNameInputs() {
         playerNamesContainer.appendChild(input);
     }
 
-    // Afficher la section de saisie des noms
     document.getElementById('player-names-selection').style.display = 'block';
 }
 
-// Fonction pour confirmer les noms des joueurs
+// Confirmer les noms des joueurs
 document.getElementById('confirm-names-button').addEventListener('click', () => {
     const inputs = document.querySelectorAll('.player-name-input');
     playerNames = Array.from(inputs).map((input) => input.value.trim());
 
-    // Vérification : tous les noms doivent être remplis
     if (playerNames.some((name) => name === '')) {
         alert('Veuillez entrer un nom pour chaque joueur.');
         return;
     }
 
-    // Masquer la section de saisie des noms et afficher la sélection des rounds
     document.getElementById('player-names-selection').style.display = 'none';
     document.getElementById('round-selection').style.display = 'block';
-
-    console.log('Joueurs:', playerNames); // Debug : afficher les noms dans la console
+    console.log('Joueurs:', playerNames);
 });
 
-// Gestion de la sélection du nombre de joueurs
+// Sélection du nombre de joueurs
 document.getElementById('confirm-players-button').addEventListener('click', () => {
     const numPlayersInput = document.getElementById('num-players');
     numPlayers = parseInt(numPlayersInput.value, 10);
@@ -131,7 +125,7 @@ document.getElementById('confirm-players-button').addEventListener('click', () =
         return;
     }
 
-    // Masquer la sélection du nombre de joueurs et afficher les champs de noms
+    playerScores = Array(numPlayers).fill(0);
     document.getElementById('player-selection').style.display = 'none';
     showPlayerNameInputs();
 });
