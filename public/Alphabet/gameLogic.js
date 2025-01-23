@@ -286,9 +286,18 @@ function resetGame(rounds) {
         livesElement.textContent = `Vies restantes : ${lives}`;
     }
 
-    // Réactiver les champs utilisateur
-    document.getElementById('player-input').disabled = false; // Réactiver l'entrée utilisateur
-    document.getElementById('submit-button').disabled = false; // Réactiver le bouton
+    // Réinitialiser le champ d'entrée utilisateur
+    const playerInput = document.getElementById('player-input');
+    if (playerInput) {
+        playerInput.value = ''; // Vider le champ de saisie
+        playerInput.disabled = false; // Réactiver le champ de saisie
+    }
+
+    // Réactiver le bouton de soumission
+    const submitButton = document.getElementById('submit-button');
+    if (submitButton) {
+        submitButton.disabled = false; // Réactiver le bouton
+    }
 
     // Réinitialiser le score si l'élément existe
     const scoreElement = document.getElementById('score');
@@ -314,10 +323,14 @@ function resetGame(rounds) {
         endButtons.remove();
     }
 
+    // Réinitialiser le feedback
+    const feedbackElement = document.getElementById('feedback');
+    if (feedbackElement) {
+        feedbackElement.textContent = '';
+    }
+
     startRound(); // Démarrer une nouvelle partie
 }
-
-
 
 function startGame(selectedRounds) {
     console.log("Démarrage du jeu");
