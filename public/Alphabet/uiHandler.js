@@ -112,3 +112,30 @@ document.getElementById('lives-selection').addEventListener('change', () => {
         }, 1000); // Attendre la fin de l'animation
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdown = document.querySelector('.custom-dropdown');
+    const selected = dropdown.querySelector('.selected-option');
+    const options = dropdown.querySelectorAll('.dropdown-options li');
+
+    // Afficher ou cacher les options au clic
+    selected.addEventListener('click', () => {
+        dropdown.classList.toggle('active');
+    });
+
+    // Mettre à jour le texte sélectionné
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            selected.textContent = option.textContent;
+            dropdown.classList.remove('active'); // Cacher les options après la sélection
+        });
+    });
+
+    // Fermer si on clique à l'extérieur
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('active');
+        }
+    });
+});

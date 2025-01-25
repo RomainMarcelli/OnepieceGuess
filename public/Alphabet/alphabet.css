@@ -7,6 +7,10 @@ main {
     align-items: center;
 }
 
+body {
+    padding-bottom: 40px;
+}
+
 .game-container {
     background-color: white;
     /* width: 38%; */
@@ -18,21 +22,21 @@ main {
     margin: 0;
 }
 
-.descript{
+.descript {
     border: 2px solid #534e41;
-    width: 35%;
+    /* width: 35%; */
     margin: 0px auto 20px;
     padding: 5px;
     background: #EADFC2;
     border-radius: 10px;
 }
 
-.descript .game-container h3{
+.descript .game-container h3 {
     text-transform: uppercase;
     margin: 0;
 }
 
-.descript .game-container h4{
+.descript .game-container h4 {
     color: #979797;
     font-size: 1.1rem;
     margin-bottom: 0;
@@ -94,42 +98,6 @@ p {
     color: #666;
 }
 
-/* Styles pour la sélection du nombre de rounds */
-/* Styles pour le conteneur de sélection des rounds */
-#round-selection {
-    background-color: #ffefd5;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    animation: fadeIn 1.5s ease-in-out;
-}
-
-#round-selection p {
-    font-size: 1.2em;
-    color: #333;
-    margin-bottom: 15px;
-    font-weight: bold;
-}
-
-/* Boutons de sélection des rounds */
-.round-option {
-    margin: 10px 5px;
-    padding: 10px 20px;
-    font-size: 1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #4caf50;
-    color: white;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.round-option:hover {
-    transform: scale(1.1);
-    background-color: #45a049;
-}
-
 /* Checkbox de système de vie */
 label {
     display: block;
@@ -149,6 +117,7 @@ label input {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -162,6 +131,7 @@ label input {
     color: #444;
     margin-top: 20px;
 }
+
 /* Section de sélection des vies */
 #lives-selection {
     background-color: #ffefd5;
@@ -216,6 +186,7 @@ label input {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -243,53 +214,234 @@ label input {
     cursor: pointer;
 }
 
-#player-selection {
-    background-color: #f4f4f9;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
+/* Choix joueur Début */
+
+/* Conteneur principal */
+#player-selection, #player-names-selection {
+    border: 2px solid #534e41;
+    /* Bordure dorée */
+    border-radius: 12px;
+    padding: 5px;
     text-align: center;
     margin: 20px auto;
     width: 80%;
     max-width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background-color: #EADFC2;
 }
 
-#player-selection h3 {
-    font-size: 1.5em;
-    color: #333;
-    margin-bottom: 15px;
+#player-selection .choose-player, .name-player {
+    padding: 20px;
+    border: 2px solid;
+    background-color: white;
+    border-radius: 12px;
 }
 
-#player-selection label {
-    font-size: 1.2em;
-    color: #555;
-    margin-right: 10px;
-}
-
-#player-selection select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-}
-
-#player-selection button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1em;
-    border-radius: 5px;
+/* Conteneur principal */
+.custom-dropdown {
+    position: relative;
+    /* Ajuste la largeur si nécessaire */
+    font-family: Arial, sans-serif;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 20px;
+}
+
+/* Border-radius modifié lorsque le menu est ouvert */
+.custom-dropdown.active .selected-option {
+    border-radius: 8px 8px 0 0;
+    /* Coins supérieurs arrondis seulement */
+}
+
+/* Option sélectionnée */
+.selected-option {
+    background-color: #f4f4f9;
+    color: #333;
+    padding: 10px;
+    border: 2px solid #534e41;
+    border-radius: 8px;
+    text-align: center;
     transition: background-color 0.3s ease;
 }
 
-#player-selection button:hover {
-    background-color: #0056b3;
+/* Liste des options (cachée par défaut) */
+.dropdown-options {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 2px solid #534e41;
+    border-radius: 0px 0px 8px 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
 }
 
+
+/* Options individuelles */
+.dropdown-options li {
+    padding: 10px;
+    text-align: center;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Changement de couleur au survol */
+.dropdown-options li:hover {
+    background-color: #D4A566;
+    /* Bleu apaisant */
+    color: #FFFFFF;
+    /* Texte blanc pour le contraste */
+}
+
+/* Affichage de la liste au clic */
+.custom-dropdown.active .dropdown-options {
+    display: block;
+}
+
+/* Option sélectionnée hover */
+.selected-option:hover {
+    background-color: #D4A566;
+    /* Bleu plus foncé pour un effet de survol */
+    color: #FFFFFF;
+    /* Texte blanc */
+}
+
+/* Bouton */
+#confirm-players-button {
+    background: #D4A566;
+    /* Bleu vif inspiré de l'océan */
+    color: #ffffff;
+    font-size: 1.1em;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Ajoute de la profondeur */
+}
+
+/* Interaction du bouton */
+#confirm-players-button:hover {
+    transform: scale(1.05);
+}
+
+#confirm-players-button:active {
+    transform: scale(0.98);
+}
+
+/* Choix joueur fin */
+
+/* CHOIX NOM JOueur */
+
+#player-names-selection .player-name-input{
+    margin-top: 20px;
+    width: 75%;
+}
+
+
+#confirm-names-button {
+    background-color: #D4A566;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+#confirm-names-button:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+#confirm-names-button:active {
+    /* Couleur plus foncée lors du clic */
+    transform: translateY(1px);
+    /* Déplacement léger vers le bas */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    /* Réduction de l'ombre */
+}
+
+/* CHOIX DES ROUNDS */
+
+/* Styles pour la sélection du nombre de rounds */
+/* Styles pour le conteneur de sélection des rounds */
+#round-selection {
+    background-color: #ffefd5;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
+    margin-top: 20px;
+}
+
+#round-selection p {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Boutons de sélection des rounds */
+.round-option {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #D4A566;
+    color: white;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#round-selection {
+    display: grid; /* Active le mode grille */
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
+    grid-gap: 10px; /* Espacement entre les éléments */
+    justify-content: center; /* Centre la grille horizontalement */
+    align-items: center; /* Centre les éléments verticalement */
+    margin-top: 20px;
+}
+
+.round-option {
+    background-color: #D4AF37; /* Doré inspiré de One Piece */
+    color: #4E342E; /* Brun pour le texte */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Effet au survol */
+.round-option:hover {
+    color: #000;
+}
+
+/* Ajustement pour les 2 derniers boutons */
+.round-option:nth-child(4),
+.round-option:nth-child(5) {
+    grid-column: span 1; /* Occupe 2 colonnes pour bien centrer */
+    text-align: center;
+}
+
+
+.round-option:hover {
+    transform: scale(1.1);
+}
 
 #current-player {
     background-color: #007BFF;
@@ -326,7 +478,8 @@ label input {
     margin: 10px 0;
 }
 
-#scoreboard th, #scoreboard td {
+#scoreboard th,
+#scoreboard td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
@@ -340,33 +493,6 @@ label input {
 
 #scoreboard tr:nth-child(even) {
     background-color: #f2f2f2;
-}
-
-
-#confirm-names-button {
-    background-color: #4CAF50; /* Vert principal */
-    color: white; /* Couleur du texte */
-    padding: 10px 20px; /* Espacement interne */
-    border: none; /* Pas de bordure */
-    border-radius: 5px; /* Coins arrondis */
-    font-size: 16px; /* Taille de la police */
-    font-weight: bold; /* Texte en gras */
-    cursor: pointer; /* Curseur pointeur */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
-    transition: all 0.3s ease-in-out; /* Transition pour effet de survol */
-    margin-top: 20px;
-}
-
-#confirm-names-button:hover {
-    background-color: #45a049; /* Couleur légèrement plus sombre au survol */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée */
-    transform: translateY(-2px); /* Léger déplacement vers le haut */
-}
-
-#confirm-names-button:active {
-    background-color: #39843c; /* Couleur plus foncée lors du clic */
-    transform: translateY(1px); /* Déplacement léger vers le bas */
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Réduction de l'ombre */
 }
 
 
@@ -399,9 +525,11 @@ label input {
 }
 
 .end-button.restart {
-    background-color: #4CAF50; /* Vert */
+    background-color: #4CAF50;
+    /* Vert */
 }
 
 .end-button.export {
-    background-color: #FF5722; /* Orange */
+    background-color: #FF5722;
+    /* Orange */
 }

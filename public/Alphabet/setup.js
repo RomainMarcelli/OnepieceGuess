@@ -115,17 +115,21 @@ document.getElementById('confirm-names-button').addEventListener('click', () => 
     console.log('Joueurs:', playerNames);
 });
 
-// Sélection du nombre de joueurs
+// Sélection du nombre de joueurs avec le menu déroulant personnalisé
 document.getElementById('confirm-players-button').addEventListener('click', () => {
-    const numPlayersInput = document.getElementById('num-players');
-    numPlayers = parseInt(numPlayersInput.value, 10);
+    const selectedOption = document.querySelector('.custom-dropdown .selected-option').textContent;
+    const numPlayersMatch = selectedOption.match(/\d+/); // Extraire le numéro depuis le texte
+    numPlayers = numPlayersMatch ? parseInt(numPlayersMatch[0], 10) : 0;
 
     if (isNaN(numPlayers) || numPlayers < 1) {
         alert('Veuillez sélectionner un nombre valide de joueurs.');
         return;
     }
 
+    // Initialiser les scores des joueurs
     playerScores = Array(numPlayers).fill(0);
+
+    // Masquer la sélection du nombre de joueurs et afficher les champs de saisie des noms
     document.getElementById('player-selection').style.display = 'none';
     showPlayerNameInputs();
 });

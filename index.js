@@ -577,7 +577,7 @@ const characters = [
         height: '263 cm', 
         gender: 'Masculin', 
         bounty: '20,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+        firstArc: 'Arlong Park' 
     },
     { 
         name: 'Kuro', 

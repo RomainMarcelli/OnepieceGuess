@@ -30,39 +30,55 @@
   </nav>
 
   <!-- Partie -->
-  <main>
+  <main> 
     <div class="descript">
 
       <div class="game-container">
         <h3>Devine le personnage de One piece !</h3>
-        <h4>Tah4e le personnage de One Piece à partir de sa première lettre !</h4>
+        <h4>Tape le personnage de One Piece à partir de sa première lettre !</h4>
   
         <!-- Menu de sélection des rounds -->
-        <div id="player-selection" style="display: block;">
-          <h3>Choisissez le nombre de joueurs :</h3>
-          <select id="num-players">
-            <option value="1">1 Joueur</option>
-            <option value="2">2 Joueurs</option>
-            <option value="3">3 Joueurs</option>
-            <option value="4">4 Joueurs</option>
-          </select>
-          <button id="confirm-players-button">Confirmer</button>
+        <div id="player-selection" style="display: block;"> 
+          <div class="choose-player">
+            <h3>Choisissez le nombre de joueurs :</h3>
+            <!-- <select id="num-players">
+              <option value="1">1 Joueur</option>
+              <option value="2">2 Joueurs</option>
+              <option value="3">3 Joueurs</option>
+              <option value="4">4 Joueurs</option>
+            </select> -->
+            <div class="custom-dropdown">
+              <div class="selected-option">1 Joueur</div>
+              <ul class="dropdown-options">
+                <li data-value="1">1 Joueur</li>
+                <li data-value="2">2 Joueurs</li>
+                <li data-value="3">3 Joueurs</li>
+                <li data-value="4">4 Joueurs</li>
+              </ul>
+            </div>            
+            <button id="confirm-players-button">Confirmer</button>
+          </div>
         </div>
   
         <!-- Sélection des noms des joueurs -->
         <div id="player-names-selection" style="display: none;">
-          <h3>Entrez les noms des joueurs :</h3>
-          <div id="player-names-container"></div>
-          <button id="confirm-names-button">Confirmer les noms</button>
+          <div class="name-player">
+            <h3>Entrez les noms des joueurs :</h3>
+            <div id="player-names-container"></div>
+            <button id="confirm-names-button">Confirmer les noms</button>
+          </div>
       </div>
   
         <div id="round-selection" style="display: none;">
           <p>Choisissez le nombre de rounds :</p>
-          <button class="round-option" data-rounds="5">5 rounds</button>
-          <button class="round-option" data-rounds="10">10 rounds</button>
-          <button class="round-option" data-rounds="15">15 rounds</button>
-          <button class="round-option" data-rounds="20">20 rounds</button>
-          <button class="round-option" data-rounds="25">25 rounds</button>
+          <div id="round-selection" class="round-grid">
+            <button class="round-option" data-rounds="5">5 Rounds</button>
+            <button class="round-option" data-rounds="10">10 Rounds</button>
+            <button class="round-option" data-rounds="15">15 Rounds</button>
+            <button class="round-option" data-rounds="20">20 Rounds</button>
+            <button class="round-option" data-rounds="25">25 Rounds</button>
+            <button class="round-option" data-rounds="illimité">Illimité</button>
+        </div>        
         </div>
   
         <!-- Menu de sélection des vies -->
