@@ -62,7 +62,7 @@ Ce jeu allie réflexion et passion pour l'univers de One Piece, tout en proposan
    ```
 4. Lancez le serveur local :
    ```bash
-   node server.js
+   npm start
    ```
 5. Accédez au jeu dans votre navigateur :
    ```bash
