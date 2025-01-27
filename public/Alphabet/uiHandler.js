@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Afficher le choix de la difficulté avec animation
 function showDifficultySelection() {
     const difficultySelection = document.getElementById('difficulty-selection');
-    difficultySelection.style.display = 'block'; // Afficher le conteneur
+    difficultySelection.style.display = 'flex'; // Afficher le conteneur
     setTimeout(() => {
         difficultySelection.style.opacity = '1'; // Lancer la transition d'opacité
     }, 100); // Légère attente pour s'assurer que "display: block" est appliqué
@@ -139,3 +139,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const difficultyOptions = document.querySelectorAll('.difficulty-option');
+
+    difficultyOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            // Retirer la classe "selected" des autres options
+            difficultyOptions.forEach(opt => opt.classList.remove('selected'));
+
+            // Ajouter la classe "selected" à l'option cliquée
+            option.classList.add('selected');
+
+            // Récupérer la valeur sélectionnée
+            const selectedValue = option.getAttribute('data-value');
+            console.log(`Niveau de difficulté sélectionné : ${selectedValue}`);
+        });
+    });
+});
+
+
+document.querySelectorAll('#difficulty-level li').forEach(item => {
+    item.addEventListener('click', () => {
+      // Retirer la classe active de tous les éléments
+      document.querySelectorAll('#difficulty-level li').forEach(li => li.classList.remove('active'));
+      // Ajouter la classe active à l'élément cliqué
+      item.classList.add('active');
+  
+      // Enregistrer la difficulté sélectionnée
+      difficultyLevel = item.getAttribute('data-value');
+      console.log('Difficulté sélectionnée :', difficultyLevel);
+    });
+  });
+  

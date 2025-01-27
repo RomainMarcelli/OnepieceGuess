@@ -74,7 +74,7 @@ Ce jeu allie réflexion et passion pour l'univers de One Piece, tout en proposan
 
 ## **Crédits**
 
-- **Créateur :** [Romain Marcelli].  
+- **Créateur :** Romain Marcelli.  
 - **Inspiré de :** L'univers de One Piece créé par Eiichiro Oda.  
 - **Développé avec :** Node.js, HTML, CSS, JavaScript et une API personnalisée.  
 
@@ -83,4 +83,4 @@ Ce jeu allie réflexion et passion pour l'univers de One Piece, tout en proposan
 ## **Contact**
 
 Pour toute question ou suggestion :  
-- **Email :** [r.marcelli31@gmail.com]  
+- **Email :** r.marcelli31@gmail.com  

@@ -54,9 +54,16 @@ document.querySelectorAll('.round-option').forEach((button) => {
 // Afficher le menu de sélection de la difficulté
 document.querySelectorAll('input[name="lives-option"]').forEach(radio => {
     radio.addEventListener('change', () => {
+        // Cacher la sélection des vies
         document.getElementById('lives-selection').style.display = 'none';
+        
+        // Afficher la sélection de la difficulté avec `flex`
         const difficultySelection = document.getElementById('difficulty-selection');
-        difficultySelection.style.display = 'block';
+        difficultySelection.style.display = 'flex'; // Passer en flexbox
+        difficultySelection.style.opacity = '0'; // Préparer pour la transition
+        difficultySelection.style.flexDirection = 'column'; // Organisation en colonne
+
+        // Transition fluide pour l'apparition
         setTimeout(() => {
             difficultySelection.style.opacity = '1';
         }, 100); // Transition d'apparition
@@ -132,4 +139,19 @@ document.getElementById('confirm-players-button').addEventListener('click', () =
     // Masquer la sélection du nombre de joueurs et afficher les champs de saisie des noms
     document.getElementById('player-selection').style.display = 'none';
     showPlayerNameInputs();
+});
+
+
+document.querySelectorAll('.difficulty-option').forEach(option => {
+    option.addEventListener('click', () => {
+        // Retirer la classe "selected" de toutes les options
+        document.querySelectorAll('.difficulty-option').forEach(opt => opt.classList.remove('selected'));
+
+        // Ajouter la classe "selected" à l'option cliquée
+        option.classList.add('selected');
+
+        // Mettre à jour la difficulté globale
+        difficultyLevel = option.getAttribute('data-value');
+        console.log(`Difficulté sélectionnée : ${difficultyLevel}`);
+    });
 });

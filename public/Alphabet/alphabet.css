@@ -7,6 +7,10 @@ main {
     align-items: center;
 }
 
+.logo_img{
+    margin-top: 10px;
+}
+
 body {
     padding-bottom: 40px;
 }
@@ -23,10 +27,9 @@ body {
 }
 
 .descript {
-    border: 2px solid #534e41;
-    /* width: 35%; */
-    margin: 0px auto 20px;
+    margin: 20px auto;
     padding: 5px;
+    max-width: 800px;
     background: #EADFC2;
     border-radius: 10px;
 }
@@ -47,55 +50,6 @@ p {
     font-size: 1.2em;
     color: #555;
     margin-bottom: 20px;
-}
-
-.game-board {
-    margin-top: 20px;
-}
-
-#letter-display {
-    font-size: 3em;
-    color: #ff4500;
-    margin-bottom: 20px;
-}
-
-#player-input {
-    width: 70%;
-    padding: 10px;
-    font-size: 1em;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-}
-
-#submit-button {
-    padding: 10px 20px;
-    font-size: 1em;
-    color: white;
-    background-color: #ff4500;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#submit-button:hover {
-    background-color: #e03e00;
-}
-
-#feedback {
-    margin-top: 20px;
-    font-size: 1.2em;
-}
-
-#score {
-    margin-top: 10px;
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-#round-info {
-    margin-top: 10px;
-    font-size: 1.2em;
-    color: #666;
 }
 
 /* Checkbox de système de vie */
@@ -132,53 +86,6 @@ label input {
     margin-top: 20px;
 }
 
-/* Section de sélection des vies */
-#lives-selection {
-    background-color: #ffefd5;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    animation: fadeIn 1s ease-in-out;
-    margin-top: 20px;
-}
-
-#lives-selection p {
-    font-size: 1.2em;
-    color: #333;
-    margin-bottom: 15px;
-    font-weight: bold;
-}
-
-#lives-selection label {
-    display: block;
-    margin: 10px 0;
-    font-size: 1em;
-    color: #555;
-}
-
-#lives-selection input[type="radio"] {
-    margin-right: 10px;
-}
-
-/* Bouton Commencer la partie */
-#start-game-button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    font-size: 1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #4caf50;
-    color: white;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    display: inline-block;
-}
-
-#start-game-button:hover {
-    transform: scale(1.1);
-    background-color: #45a049;
-}
 
 /* Animation d’apparition */
 @keyframes fadeIn {
@@ -193,48 +100,11 @@ label input {
     }
 }
 
-
-#difficulty-selection {
-    text-align: center;
-    margin-top: 50px;
-}
-
-#difficulty-level {
-    font-size: 16px;
-    padding: 5px;
-    margin-right: 10px;
-}
-
-#start-game-button {
-    font-size: 16px;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
 /* Choix joueur Début */
 
-/* Conteneur principal */
-#player-selection, #player-names-selection {
-    border: 2px solid #534e41;
-    /* Bordure dorée */
-    border-radius: 12px;
-    padding: 5px;
-    text-align: center;
-    margin: 20px auto;
-    width: 80%;
-    max-width: 400px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    background-color: #EADFC2;
-}
-
-#player-selection .choose-player, .name-player {
-    padding: 20px;
-    border: 2px solid;
-    background-color: white;
-    border-radius: 12px;
+#player-selection, #player-names-selection{
+    width: 440px;
+    margin: 10px;
 }
 
 /* Conteneur principal */
@@ -303,9 +173,8 @@ label input {
 /* Option sélectionnée hover */
 .selected-option:hover {
     background-color: #D4A566;
-    /* Bleu plus foncé pour un effet de survol */
     color: #FFFFFF;
-    /* Texte blanc */
+    border: 2px solid #D4A566;
 }
 
 /* Bouton */
@@ -378,9 +247,17 @@ label input {
     background-color: #ffefd5;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     animation: fadeIn 1.5s ease-in-out;
+    margin-top: 10px;
+}
+
+.round-selection{
+    display: grid; /* Active le mode grille */
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
+    grid-gap: 10px; /* Espacement entre les éléments */
+    justify-content: center; /* Centre la grille horizontalement */
+    align-items: center; /* Centre les éléments verticalement */
     margin-top: 20px;
 }
 
@@ -392,43 +269,17 @@ label input {
     font-weight: bold;
 }
 
-/* Boutons de sélection des rounds */
 .round-option {
+    background-color: #D4A566; /* Doré inspiré de One Piece */
+    color: white; /* Brun pour le texte */
+    border: none;
     margin: 10px 5px;
-    padding: 10px 20px;
-    font-size: 1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #D4A566;
-    color: white;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-#round-selection {
-    display: grid; /* Active le mode grille */
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-    grid-gap: 10px; /* Espacement entre les éléments */
-    justify-content: center; /* Centre la grille horizontalement */
-    align-items: center; /* Centre les éléments verticalement */
-    margin-top: 20px;
-}
-
-.round-option {
-    background-color: #D4AF37; /* Doré inspiré de One Piece */
-    color: #4E342E; /* Brun pour le texte */
-    border: none;
     padding: 10px 20px;
     font-size: 1em;
     border-radius: 8px;
     cursor: pointer;
     text-align: center;
     transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-/* Effet au survol */
-.round-option:hover {
-    color: #000;
 }
 
 /* Ajustement pour les 2 derniers boutons */
@@ -441,6 +292,253 @@ label input {
 
 .round-option:hover {
     transform: scale(1.1);
+}
+
+/* Section de sélection des vies */
+#lives-selection {
+    border-radius: 15px;
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    margin: 10px auto;
+    font-family: 'Arial', sans-serif;
+    background: #ffefd5;
+    padding: 17px 14px 10px;
+}
+
+#lives-selection p {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Conteneur pour les options */
+#lives-selection input[type="radio"] {
+    display: none; /* Masque complètement le bouton radio */
+}
+
+#lives-selection label {
+    display: block;
+    font-size: 17px;;
+    color: white;
+    margin: 15px auto;
+    text-align: center;
+    padding: 15px 20px;
+    /* border: 2px solid #d4a373; */
+    border-radius: 10px;
+    background: #D4A566; /* Dégradé doux */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    width: 80%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Effet au survol */
+#lives-selection label:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+/* Option sélectionnée */
+#lives-selection input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #d4a373, #b67d4b); /* Dégradé différent pour l'option sélectionnée */
+    color: white; /* Texte blanc pour l'option sélectionnée */
+    box-shadow: 0 0 10px rgba(212, 163, 115, 0.6); /* Légère lueur */
+    transform: scale(1.05); /* Option légèrement agrandie */
+}
+
+/* FIN DE LA SELECTION DES VIES */
+
+/* SELECTION DE LA DIFFICULTE */
+
+#difficulty-selection {
+    /* border: 2px solid #534e41; */
+    /* Bordure dorée */
+    padding: 5px;
+    text-align: center;
+    margin: auto;
+    /* display: flex; */
+    flex-direction: column;
+}
+
+/* Lorsque l'élément est actif */
+#difficulty-selection.active {
+    display: flex; /* Afficher en flexbox */
+    opacity: 1; /* Rendre visible */
+}
+
+.difficulty {
+    padding: 20px;
+    border: 2px solid;
+    background-color: white;
+    border-radius: 12px;
+}
+
+/* Titre */
+#difficulty-selection p {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Menu déroulant */
+/* Conteneur UL */
+#difficulty-level {
+    list-style: none; /* Pas de puces */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around; /* Espacer les options */
+    background-color: #fff7e6; /* Fond doux beige */
+    border: 2px solid #d4a373; /* Bordure dorée */
+    border-radius: 8px; /* Coins arrondis */
+    font-size: 1.1em;
+    padding: 10px 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* Chaque option individuelle */
+.difficulty-options {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+/* Option sélectionnée */
+.difficulty-option.selected {
+    background-color: #4a3d35; /* Fond brun foncé */
+    color: white; /* Texte blanc */
+    font-weight: bold; /* Mettre en gras */
+    cursor: default; /* Curseur par défaut */
+}
+
+/* Style de base pour les options */
+.difficulty-options li {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid #d4a374;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 5px 10px;
+  }
+  
+  .difficulty-options li:hover {
+    background-color: #d4a374;
+    color: white;
+  }
+  
+  /* Style de l'info-bulle */
+  .difficulty-options li::after {
+    content: attr(data-tooltip); /* Utilise la valeur de l'attribut data-tooltip */
+    position: absolute;
+    bottom: -30px; /* Position en-dessous de l'élément */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  
+  /* Afficher l'info-bulle au survol */
+  .difficulty-options li:hover::after {
+    opacity: 1;
+  }
+  
+
+/* Bouton */
+#start-game-button {
+    background-color: #D4A566; /* Vert inspiré de la nature */
+    color: white;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 15px;
+}
+
+/* Effet au survol du bouton */
+#start-game-button:hover {
+    transform: scale(1.05);
+}
+
+/* Transition au clic */
+#start-game-button:active {
+    transform: scale(0.98);
+}
+
+/* FIN CHOIX DIFFICULTE */
+
+/* Début de la game */
+
+.game-board {
+    margin-top: 20px;
+}
+
+#letter-display {
+    font-size: 3em;
+    color: #ff4500;
+    margin-bottom: 20px;
+}
+
+#player-input {
+    width: 70%;
+    padding: 10px;
+    font-size: 1em;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+}
+
+#submit-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: #ff4500;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submit-button:hover {
+    background-color: #e03e00;
+}
+
+#feedback {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+#score {
+    margin-top: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#round-info {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #666;
 }
 
 #current-player {
