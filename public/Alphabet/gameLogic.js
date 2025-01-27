@@ -38,6 +38,11 @@ function resetUsedLetters() {
     usedLetters = [];
 }
 
+function updateLivesDisplay() {
+    const livesElement = document.getElementById('lives');
+    livesElement.textContent = `Vies restantes pour ${playerNames[currentPlayerIndex]} : ${playerLives[currentPlayerIndex]}`;
+}
+
 function startRound() {
     console.log(`Début du round ${currentRound + 1}/${maxRounds}`);
 
@@ -58,11 +63,8 @@ function startRound() {
     const playerRoundIndex = Math.floor(currentRound / numPlayers); // Round actuel pour ce joueur
     currentPlayerIndex = currentRound % numPlayers; // Alterner entre les joueurs
 
-    console.log(`Joueur actuel : ${playerNames[currentPlayerIndex]} (Index : ${currentPlayerIndex})`);
-    console.log(`Rounds joués par ${playerNames[currentPlayerIndex]} : ${roundsPlayedByPlayer}/${maxRounds}`);
-
     // Afficher le joueur actuel
-    document.getElementById('current-player').textContent = `Joueur actuel : ${playerNames[currentPlayerIndex]}`;
+    document.getElementById('current-player').textContent = `Au tour de : ${playerNames[currentPlayerIndex]}`;
 
     // Nouvelle lettre aléatoire
     currentLetter = getRandomLetter();
@@ -81,10 +83,11 @@ function startRound() {
     } else {
         timeLeft = 15; // 15 secondes pour moyen
     }
-    console.log(`Temps alloué pour ce round : ${timeLeft} secondes`);
+
+    updateLivesDisplay()
 
     updateTimerDisplay(); // Mettre à jour l'affichage initial du timer
-    startTimer(); // Démarrer le compte à rebours
+    startTimer(); // Démarrer le compte à rebours 
 
     // Incrémenter le compteur des rounds
     currentRound++;
@@ -125,27 +128,63 @@ function checkAnswer() {
     if (isCorrect) {
         // Ajouter un point au score du joueur actuel
         playerScores[currentPlayerIndex]++;
-        document.getElementById('feedback').textContent = `Bonne réponse ! ${playerNames[currentPlayerIndex]} gagne un point.`;
-        document.getElementById('feedback').style.color = 'green';
+        const feedbackElement = document.getElementById('feedback');
+    
+        // Modifier le feedback
+        feedbackElement.textContent = `Bonne réponse ! ${playerNames[currentPlayerIndex]} gagne un point.`;
+        feedbackElement.className = 'feedback success'; // Ajout de la classe success
+    
+        // Afficher le feedback avec animation
+        feedbackElement.classList.add('show');
+        setTimeout(() => {
+            feedbackElement.classList.remove('show'); // Retirer l'animation après 1s
+            feedbackElement.textContent = ''; // Effacer le contenu du feedback
+        }, 1000); // Ajuster la durée selon vos besoins
     } else {
         lives--; // Réduire une vie
         document.getElementById('lives').textContent = `Vies restantes : ${lives}`;
-
+    
         const validNames = validAnswers.map((character) => {
             const aliasesText = character.aliases && character.aliases.length > 0
                 ? ` (Alias : ${character.aliases.join(', ')})`
                 : '';
             return `${character.name}${aliasesText}`;
         }).join(', ');
-
-        document.getElementById('feedback').textContent = `Mauvaise réponse. Réponses valides : ${validNames}`;
-        document.getElementById('feedback').style.color = 'red';
-
+    
+        const feedbackElement = document.getElementById('feedback');
+    
+        // Modifier le feedback pour une mauvaise réponse
+        feedbackElement.textContent = `Mauvaise réponse. Réponses valides : ${validNames}`;
+        feedbackElement.className = 'feedback error'; // Ajout de la classe error
+    
+        // Afficher le feedback avec animation
+        feedbackElement.classList.add('show');
+        setTimeout(() => {
+            feedbackElement.classList.remove('show'); // Retirer l'animation après 1s
+            feedbackElement.textContent = ''; // Effacer le contenu du feedback
+        }, 1000); // Ajuster la durée selon vos besoins
+    
         if (lives <= 0) {
             endGame(); // Terminer immédiatement si les vies sont épuisées
             return;
+        }    
+        if (!isCorrect) {
+            playerLives[currentPlayerIndex]--; // Réduire la vie du joueur actuel
+            document.getElementById('lives').textContent = `Vies restantes pour ${playerNames[currentPlayerIndex]} : ${playerLives[currentPlayerIndex]}`;
+        
+            if (playerLives[currentPlayerIndex] <= 0) {
+                const feedbackElement = document.getElementById('feedback');
+                feedbackElement.textContent = `${playerNames[currentPlayerIndex]} a perdu toutes ses vies !`;
+                feedbackElement.className = 'feedback error';
+        
+                // Vérifier si tous les joueurs sont éliminés
+                if (playerLives.every((lives) => lives <= 0)) {
+                    endGame(); // Terminer la partie si tous les joueurs sont éliminés
+                    return;
+                }
+            }
         }
-    }
+    }    
 
     // Afficher le tableau des scores mis à jour
     updateScoreboard();

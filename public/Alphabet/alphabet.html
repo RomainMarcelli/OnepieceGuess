@@ -37,15 +37,10 @@
         <!-- Menu de sélection des rounds -->
         <div id="player-selection" style="display: block;">
           <h3>Choisissez le nombre de joueurs :</h3>
-          <!-- <select id="num-players">
-              <option value="1">1 Joueur</option>
-              <option value="2">2 Joueurs</option>
-              <option value="3">3 Joueurs</option>
-              <option value="4">4 Joueurs</option>
-            </select> -->
           <div class="custom-dropdown">
             <div class="selected-option">1 Joueur</div>
             <ul class="dropdown-options">
+              <li data-value="0">Choisir le nombre de joueur</li>
               <li data-value="1">1 Joueur</li>
               <li data-value="2">2 Joueurs</li>
               <li data-value="3">3 Joueurs</li>
@@ -78,7 +73,7 @@
         <div id="lives-selection" style="display: none;">
           <p>Souhaitez-vous jouer avec des vies ?</p>
           <input type="radio" id="with-lives" name="lives-option" value="with-lives" />
-          <label for="with-lives">Oui, activer le mode "Système de vie" (3 vies par défaut)</label>
+          <label for="with-lives">Oui, 3 vies par défaut</label>
 
           <input type="radio" id="without-lives" name="lives-option" value="without-lives" />
           <label for="without-lives">Non, jouer sans vies</label>
@@ -92,28 +87,47 @@
             <li data-tooltip="15 secondes" data-value="medium" class="difficulty-option active">Moyen</li>
             <li data-tooltip="10 secondes" data-value="hard" class="difficulty-option">Difficile</li>
           </ul>
-                 
+
           <button id="start-game-button">Commencer</button>
         </div>
-
-        <!-- Jeu -->
-        <div id="game" style="display: none;">
-          <h3>Devine le personnage de One piece !</h3>
-          <h4>Tape le personnage de One Piece à partir de sa première lettre !</h4>
-          <div id="current-player" style="margin-top: 10px; font-size: 1.2em;"></div>
-          <div class="game-board">
-            <div id="letter-display"></div>
-            <div id="timer">Temps restant : 0s</div> <!-- Ajout du timer -->
-            <input type="text" id="player-input" placeholder="Entrez un nom" />
-            <button id="submit-button">Soumettre</button>
-          </div>
-          <div id="feedback"></div>
-          <!-- <div id="score">Score : 0</div> -->
-          <div id="lives" style="font-size: 1.2em; color: red; margin-top: 10px;">Vies restantes : 3</div>
-          <div id="round-info"></div>
-        </div>
-        <div id="time-taken" style="margin-top: 10px; font-size: 1.2em; color: #666;"></div>
       </div>
+    </div>
+
+    <!-- Jeu -->
+    <div id="game" style="display: none;">
+      <div class="all-game">
+        <div class="contenu-game">
+          <h3 class="game-title">Devine le personnage de One Piece !</h3>
+          <h4 class="game-subtitle">Tape le personnage de One Piece à partir de sa première lettre !</h4>
+
+          <div id="current-player" class="player-status"></div>
+
+          <div class="game-board">
+            <div id="letter-display" class="letter-display"></div>
+            <div id="timer" class="timer">Temps restant : 0s</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="input-group">
+              <input type="text" id="player-input" class="player-input" placeholder="Entrez un nom" />
+              <button id="submit-button" class="submit-button">Soumettre</button>
+            </div> -->
+
+      <div class="infos">
+        <div class="search">
+          <input type="text" id="player-input" class="player-input" autocomplete="off" placeholder="Entrez un nom">
+          <button type="submit" id="submit-button"><img src="../img/guess.png" alt=""></button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="lives" class="lives">Vies restantes : 3</div>
+        <div id="round-info" class="round-info"></div>
+      </div>
+    </div>
+    </div>
+    <div id="time-taken" style="margin-top: 10px; font-size: 1.2em; color: #666;"></div>
+    </div>
     </div>
   </main>
   <script src="setup.js"></script>

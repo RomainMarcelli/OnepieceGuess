@@ -171,5 +171,28 @@ document.querySelectorAll('#difficulty-level li').forEach(item => {
       difficultyLevel = item.getAttribute('data-value');
       console.log('Difficulté sélectionnée :', difficultyLevel);
     });
-  });
-  
+});
+
+function updateLives(remainingLives) {
+    const livesElement = document.getElementById('lives');
+
+    if (!livesElement) {
+        console.error("Element avec l'ID 'lives' introuvable !");
+        return;
+    }
+
+    // Mettre à jour le texte
+    livesElement.textContent = `Vies restantes : ${remainingLives}`;
+
+    // Retirer l'ancienne classe avant de la réappliquer
+    livesElement.classList.remove('decrease');
+
+    // Forcer un reflow pour réinitialiser l'animation (important pour rejouer)
+    void livesElement.offsetWidth;
+
+    // Ajouter l'animation de tremblement si les vies diminuent
+    livesElement.classList.add('decrease');
+
+    // Si vous voulez un log pour déboguer :
+    console.log(`Animation ajoutée pour ${remainingLives} vies restantes.`);
+}
