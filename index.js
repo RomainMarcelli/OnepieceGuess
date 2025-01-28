@@ -456,7 +456,7 @@ const characters = [
         firstArc: 'Dressrosa' 
     },
     { 
-        name: 'Riku Viola',
+        name: 'Viola',
         aliases: ['Viola'], 
         devilFruit: 'Giro Giro no Mi', 
         haki: 'Aucun', 

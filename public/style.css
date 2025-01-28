@@ -734,6 +734,15 @@ img {
 /* /////Jeux Fruit du démon //////////// */
 /* //////////////////////////////////////////////// */
 
+#typeHintInfo, #traduitFruitHintInfo{
+    font-size: .6rem;
+    color: #979797;
+}
+
+#typeHint p {
+    margin-top: 16px;
+}
+
 #resultFruitContainer .incorrect-guess{
     width: 350px;
     margin: auto;
