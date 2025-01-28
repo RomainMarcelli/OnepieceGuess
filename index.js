@@ -2153,6 +2153,107 @@ const devilFruitsByType = {
     ]
 };
 
+const devilFruitsTranslated = {
+    Logia: [
+        { name: 'Moku Moku no Mi', translation: 'Fruit de la Fumée' },
+        { name: 'Magu Magu no Mi', translation: 'Fruit du Magma' },
+        { name: 'Hie Hie no Mi', translation: 'Fruit de la Glace' },
+        { name: 'Mera Mera no Mi', translation: 'Fruit du Feu' },
+        { name: 'Pika Pika no Mi', translation: 'Fruit de la Lumière' },
+        { name: 'Goro Goro no Mi', translation: 'Fruit de la Foudre' },
+        { name: 'Yami Yami no Mi', translation: 'Fruit des Ténèbres' },
+        { name: 'Gasu Gasu no Mi', translation: 'Fruit du Gaz' },
+        { name: 'Yuki Yuki no Mi', translation: 'Fruit de la Neige' },
+        { name: 'Suna Suna no Mi', translation: 'Fruit du Sable' },
+        { name: 'Numa Numa no Mi', translation: 'Fruit du Marécage' },
+        { name: 'Mori Mori no Mi', translation: 'Fruit de la Forêt' }
+    ],
+    Paramecia: [
+        { name: 'Gomu Gomu no Mi', translation: 'Fruit du Caoutchouc' },
+        { name: 'Bara Bara no Mi', translation: 'Fruit de la Séparation' },
+        { name: 'Hana Hana no Mi', translation: 'Fruit de la Fleur' },
+        { name: 'Yomi Yomi no Mi', translation: 'Fruit de la Résurrection' },
+        { name: 'Toshi Toshi no Mi', translation: 'Fruit de l’Âge' },
+        { name: 'Gura Gura no Mi', translation: 'Fruit du Tremblement' },
+        { name: 'Ope Ope no Mi', translation: 'Fruit de l’Opération' },
+        { name: 'Jiki Jiki no Mi', translation: 'Fruit du Magnétisme' },
+        { name: 'String String Fruit', translation: 'Fruit des Fils' },
+        { name: 'Soru Soru no Mi', translation: 'Fruit des Âmes' },
+        { name: 'Supa Supa no Mi', translation: 'Fruit de l’Acier' },
+        { name: 'Doru Doru no Mi', translation: 'Fruit de la Cire' },
+        { name: 'Mane Mane no Mi', translation: 'Fruit de l’Imitation' },
+        { name: 'Riki Riki no Mi', translation: 'Fruit de la Force' },
+        { name: 'Wara Wara no Mi', translation: 'Fruit de la Paille' },
+        { name: 'Ishi Ishi no Mi', translation: 'Fruit de la Pierre' },
+        { name: 'Sui Sui no Mi', translation: 'Fruit de la Nage' },
+        { name: 'Horo Horo no Mi', translation: 'Fruit des Fantômes' },
+        { name: 'Mero Mero no Mi', translation: 'Fruit de l’Amour' },
+        { name: 'Fruit Urouge', translation: 'Fruit d’Urouge' },
+        { name: 'Zushi Zushi no Mi', translation: 'Fruit de la Gravité' },
+        { name: 'Kage Kage no Mi', translation: 'Fruit des Ombres' },
+        { name: 'Maki Maki no Mi', translation: 'Fruit du Papier' },
+        { name: 'Nagi Nagi no Mi', translation: 'Fruit du Silence' },
+        { name: 'Bari Bari no Mi', translation: 'Fruit de la Barrière' },
+        { name: 'Nikyu Nikyu no Mi', translation: 'Fruit du Coussin' },
+        { name: 'Horu Horu no Mi', translation: 'Fruit des Hormones' },
+        { name: 'Noro Noro no Mi', translation: 'Fruit de la Lenteur' },
+        { name: 'Bane Bane no Mi', translation: 'Fruit du Ressort' },
+        { name: 'Doku Doku no Mi', translation: 'Fruit du Poison' },
+        { name: 'Awa Awa no Mi', translation: 'Fruit des Bulles' },
+        { name: 'Doa Doa no Mi', translation: 'Fruit des Portes' },
+        { name: 'Fuku Fuku no Mi', translation: 'Fruit des Vêtements' },
+        { name: 'Mochi Mochi no Mi', translation: 'Fruit du Mochi' },
+        { name: 'Memo Memo no Mi', translation: 'Fruit de la Mémoire' },
+        { name: 'Mira Mira no Mi', translation: 'Fruit du Miroir' },
+        { name: 'Buku Buku no Mi', translation: 'Fruit des Livres' },
+        { name: 'Pero Pero no Mi', translation: 'Fruit du Bonbon' },
+        { name: 'Bisu Bisu no Mi', translation: 'Fruit du Biscuit' },
+        { name: 'Kibi Kibi no Mi', translation: 'Fruit de la Nourriture' },
+        { name: 'Hira Hira no Mi', translation: 'Fruit des Ondulations' },
+        { name: 'Giro Giro no Mi', translation: 'Fruit de la Vue Profonde' },
+        { name: 'Netsu Netsu no Mi', translation: 'Fruit de la Chaleur' },
+        { name: 'Shibo Shibo no Mi', translation: 'Fruit de l’Essorage' },
+        { name: 'Sube Sube no Mi', translation: 'Fruit de la Glisse' },
+        { name: 'Nomi Nomi no Mi', translation: 'Fruit du Savoir' },
+        { name: 'Beta Beta no Mi', translation: 'Fruit de la Colle' },
+        { name: 'Pamu Pamu no Mi', translation: 'Fruit de l’Explosion' },
+        { name: 'Guru Guru no Mi', translation: 'Fruit de la Rotation' },
+        { name: 'Buki Buki no Mi', translation: 'Fruit des Armes' },
+        { name: 'Hobi Hobi no Mi', translation: 'Fruit du Jeu' },
+        { name: 'Nui Nui no Mi', translation: 'Fruit de la Couture' },
+        { name: 'Oto Oto no Mi', translation: 'Fruit du Son' },
+        { name: 'Kira Kira no Mi', translation: 'Fruit du Brillant' },
+        { name: 'Toki Toki no Mi', translation: 'Fruit du Temps' },
+        { name: 'Uta Uta no Mi', translation: 'Fruit du Chant' },
+        { name: 'Juku Juku no Mi', translation: 'Fruit de la Maturation' },
+        { name: 'Choki Choki no Mi', translation: 'Fruit des Ciseaux' }
+    ],
+    Zoan: [
+        { name: 'Inu Inu no Mi', translation: 'Fruit du Chien' },
+        { name: 'Ryu Ryu no Mi', translation: 'Fruit du Dragon' },
+        { name: 'Ushi Ushi no Mi', translation: 'Fruit de la Vache' },
+        { name: 'Tori Tori no Mi', translation: 'Fruit de l’Oiseau' },
+        { name: 'Hito Hito no Mi', translation: 'Fruit de l’Humain' },
+        { name: 'Uo Uo no Mi', translation: 'Fruit du Poisson' },
+        { name: 'Kame Kame no Mi', translation: 'Fruit de la Tortue' },
+        { name: 'Neko Neko no Mi', translation: 'Fruit du Chat' },
+        { name: 'Fruit de Kozuki Momonosuke (Fruit Artificiel)', translation: null },
+        { name: 'Ryu Ryu no Mi, Modèle: Pachycéphalosaure', translation: null },
+        { name: 'Neko Neko no Mi, Modèle: Tigre à Dents de Sabre', translation: null },
+        { name: 'Ryu Ryu no Mi, Modèle: Spinosaurus', translation: null },
+        { name: 'Ryu Ryu no Mi, Modèle: Ptéranodon', translation: null },
+        { name: 'Ryu Ryu no Mi, Modèle: Brachiosaure', translation: null },
+        { name: 'Zo Zo no Mi, Modèle: Mammouth', translation: null },
+        { name: 'Ryu Ryu no Mi, Modèle: Tricératops', translation: null },
+        { name: 'Kumo Kumo no Mi, Modèle: Rosamygale Grauvogeli', translation: null },
+        { name: 'Tama Tama no Mi', translation: 'Fruit de l’Oeuf' },
+        { name: 'Hebi Hebi no Mi, Modèle: Yamata no Orochi', translation: null },
+        { name: 'Hito Hito no Mi, Modèle: Daibutsu', translation: null },
+        { name: 'Smile', translation: 'Fruit Artificiel' }
+    ]
+};
+
+
 
 // // Fonction pour catégoriser le fruit du démon
 // function categorizeDevilFruit(devilFruit) {
@@ -2191,6 +2292,37 @@ app.get('/api/devil-fruits', (req, res) => {
 app.get('/api/devilFruitsByType', (req, res) => {
     res.json(devilFruitsByType);
 });
+
+// Route pour obtenir la traduction d'un fruit par son nom
+app.get('/api/devil-fruit-translation', (req, res) => {
+    const fruitName = req.query.name;
+    console.log('Nom de fruit reçu pour traduction:', fruitName);
+
+    if (!fruitName) {
+        console.log('Erreur : Nom de fruit manquant.');
+        return res.status(400).json({ error: 'Nom de fruit manquant.' });
+    }
+
+    let translation = null;
+    for (const type in devilFruitsTranslated) {
+        const fruit = devilFruitsTranslated[type].find(f => f.name === fruitName);
+        if (fruit) {
+            translation = fruit.translation;
+            break;
+        }
+    }
+
+    if (translation) {
+        console.log(`Traduction trouvée pour "${fruitName}":`, translation);
+        res.json({ translation });
+    } else {
+        console.log(`Erreur : Traduction non trouvée pour "${fruitName}".`);
+        res.status(404).json({ error: 'Traduction non trouvée.' });
+    }
+});
+
+
+
 
 // Démarrer le serveur
 app.listen(port, () => {

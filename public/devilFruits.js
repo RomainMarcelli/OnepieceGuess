@@ -1,5 +1,6 @@
 let characterName = '';
 let incorrectGuesses = [];
+let translationHintDisplayed = false; // Nouveau drapeau pour contrôler l'affichage de l'indice de traduction
 // let attempts = 0;
 let selectedFruit = [// ////////////////////////////
     ////////// Logia  /////////
@@ -149,6 +150,22 @@ let devilFruitsByType = {
     ]
 };
 
+async function fetchDevilFruitTranslation(fruitName) {
+    try {
+        const apiUrl = `/api/devil-fruit-translation?name=${encodeURIComponent(fruitName)}`;
+        console.log('URL appelée pour la traduction:', apiUrl);
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Erreur réseau : ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.translation || null; // Retourne la traduction ou null si absente
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la traduction:', error);
+        return null;
+    }
+}
 
 function categorizeDevilFruit(devilFruit) {
     for (const [type, fruits] of Object.entries(devilFruitsByType)) {
@@ -340,15 +357,25 @@ function getDevilFruitType(fruitName) {
     return 'Type inconnu'; // Si le fruit n'est pas trouvé
 }
 
-function updateHintInfo() {
+function getTranslation(fruitName) {
+    for (const type in devilFruitsTranslated) {
+        const fruit = devilFruitsTranslated[type].find(item => item.name === fruitName);
+        if (fruit) {
+            return fruit.translation || 'Traduction non disponible';
+        }
+    }
+    return 'Traduction inconnue'; // Si le fruit n'est pas trouvé
+}
+
+async function updateHintInfo() {
     const typeHintInfo = document.getElementById('typeHintInfo');
-    // const traduitFruitHintInfo = document.getElementById('traduitFruitHintInfo');
+    const traduitFruitHintInfo = document.getElementById('traduitFruitHintInfo'); // Élément pour afficher la traduction
     const typeHint = document.querySelector('#typeHint');
-    // const traduitFruitHint = document.querySelector('#traduitFruitHint');
+    const traduitFruitHint = document.querySelector('#traduitFruitHint');
     const typeHintP = document.querySelector('#typeHint p');
+    const traduitFruitHintP = document.querySelector('#traduitFruitHint p');
 
     const attemptsFortypeHint = 4;
-
     const remainingAttemptsFortypeHint = Math.max(0, attemptsFortypeHint - attempts);
 
     if (remainingAttemptsFortypeHint > 0) {
@@ -364,6 +391,29 @@ function updateHintInfo() {
         typeHintP.style.color = '#928157'; 
         typeHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
     }
+
+    // Gestion de l'indice de traduction
+    if (attempts >= 1) {
+        traduitFruitHintInfo.textContent = 'Chargement de la traduction...';
+        traduitFruitHintInfo.style.display = 'block';
+
+        try {
+            // Récupérer la traduction via l'API
+            const translation = await fetchDevilFruitTranslation(selectedFruit.name);
+
+            if (translation) {
+                traduitFruitHintInfo.textContent = `${translation}`;
+            } else {
+                traduitFruitHintInfo.textContent = 'Traduction non disponible.';
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération de la traduction:', error);
+            traduitFruitHintInfo.textContent = 'Erreur lors de la récupération de la traduction.';
+        }
+    } else {
+        traduitFruitHintInfo.textContent = 'Dans 1 essai';
+        traduitFruitHintInfo.style.display = 'block';
+    }
 }
 
 
@@ -376,7 +426,7 @@ function toggleHint(id) {
         }
 
         if (typeHintDisplay.style.display === 'none' || typeHintDisplay.style.display === '') {
-            traduitFruitHintDisplay.style.display = 'none';
+            // traduitFruitHintDisplay.style.display = 'none';
             typeHintDisplay.innerHTML = `Indice de type : ${selectedFruit.type}`;
             typeHintDisplay.style.display = 'block';
         } else {
@@ -386,6 +436,24 @@ function toggleHint(id) {
     }
 }
 
+// // Afficher la traduction du fruit dès le premier essai
+// function toggleHint(id) {
+//     const traduitFruitHintDisplay = document.getElementById('traduitFruitHintDisplay');
+
+//     if (id === 'traduitFruitHintDisplay') {
+//         if (attempts < 1) {
+//             return;
+//         }
+
+//         if (traduitFruitHintDisplay.style.display === 'none' || traduitFruitHintDisplay.style.display === '') {
+//             traduitFruitHintDisplay.innerHTML = `Indice de traduction : ${getTranslation(selectedFruit.name)}`;
+//             traduitFruitHintDisplay.style.display = 'block';
+//         } else {
+//             traduitFruitHintDisplay.style.display = 'none';
+//         }
+//         console.log('Contenu de traduitFruitHintDisplay après 1 essai:', traduitFruitHintDisplay.innerHTML);
+//     }
+// }
 
 // Fonction pour gérer les indices en fonction des essais
 function updateHints() {
@@ -402,8 +470,9 @@ document.getElementById('traduitFruitHint').addEventListener('click', () => {
     toggleHint('traduitFruitHintDisplay');
 });
 
-
 // Fetch a random devil fruit when the page loads
 window.onload = fetchDevilFruit;
 
+
+// Mettre à jour les indices après chaque essai
 document.getElementById('guessFruitForm').addEventListener('submit', checkGuess);
