@@ -196,3 +196,23 @@ function updateLives(remainingLives) {
     // Si vous voulez un log pour déboguer :
     console.log(`Animation ajoutée pour ${remainingLives} vies restantes.`);
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const selectedOption = document.querySelector('.custom-dropdown .selected-option');
+    const defaultOption = document.querySelector('.dropdown-options li[data-value="0"]');
+
+    // Afficher par défaut la valeur de l'élément avec data-value="0"
+    selectedOption.textContent = defaultOption.textContent;
+
+    // Ajouter un gestionnaire d'événements pour changer la sélection
+    const dropdownOptions = document.querySelectorAll('.dropdown-options li');
+    dropdownOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            selectedOption.textContent = option.textContent;
+            selectedOption.dataset.value = option.dataset.value; // Optionnel, pour gérer les données
+        });
+    });
+});
+
+

@@ -638,7 +638,7 @@ label input {
 } */
 
 /* Style général pour la div des vies */
-.lives {
+ .lives {
     font-size: 1.2em;
     font-weight: bold;
     text-align: center;
@@ -649,14 +649,14 @@ label input {
     box-shadow: 0 4px 10px rgba(255, 77, 77, 0.4);
     transition: all 0.3s ease;
     display: inline-block;
-    animation: fadeIn 1s ease-in-out;
-    width: auto; /* Ajuste automatiquement la largeur au contenu */
-    max-width: 100%; /* Empêche que ça dépasse le conteneur parent */
-    box-sizing: border-box; /* Inclut le padding dans la largeur totale */
-    display: inline-block; /* Reste à la taille de son contenu */
-    transition: all 0.3s ease; /* Animation pour les changements visuels */
-    word-wrap: break-word; /* Permet de couper le texte si nécessaire */
-}
+    animation: fadeIn 1s ease-in-out; 
+    width: auto; 
+    max-width: 100%;
+    box-sizing: border-box;
+    display: inline-block; 
+    transition: all 0.3s ease;
+    word-wrap: break-word; 
+} 
 
 /* Animation d'apparition */
 @keyframes fadeIn {
@@ -685,7 +685,6 @@ label input {
         transform: translateX(-5px);
     }
 }
-
 /* Lorsque les vies diminuent */
 .lives.decrease {
     animation: shake 0.5s ease-in-out, fadeIn 1s ease-in-out; /* Tremblement + réapparition */
