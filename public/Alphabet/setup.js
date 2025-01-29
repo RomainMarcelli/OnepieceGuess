@@ -30,11 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '../devilfruit.html';
     });
 
+    document.querySelector('.vs img').addEventListener('click', () => {
+        window.location.href = 'vs.html';
+    });
+
     const currentPage = window.location.pathname.split('/').pop();
     if (currentPage === 'index.html') {
         document.querySelector('.guessPerso img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     } else if (currentPage === '../devilfruit.html') {
         document.querySelector('.devilFruit img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
+    } else if (currentPage === 'vs.html') {
+        document.querySelector('.vs img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     }
 });
 

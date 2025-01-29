@@ -1997,6 +1997,28 @@ const characters = [
         bounty: '290,000,000 Berries',
         firstArc: 'Wano'
     },
+    {
+        name: 'Vander Decken',
+        devilFruit: 'Mato Mato no Mi',
+        haki: 'Aucun',
+        affiliation: 'Équipage des Pirates Volants',
+        height: '352 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Fishman Island'
+    },
+    {
+        name: 'Wapol',
+        devilFruit: 'Baku Baku no Mi',
+        haki: 'Aucun',
+        affiliation: 'Royaume maléfique de Black Drum',
+        height: '207 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Drum Island'
+    },
+
+
 ];
 
 
@@ -2079,8 +2101,8 @@ const devilFruits = [
     { name: 'Uta Uta no Mi', type: 'Paramecia' },
     { name: 'Juku Juku no Mi', type: 'Paramecia' },
     { name: 'Choki Choki no Mi', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
+    { name: 'Mato Mato no Mi', type: 'Paramecia' },
+    { name: 'Baku Baku no Mi', type: 'Paramecia' },
     { name: 'au', type: 'Paramecia' },
 
     // ////////////////////////////
@@ -2138,7 +2160,7 @@ const devilFruitsByType = {
         'Sube Sube no Mi', 'Nomi Nomi no Mi', 'Beta Beta no Mi', 'Pamu Pamu no Mi', 
         'Guru Guru no Mi', 'Buki Buki no Mi', 'Hobi Hobi no Mi', 'Nui Nui no Mi', 
         'Oto Oto no Mi', 'Kira Kira no Mi', 'Toki Toki no Mi', 'Uta Uta no Mi', 
-        'Juku Juku no Mi', 'Choki Choki no Mi'
+        'Juku Juku no Mi', 'Choki Choki no Mi', 'Mato Mato no Mi', 'Baku Baku no Mi'
     ],
     Zoan: [
         'Inu Inu no Mi', 'Ryu Ryu no Mi', 'Ushi Ushi no Mi', 'Tori Tori no Mi', 
@@ -2226,6 +2248,8 @@ const devilFruitsTranslated = {
         { name: 'Toki Toki no Mi', translation: 'Fruit du Temps' },
         { name: 'Uta Uta no Mi', translation: 'Fruit du Chant' },
         { name: 'Juku Juku no Mi', translation: 'Fruit de la Maturation' },
+        { name: 'Mato Mato no Mi', translation: 'Fruit du Dans le Mille' },
+        { name: 'Baku Baku no Mi', translation: 'Fruit du Glouton' },
         { name: 'Choki Choki no Mi', translation: 'Fruit des Ciseaux' }
     ],
     Zoan: [

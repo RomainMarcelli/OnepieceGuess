@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'devilfruit.html';
     });
 
+    document.querySelector('.vs img').addEventListener('click', () => {
+        window.location.href = 'Alphabet/alphabet.html';
+    });
+
     // Appliquer le filtre CSS sur l'image active
     const currentPage = window.location.pathname.split('/').pop();
     
@@ -53,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.guessPerso img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     } else if (currentPage === 'devilfruit.html') {
         document.querySelector('.devilFruit img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
+    }else if (currentPage === '../Alphabet/alphabet.html') {
+        document.querySelector('.vs img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     }
 });
 

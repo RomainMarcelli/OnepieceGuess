@@ -440,28 +440,21 @@ function startGameWithLives(selectedRounds, useLives) {
 
 function updateActivePlayerHearts() {
     const activeHeartsContainer = document.getElementById('active-player-hearts');
-    if (!activeHeartsContainer) return; // Vérifier si l'élément existe
+    if (!activeHeartsContainer) return;
 
-    // Réinitialiser le conteneur pour afficher uniquement les cœurs du joueur actif
-    activeHeartsContainer.innerHTML = '';
+    activeHeartsContainer.innerHTML = ''; // Réinitialiser
 
-    // Récupérer les vies restantes du joueur actif
     const livesRemaining = playerLives[currentPlayerIndex];
 
-    // Ajouter le nom du joueur actif
-    const playerLabel = document.createElement('p');
-    playerLabel.textContent = `${playerNames[currentPlayerIndex]} :`;
-    activeHeartsContainer.appendChild(playerLabel);
+    // ✅ Supprimer l'ajout du nom du joueur ici
 
-    // Ajouter uniquement les cœurs du joueur actif
     for (let i = 0; i < 3; i++) {
         const heart = document.createElement('span');
-        heart.className = i < livesRemaining ? 'heart full' : 'heart broken'; // Plein ou cassé
-        heart.innerHTML = '&#10084;'; // Symbole du cœur
+        heart.className = i < livesRemaining ? 'heart full' : 'heart broken';
+        heart.innerHTML = '&#10084;';
         activeHeartsContainer.appendChild(heart);
     }
 }
-
 
 function handleTimeout() {
     console.log(`⏳ Temps écoulé ! ${playerNames[currentPlayerIndex]} perd une vie.`);
