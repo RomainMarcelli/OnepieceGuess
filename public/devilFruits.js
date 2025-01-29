@@ -1,5 +1,6 @@
 let characterName = '';
 let incorrectGuesses = [];
+let translationHintDisplayed = false; // Nouveau drapeau pour contrôler l'affichage de l'indice de traduction
 // let attempts = 0;
 let selectedFruit = [// ////////////////////////////
     ////////// Logia  /////////
@@ -149,6 +150,22 @@ let devilFruitsByType = {
     ]
 };
 
+async function fetchDevilFruitTranslation(fruitName) {
+    try {
+        const apiUrl = `/api/devil-fruit-translation?name=${encodeURIComponent(fruitName)}`;
+        console.log('URL appelée pour la traduction:', apiUrl);
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Erreur réseau : ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.translation || null; // Retourne la traduction ou null si absente
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la traduction:', error);
+        return null;
+    }
+}
 
 function categorizeDevilFruit(devilFruit) {
     for (const [type, fruits] of Object.entries(devilFruitsByType)) {
@@ -340,52 +357,120 @@ function getDevilFruitType(fruitName) {
     return 'Type inconnu'; // Si le fruit n'est pas trouvé
 }
 
-function updateHintInfo() {
-    const typeHintInfo = document.getElementById('typeHintInfo');
-    // const traduitFruitHintInfo = document.getElementById('traduitFruitHintInfo');
-    const typeHint = document.querySelector('#typeHint');
-    // const traduitFruitHint = document.querySelector('#traduitFruitHint');
-    const typeHintP = document.querySelector('#typeHint p');
-
-    const attemptsFortypeHint = 4;
-
-    const remainingAttemptsFortypeHint = Math.max(0, attemptsFortypeHint - attempts);
-
-    if (remainingAttemptsFortypeHint > 0) {
-        typeHintInfo.textContent = `Dans ${remainingAttemptsFortypeHint} Essais`;
-        typeHintInfo.style.display = 'block';
-        // Réinitialiser le filtre si les essais ne sont pas atteints
-        typeHintImage.style.filter = '';
-    } else {
-        typeHintInfo.textContent = `Indice de type : ${selectedFruit.type}`;
-        typeHintInfo.style.display = 'none';
-        // Appliquer le filtre après avoir atteint le nombre d'essais
-        typeHint.style.border = '2px solid #928157';
-        typeHintP.style.color = '#928157'; 
-        typeHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
+function getTranslation(fruitName) {
+    for (const type in devilFruitsTranslated) {
+        const fruit = devilFruitsTranslated[type].find(item => item.name === fruitName);
+        if (fruit) {
+            return fruit.translation || 'Traduction non disponible';
+        }
     }
+    return 'Traduction inconnue'; // Si le fruit n'est pas trouvé
 }
 
+async function updateHintInfo() {
+    const typeHintInfo = document.getElementById('typeHintInfo');
+    const traduitFruitHintInfo = document.getElementById('traduitFruitHintInfo');
+
+    const typeHint = document.getElementById('typeHint');
+    const traduitFruitHint = document.getElementById('traduitFruitHint');
+    const typeHintP = document.querySelector('#typeHint p');
+    const traduitFruitHintP = document.querySelector('#traduitFruitHint p');
+
+    const typeHintImage = document.getElementById('typeHintImage');
+    const traduitFruitHintImage = document.getElementById('traduitFruitHintImage');
+
+    const typeHintDisplay = document.getElementById('typeHintDisplay');
+    const traduitFruitHintDisplay = document.getElementById('traduitFruitHintDisplay');
+
+    const attemptsForTypeHint = 4;
+    const remainingAttemptsForTypeHint = Math.max(0, attemptsForTypeHint - attempts);
+
+    const attemptsForTraduitHint = 7;
+    const remainingAttemptsForTraduitHint = Math.max(0, attemptsForTraduitHint - attempts);
+
+    // ✅ Gestion de l'indice de type
+    if (remainingAttemptsForTypeHint > 0) {
+        typeHintInfo.textContent = `Dans ${remainingAttemptsForTypeHint} Essais`;
+        typeHintInfo.style.display = 'block';
+        typeHintDisplay.style.display = 'none'; // ✅ Caché jusqu'au clic
+        typeHintImage.style.filter = ''; // Réinitialiser l'apparence
+    } else {
+        typeHintInfo.textContent = `Indice de type : ${selectedFruit.type}`;
+        typeHintInfo.style.display = 'none'; // ✅ Caché pour éviter le chevauchement
+        typeHintDisplay.textContent = `Type : ${selectedFruit.type}`; // ✅ Ajouter l'indice sous la case
+        typeHintDisplay.style.display = 'none'; // ✅ Caché jusqu'au clic
+        typeHint.style.border = '2px solid #928157';
+        typeHintP.style.color = '#928157';
+        typeHintImage.style.filter =
+            'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
+    }
+
+    // ✅ Gestion de l'indice de traduction
+    if (remainingAttemptsForTraduitHint > 0) {
+        traduitFruitHintInfo.textContent = `Dans ${remainingAttemptsForTraduitHint} Essai(s)`;
+        traduitFruitHintInfo.style.display = 'block';
+        traduitFruitHintDisplay.style.display = 'none'; // ✅ Caché jusqu'au clic
+        traduitFruitHintImage.style.filter = ''; // Réinitialiser l'apparence
+    } else {
+        traduitFruitHintInfo.style.display = 'none'; // ✅ Caché pour éviter le chevauchement
+        traduitFruitHintDisplay.textContent = 'Chargement...';
+        traduitFruitHintDisplay.style.display = 'none'; // ✅ Caché jusqu'au clic
+
+        traduitFruitHint.style.border = '2px solid #928157';
+        traduitFruitHintP.style.color = '#928157';
+        traduitFruitHintImage.style.filter =
+            'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
+
+        try {
+            const translation = await fetchDevilFruitTranslation(selectedFruit.name);
+            if (translation) {
+                traduitFruitHintDisplay.textContent = `Traduction : ${translation}`;
+            } else {
+                traduitFruitHintDisplay.textContent = 'Traduction non disponible.';
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération de la traduction:', error);
+            traduitFruitHintDisplay.textContent = 'Erreur lors de la récupération de la traduction.';
+        }
+    }
+}
 
 function toggleHint(id) {
     const typeHintDisplay = document.getElementById('typeHintDisplay');
+    const traduitFruitHintDisplay = document.getElementById('traduitFruitHintDisplay');
 
     if (id === 'typeHintDisplay') {
-        if (attempts < 1) {
+        if (attempts < 4) {
+            console.log('Indice de type non encore disponible.');
             return;
         }
 
-        if (typeHintDisplay.style.display === 'none' || typeHintDisplay.style.display === '') {
-            traduitFruitHintDisplay.style.display = 'none';
-            typeHintDisplay.innerHTML = `Indice de type : ${selectedFruit.type}`;
-            typeHintDisplay.style.display = 'block';
-        } else {
-            typeHintDisplay.style.display = 'none';
+        // ✅ Fermer l'autre indice avant d'ouvrir celui-ci
+        traduitFruitHintDisplay.style.display = 'none';
+
+        // ✅ Toggle l'affichage du type
+        typeHintDisplay.style.display =
+            typeHintDisplay.style.display === 'none' || typeHintDisplay.style.display === ''
+                ? 'block'
+                : 'none';
+    }
+
+    if (id === 'traduitFruitHintDisplay') {
+        if (attempts < 7) {
+            console.log('Indice de traduction non encore disponible.');
+            return;
         }
-        console.log('Contenu de typeHintDisplay après 1 essai:', typeHintDisplay.innerHTML);
+
+        // ✅ Fermer l'autre indice avant d'ouvrir celui-ci
+        typeHintDisplay.style.display = 'none';
+
+        // ✅ Toggle l'affichage de la traduction
+        traduitFruitHintDisplay.style.display =
+            traduitFruitHintDisplay.style.display === 'none' || traduitFruitHintDisplay.style.display === ''
+                ? 'block'
+                : 'none';
     }
 }
-
 
 // Fonction pour gérer les indices en fonction des essais
 function updateHints() {
@@ -402,8 +487,9 @@ document.getElementById('traduitFruitHint').addEventListener('click', () => {
     toggleHint('traduitFruitHintDisplay');
 });
 
-
 // Fetch a random devil fruit when the page loads
 window.onload = fetchDevilFruit;
 
+
+// Mettre à jour les indices après chaque essai
 document.getElementById('guessFruitForm').addEventListener('submit', checkGuess);

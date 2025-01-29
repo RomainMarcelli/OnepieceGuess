@@ -38,6 +38,23 @@ function resetUsedLetters() {
     usedLetters = [];
 }
 
+
+function updateHeartsDisplay() {
+    const playerHearts = document.getElementById(`player-hearts-${currentPlayerIndex}`);
+    if (!playerHearts) return;
+
+    const hearts = playerHearts.querySelectorAll('.heart');
+
+    // Trouver le dernier cœur "plein" et le "casser"
+    for (let i = hearts.length - 1; i >= 0; i--) {
+        if (hearts[i].classList.contains('full')) {
+            hearts[i].classList.remove('full'); // Retirer l'état "plein"
+            hearts[i].classList.add('broken'); // Ajouter l'état "cassé"
+            return;
+        }
+    }
+}
+
 function startRound() {
     console.log(`Début du round ${currentRound + 1}/${maxRounds}`);
 
@@ -47,30 +64,28 @@ function startRound() {
     }
 
     // Vérifier si le jeu doit se terminer
-    if (currentRound >= maxRounds) {
-        console.log("Fin du jeu : tous les rounds ont été joués.");
-        endGame(); // Terminer la partie si toutes les manches ont été jouées
+    if (currentRound >= totalRounds) {
+        endGame();
         return;
     }
 
-    // Déterminer le joueur actuel
-    const roundsPerPlayer = maxRounds / numPlayers; // Nombre total de rounds par joueur
-    const playerRoundIndex = Math.floor(currentRound / numPlayers); // Round actuel pour ce joueur
-    currentPlayerIndex = currentRound % numPlayers; // Alterner entre les joueurs
+    // Alterner entre les joueurs
+    currentPlayerIndex = (currentRound) % numPlayers;
 
-    console.log(`Joueur actuel : ${playerNames[currentPlayerIndex]} (Index : ${currentPlayerIndex})`);
-    console.log(`Rounds joués par ${playerNames[currentPlayerIndex]} : ${playerRoundIndex + 1}/${roundsPerPlayer}`);
+    updateActivePlayerHearts();
 
     // Afficher le joueur actuel
-    document.getElementById('current-player').textContent = `Joueur actuel : ${playerNames[currentPlayerIndex]}`;
+    const currentPlayerElement = document.getElementById('current-player');
+    currentPlayerElement.textContent = `Au tour de : ${playerNames[currentPlayerIndex]}`;
 
-    // Nouvelle lettre aléatoire
+    // Nouvelle lettre aléatoire pour le round
     currentLetter = getRandomLetter();
     console.log(`Lettre choisie pour ce round : ${currentLetter}`);
     document.getElementById('letter-display').textContent = currentLetter;
 
     // Réinitialiser l'entrée utilisateur
-    document.getElementById('player-input').value = '';
+    const playerInput = document.getElementById('player-input');
+    playerInput.value = '';
     document.getElementById('feedback').textContent = '';
 
     // Temps ajusté selon le niveau
@@ -81,10 +96,13 @@ function startRound() {
     } else {
         timeLeft = 15; // 15 secondes pour moyen
     }
-    console.log(`Temps alloué pour ce round : ${timeLeft} secondes`);
 
-    updateTimerDisplay(); // Mettre à jour l'affichage initial du timer
-    startTimer(); // Démarrer le compte à rebours
+    // Mettre à jour les cœurs pour représenter les vies actuelles
+    // updateHeartsDisplay();
+
+    // Mettre à jour le timer
+    updateTimerDisplay();
+    startTimer();
 
     // Incrémenter le compteur des rounds
     currentRound++;
@@ -108,6 +126,7 @@ function checkAnswer() {
         playerNames = Array.from({ length: numPlayers }, (_, i) => `Joueur ${i + 1}`); // Initialiser les noms par défaut
     }
 
+    // Filtrer les réponses valides
     const validAnswers = characters.filter((character) => {
         const nameParts = character.name.toLowerCase().split(' ');
         const aliasParts = (character.aliases || []).flatMap((alias) => alias.toLowerCase().split(' '));
@@ -125,11 +144,22 @@ function checkAnswer() {
     if (isCorrect) {
         // Ajouter un point au score du joueur actuel
         playerScores[currentPlayerIndex]++;
-        document.getElementById('feedback').textContent = `Bonne réponse ! ${playerNames[currentPlayerIndex]} gagne un point.`;
-        document.getElementById('feedback').style.color = 'green';
+        const feedbackElement = document.getElementById('feedback');
+
+        // Modifier le feedback
+        feedbackElement.textContent = `Bonne réponse ! ${playerNames[currentPlayerIndex]} gagne un point.`;
+        feedbackElement.className = 'feedback success';
+
+        // Afficher le feedback avec animation
+        feedbackElement.classList.add('show');
+        setTimeout(() => {
+            feedbackElement.classList.remove('show');
+            feedbackElement.textContent = '';
+        }, 1000);
     } else {
-        lives--; // Réduire une vie
-        document.getElementById('lives').textContent = `Vies restantes : ${lives}`;
+        // Réduire la vie du joueur actuel
+        playerLives[currentPlayerIndex]--;
+        updateActivePlayerHearts(); // ✅ Mettre à jour uniquement les cœurs du joueur actif
 
         const validNames = validAnswers.map((character) => {
             const aliasesText = character.aliases && character.aliases.length > 0
@@ -138,26 +168,46 @@ function checkAnswer() {
             return `${character.name}${aliasesText}`;
         }).join(', ');
 
-        document.getElementById('feedback').textContent = `Mauvaise réponse. Réponses valides : ${validNames}`;
-        document.getElementById('feedback').style.color = 'red';
+        const feedbackElement = document.getElementById('feedback');
 
-        if (lives <= 0) {
-            endGame(); // Terminer immédiatement si les vies sont épuisées
+        // Modifier le feedback pour une mauvaise réponse
+        feedbackElement.textContent = `Mauvaise réponse. Réponses valides : ${validNames}`;
+        feedbackElement.className = 'feedback error';
+
+        // Afficher le feedback avec animation
+        feedbackElement.classList.add('show');
+        setTimeout(() => {
+            feedbackElement.classList.remove('show');
+            feedbackElement.textContent = '';
+        }, 1000);
+
+        // ✅ Vérifier si le joueur actuel a perdu toutes ses vies
+        if (playerLives[currentPlayerIndex] <= 0) {
+            feedbackElement.textContent = `${playerNames[currentPlayerIndex]} a perdu toutes ses vies !`;
+            feedbackElement.className = 'feedback error';
+
+            // ✅ La partie se termine immédiatement si un joueur est éliminé
+            setTimeout(() => {
+                endGame();
+            }, 2000);
             return;
         }
     }
 
-    // Afficher le tableau des scores mis à jour
-    updateScoreboard();
+    // ✅ Passer au joueur suivant normalement
+    currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
 
-    // Passer au round suivant
-    if (currentRound < maxRounds) {
+    // ✅ Assurer qu'on affiche bien les cœurs du bon joueur
+    updateActivePlayerHearts();
+
+    // ✅ Passer au round suivant ou terminer la partie
+    if (currentRound < totalRounds) {
         setTimeout(() => {
             isAnswerSubmitted = false; // Réinitialiser le verrou pour la manche suivante
             startRound();
-        }, 2000); // Délai avant la manche suivante
+        }, 2000);
     } else {
-        endGame(); // Terminer la partie si toutes les manches jouées
+        endGame();
     }
 }
 
@@ -166,6 +216,9 @@ function endGame() {
     document.getElementById('player-input').disabled = true; // Désactiver l'entrée utilisateur
     document.getElementById('submit-button').disabled = true; // Désactiver le bouton
     document.getElementById('round-info').textContent = ''; // Effacer l'information des tours
+
+    // Supprimer le message de feedback
+    document.getElementById('feedback').textContent = '';
 
     const gameContainer = document.querySelector('.game-container');
 
@@ -178,26 +231,16 @@ function endGame() {
     // Conteneur pour le tableau des scores
     const scoreBoardDiv = document.createElement('div');
     scoreBoardDiv.className = 'scoreboard';
-    scoreBoardDiv.style.marginTop = '20px';
-    scoreBoardDiv.style.textAlign = 'center';
 
     const scoreBoardTitle = document.createElement('h3');
     scoreBoardTitle.textContent = 'Tableau des scores';
     scoreBoardDiv.appendChild(scoreBoardTitle);
 
-    // Vérifier et initialiser playerScores et playerNames si nécessaire
-    if (!playerScores || playerScores.length === 0) {
-        playerScores = Array(numPlayers).fill(0);
-    }
-    if (!playerNames || playerNames.length === 0) {
-        playerNames = Array.from({ length: numPlayers }, (_, i) => `Joueur ${i + 1}`);
-    }
-
     // Liste des scores
     const scoreList = document.createElement('ul');
     playerScores.forEach((score, index) => {
         const playerName = playerNames[index] || `Joueur ${index + 1}`;
-        const validScore = isNaN(score) ? 0 : score; // Si score est NaN, remplacez par 0
+        const validScore = isNaN(score) ? 0 : score;
         const scoreItem = document.createElement('li');
         scoreItem.textContent = `${playerName} : ${validScore} points`;
         scoreList.appendChild(scoreItem);
@@ -218,22 +261,19 @@ function endGame() {
 
     // Message d'encouragement basé sur les performances
     const encouragementMessage = document.createElement('p');
+    encouragementMessage.className = 'encouragement-message';
     if (bestPlayers.length > 1) {
         encouragementMessage.textContent = `Bravo à ${bestPlayers.join(' et ')} pour le meilleur score de ${maxScore} points !`;
     } else {
         encouragementMessage.textContent = `Bravo à ${bestPlayers[0]} pour le meilleur score de ${maxScore} points !`;
     }
-    encouragementMessage.style.fontSize = '1.2em';
-    encouragementMessage.style.marginTop = '15px';
-    encouragementMessage.style.color = '#4CAF50';
     gameContainer.appendChild(encouragementMessage);
 
     // Conteneur pour les options de fin
     const endButtonsDiv = document.createElement('div');
     endButtonsDiv.className = 'end-buttons';
-    endButtonsDiv.style.marginTop = '20px';
 
-    // Select pour choisir le nombre de rounds
+    // **Ajout de l'élément `roundSelect`**
     const roundSelect = document.createElement('select');
     roundSelect.style.padding = '10px';
     roundSelect.style.borderRadius = '5px';
@@ -250,14 +290,10 @@ function endGame() {
 
     // Bouton pour recommencer
     const restartButton = document.createElement('button');
+    restartButton.className = 'end-button restart';
     restartButton.textContent = 'Recommencer';
-    restartButton.style.marginLeft = '10px';
-    restartButton.style.padding = '10px';
-    restartButton.style.borderRadius = '5px';
-    restartButton.style.backgroundColor = '#4CAF50';
-    restartButton.style.color = 'white';
-    restartButton.style.cursor = 'pointer';
 
+    // Correction : Utiliser `roundSelect` correctement ici
     restartButton.addEventListener('click', () => {
         const newRounds = parseInt(roundSelect.value, 10);
         resetGame(newRounds); // Recommence avec le nombre de rounds sélectionné
@@ -265,14 +301,8 @@ function endGame() {
 
     // Bouton pour exporter les scores
     const exportButton = document.createElement('button');
+    exportButton.className = 'end-button export';
     exportButton.textContent = 'Exporter les scores';
-    exportButton.style.marginLeft = '10px';
-    exportButton.style.padding = '10px';
-    exportButton.style.borderRadius = '5px';
-    exportButton.style.backgroundColor = '#FF5722';
-    exportButton.style.color = 'white';
-    exportButton.style.cursor = 'pointer';
-
     exportButton.addEventListener('click', () => {
         const scoreData = playerScores.map((score, index) => {
             const playerName = playerNames[index] || `Joueur ${index + 1}`;
@@ -285,17 +315,12 @@ function endGame() {
         link.click();
     });
 
-    // Ajouter les éléments de fin au conteneur
+    // Ajouter le sélecteur et les boutons au conteneur
     endButtonsDiv.appendChild(roundSelect);
     endButtonsDiv.appendChild(restartButton);
     endButtonsDiv.appendChild(exportButton);
 
     gameContainer.appendChild(endButtonsDiv);
-
-    // Résumé pour un seul joueur
-    if (numPlayers === 1) {
-        document.getElementById('feedback').textContent = `Votre score final est de ${currentScore} sur ${maxRounds}`;
-    }
 }
 
 function resetGame(rounds) {
@@ -304,14 +329,58 @@ function resetGame(rounds) {
     maxRounds = rounds;
     currentScore = 0;
     lives = 3; // Réinitialiser les vies
-    document.getElementById('lives').textContent = `Vies restantes : ${lives}`;
-    document.getElementById('player-input').disabled = false; // Réactiver l'entrée utilisateur
-    document.getElementById('submit-button').disabled = false; // Réactiver le bouton
-    document.getElementById('score').textContent = `Score : 0`;
-    document.querySelector('.end-buttons').remove(); // Supprimer les boutons de fin de partie
+
+    // Réinitialiser l'affichage des vies
+    const livesElement = document.getElementById('lives');
+    if (livesElement) {
+        livesElement.textContent = `Vies restantes : ${lives}`;
+    }
+
+    // Réinitialiser le champ d'entrée utilisateur
+    const playerInput = document.getElementById('player-input');
+    if (playerInput) {
+        playerInput.value = ''; // Vider le champ de saisie
+        playerInput.disabled = false; // Réactiver le champ de saisie
+    }
+
+    // Réactiver le bouton de soumission
+    const submitButton = document.getElementById('submit-button');
+    if (submitButton) {
+        submitButton.disabled = false; // Réactiver le bouton
+    }
+
+    // Réinitialiser le score si l'élément existe
+    const scoreElement = document.getElementById('score');
+    if (scoreElement) {
+        scoreElement.textContent = `Score : 0`;
+    }
+
+    // Supprimer les anciens éléments du tableau des scores
+    const existingScoreboard = document.querySelector('.scoreboard');
+    if (existingScoreboard) {
+        existingScoreboard.remove();
+    }
+
+    // Supprimer le message d'encouragement
+    const encouragementMessage = document.querySelector('.encouragement-message');
+    if (encouragementMessage) {
+        encouragementMessage.remove();
+    }
+
+    // Supprimer les boutons de fin de partie si présents
+    const endButtons = document.querySelector('.end-buttons');
+    if (endButtons) {
+        endButtons.remove();
+    }
+
+    // Réinitialiser le feedback
+    const feedbackElement = document.getElementById('feedback');
+    if (feedbackElement) {
+        feedbackElement.textContent = '';
+    }
+
     startRound(); // Démarrer une nouvelle partie
 }
-
 
 function startGame(selectedRounds) {
     console.log("Démarrage du jeu");
@@ -358,18 +427,39 @@ function startGame(selectedRounds) {
 function startGameWithLives(selectedRounds, useLives) {
     maxRounds = selectedRounds;
     currentRound = 0;
-    currentScore = 0;
-    lives = useLives ? 3 : Infinity; // Si avec vies, initialise à 3
-    if (useLives) {
-        document.getElementById('lives').style.display = 'block';
-        document.getElementById('lives').textContent = `Vies restantes : ${lives}`;
-    } else {
-        document.getElementById('lives').style.display = 'none';
-    }
+    playerLives = Array(numPlayers).fill(3); // Réinitialiser les vies pour tous les joueurs
 
-    document.getElementById('round-selection').style.display = 'none'; // Cacher les sélections
-    document.getElementById('lives-selection').style.display = 'none';
-    document.getElementById('game').style.display = 'block'; // Afficher le jeu
+    initializeHearts(); // Initialiser tous les cœurs
+    updateActivePlayerHearts(); // ✅ Afficher uniquement les cœurs du joueur actif dès le début
 
-    startRound(); // Démarrer le premier tour
+    document.getElementById('game').style.display = 'block'; // Afficher la section de jeu
+
+    startRound(); // Démarrer la première manche
 }
+
+
+function updateActivePlayerHearts() {
+    const activeHeartsContainer = document.getElementById('active-player-hearts');
+    if (!activeHeartsContainer) return; // Vérifier si l'élément existe
+
+    // Réinitialiser le conteneur pour afficher uniquement les cœurs du joueur actif
+    activeHeartsContainer.innerHTML = '';
+
+    // Récupérer les vies restantes du joueur actif
+    const livesRemaining = playerLives[currentPlayerIndex];
+
+    // Ajouter le nom du joueur actif
+    const playerLabel = document.createElement('p');
+    playerLabel.textContent = `${playerNames[currentPlayerIndex]} :`;
+    activeHeartsContainer.appendChild(playerLabel);
+
+    // Ajouter uniquement les cœurs du joueur actif
+    for (let i = 0; i < 3; i++) {
+        const heart = document.createElement('span');
+        heart.className = i < livesRemaining ? 'heart full' : 'heart broken'; // Plein ou cassé
+        heart.innerHTML = '&#10084;'; // Symbole du cœur
+        activeHeartsContainer.appendChild(heart);
+    }
+}
+
+
