@@ -148,14 +148,14 @@ function checkAnswer() {
 
         // Modifier le feedback
         feedbackElement.textContent = `Bonne réponse ! ${playerNames[currentPlayerIndex]} gagne un point.`;
-        feedbackElement.className = 'feedback success'; // Ajout de la classe success
+        feedbackElement.className = 'feedback success';
 
         // Afficher le feedback avec animation
         feedbackElement.classList.add('show');
         setTimeout(() => {
-            feedbackElement.classList.remove('show'); // Retirer l'animation après 1s
-            feedbackElement.textContent = ''; // Effacer le contenu du feedback
-        }, 1000); // Ajuster la durée selon vos besoins
+            feedbackElement.classList.remove('show');
+            feedbackElement.textContent = '';
+        }, 1000);
     } else {
         // Réduire la vie du joueur actuel
         playerLives[currentPlayerIndex]--;
@@ -172,30 +172,29 @@ function checkAnswer() {
 
         // Modifier le feedback pour une mauvaise réponse
         feedbackElement.textContent = `Mauvaise réponse. Réponses valides : ${validNames}`;
-        feedbackElement.className = 'feedback error'; // Ajout de la classe error
+        feedbackElement.className = 'feedback error';
 
         // Afficher le feedback avec animation
         feedbackElement.classList.add('show');
         setTimeout(() => {
-            feedbackElement.classList.remove('show'); // Retirer l'animation après 1s
-            feedbackElement.textContent = ''; // Effacer le contenu du feedback
-        }, 1000); // Ajuster la durée selon vos besoins
+            feedbackElement.classList.remove('show');
+            feedbackElement.textContent = '';
+        }, 1000);
 
         // ✅ Vérifier si le joueur actuel a perdu toutes ses vies
         if (playerLives[currentPlayerIndex] <= 0) {
             feedbackElement.textContent = `${playerNames[currentPlayerIndex]} a perdu toutes ses vies !`;
             feedbackElement.className = 'feedback error';
 
-            // ✅ Fin immédiate de la partie
+            // ✅ La partie se termine immédiatement si un joueur est éliminé
             setTimeout(() => {
                 endGame();
-            }, 2000); // Laisser 2s pour voir le message avant la fin du jeu
-
-            return; // ✅ Ne pas continuer la partie
+            }, 2000);
+            return;
         }
     }
 
-    // ✅ Passer au joueur suivant après chaque réponse (bonne ou mauvaise)
+    // ✅ Passer au joueur suivant normalement
     currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
 
     // ✅ Assurer qu'on affiche bien les cœurs du bon joueur
@@ -206,9 +205,9 @@ function checkAnswer() {
         setTimeout(() => {
             isAnswerSubmitted = false; // Réinitialiser le verrou pour la manche suivante
             startRound();
-        }, 2000); // Délai avant la manche suivante
+        }, 2000);
     } else {
-        endGame(); // Terminer la partie si toutes les manches jouées
+        endGame();
     }
 }
 
