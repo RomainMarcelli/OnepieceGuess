@@ -407,7 +407,7 @@ async function updateHintInfo() {
 
     // ✅ Gestion de l'indice de traduction
     if (remainingAttemptsForTraduitHint > 0) {
-        traduitFruitHintInfo.textContent = `Dans ${remainingAttemptsForTraduitHint} Essai(s)`;
+        traduitFruitHintInfo.textContent = `Dans ${remainingAttemptsForTraduitHint} Essais`;
         traduitFruitHintInfo.style.display = 'block';
         traduitFruitHintDisplay.style.display = 'none'; // ✅ Caché jusqu'au clic
         traduitFruitHintImage.style.filter = ''; // Réinitialiser l'apparence

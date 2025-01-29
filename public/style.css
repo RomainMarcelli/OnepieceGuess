@@ -874,3 +874,10 @@ img {
     filter: drop-shadow(0 0 10px #faf9f3);
 }
 
+.suggestion.active {
+    background-color: #d8d7d1;
+    color: #333;
+    cursor: pointer;
+}
+
+
