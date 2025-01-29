@@ -385,12 +385,12 @@ async function updateHintInfo() {
     const attemptsForTypeHint = 4;
     const remainingAttemptsForTypeHint = Math.max(0, attemptsForTypeHint - attempts);
 
-    const attemptsForTraduitHint = 1;
+    const attemptsForTraduitHint = 7;
     const remainingAttemptsForTraduitHint = Math.max(0, attemptsForTraduitHint - attempts);
 
     // ✅ Gestion de l'indice de type
     if (remainingAttemptsForTypeHint > 0) {
-        typeHintInfo.textContent = `Dans ${remainingAttemptsForTypeHint} Essai(s)`;
+        typeHintInfo.textContent = `Dans ${remainingAttemptsForTypeHint} Essais`;
         typeHintInfo.style.display = 'block';
         typeHintDisplay.style.display = 'none'; // ✅ Caché jusqu'au clic
         typeHintImage.style.filter = ''; // Réinitialiser l'apparence
@@ -456,7 +456,7 @@ function toggleHint(id) {
     }
 
     if (id === 'traduitFruitHintDisplay') {
-        if (attempts < 1) {
+        if (attempts < 7) {
             console.log('Indice de traduction non encore disponible.');
             return;
         }

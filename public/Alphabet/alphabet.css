@@ -589,7 +589,8 @@ label input {
 .feedback {
     font-size: 1.2em;
     /* margin-top: 15px; */
-    transition: transform 0.3s ease, opacity 0.3s ease; /* Durée de 300ms */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    /* Durée de 300ms */
 }
 
 
@@ -604,20 +605,24 @@ label input {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-bottom: 15px;
     transition: transform 0.3s ease, opacity 0.3s ease;
-    opacity: 0; /* Par défaut, caché */
-    transform: translateY(-20px); /* Animation d'apparition */
+    opacity: 0;
+    /* Par défaut, caché */
+    transform: translateY(-20px);
+    /* Animation d'apparition */
 }
 
 /* Feedback pour les erreurs */
 .feedback.error {
-    background: #dd1414; /* Dégradé rouge */
+    background: #dd1414;
+    /* Dégradé rouge */
     color: white;
     box-shadow: 0 6px 12px rgba(255, 77, 77, 0.5);
 }
 
 /* Feedback pour les succès */
 .feedback.success {
-    background: linear-gradient(90deg, #4caf50, #81c784); /* Dégradé vert */
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    /* Dégradé vert */
     color: white;
     box-shadow: 0 6px 12px rgba(76, 175, 80, 0.5);
 }
@@ -626,7 +631,8 @@ label input {
 .feedback.show {
     opacity: 1;
     transform: translateY(0);
-    transition: transform 0.3s ease, opacity 0.3s ease; /* Correspond à 300ms */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    /* Correspond à 300ms */
     margin-top: 15px;
 }
 
@@ -637,8 +643,36 @@ label input {
     margin-top: 15px;
 } */
 
+#active-player-hearts {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    align-items: baseline;
+}
+
+#active-player-hearts p {
+    margin-right: 7px;
+    margin-top: 0;
+}
+
+.heart {
+    font-size: 24px;
+    color: red;
+    transition: transform 0.3s, opacity 0.3s;
+    margin-left: 6px;
+}
+
+.heart.broken {
+    color: gray;
+    transform: scale(0.8);
+    opacity: 0.5;
+}
+
+
 /* Style général pour la div des vies */
- .lives {
+.lives {
     font-size: 1.2em;
     font-weight: bold;
     text-align: center;
@@ -649,14 +683,14 @@ label input {
     box-shadow: 0 4px 10px rgba(255, 77, 77, 0.4);
     transition: all 0.3s ease;
     display: inline-block;
-    animation: fadeIn 1s ease-in-out; 
-    width: auto; 
+    animation: fadeIn 1s ease-in-out;
+    width: auto;
     max-width: 100%;
     box-sizing: border-box;
-    display: inline-block; 
+    display: inline-block;
     transition: all 0.3s ease;
-    word-wrap: break-word; 
-} 
+    word-wrap: break-word;
+}
 
 /* Animation d'apparition */
 @keyframes fadeIn {
@@ -664,6 +698,7 @@ label input {
         opacity: 0;
         transform: scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -672,24 +707,33 @@ label input {
 
 /* Animation de tremblement pour les vies */
 @keyframes shake {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateX(0);
     }
+
     25% {
         transform: translateX(-5px);
     }
+
     50% {
         transform: translateX(5px);
     }
+
     75% {
         transform: translateX(-5px);
     }
 }
+
 /* Lorsque les vies diminuent */
 .lives.decrease {
-    animation: shake 0.5s ease-in-out, fadeIn 1s ease-in-out; /* Tremblement + réapparition */
-    background: linear-gradient(90deg, #ff1a1a, #ff9999); /* Couleur plus intense */
-    box-shadow: 0 6px 15px rgba(255, 26, 26, 0.5); /* Ombre plus marquée */
+    animation: shake 0.5s ease-in-out, fadeIn 1s ease-in-out;
+    /* Tremblement + réapparition */
+    background: linear-gradient(90deg, #ff1a1a, #ff9999);
+    /* Couleur plus intense */
+    box-shadow: 0 6px 15px rgba(255, 26, 26, 0.5);
+    /* Ombre plus marquée */
 }
 
 

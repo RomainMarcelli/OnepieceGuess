@@ -17,29 +17,104 @@ function startTimer() {
     }, 1000); // Réduction du temps toutes les secondes
 }
 
-function handleTimeout() {
-    document.getElementById('feedback').textContent = 'Temps écoulé ! Mauvaise réponse.';
-    document.getElementById('feedback').style.color = 'red';
+function checkAnswer() {
+    if (isAnswerSubmitted) {
+        return; // Empêcher les exécutions multiples
+    }
+    isAnswerSubmitted = true; // Activer le verrou
 
-    // Réduire une vie si le mode avec vies est actif
-    const useLives = document.querySelector('input[name="lives-option"]:checked').value === 'with-lives';
-    if (useLives) {
-        lives--;
-        document.getElementById('lives').textContent = `Vies restantes : ${lives}`;
+    clearInterval(timerInterval); // Arrêter le timer pour éviter tout conflit
+    const playerInput = document.getElementById('player-input').value.trim().toLowerCase();
+
+    // Vérifier si les données `playerScores` et `playerNames` sont bien initialisées
+    if (!playerScores || playerScores.length === 0) {
+        playerScores = Array(numPlayers).fill(0); // Initialiser les scores à 0 pour chaque joueur
+    }
+    if (!playerNames || playerNames.length === 0) {
+        playerNames = Array.from({ length: numPlayers }, (_, i) => `Joueur ${i + 1}`); // Initialiser les noms par défaut
     }
 
-    // Passer à la manche suivante
-    currentRound++;
+    // Filtrer les réponses valides
+    const validAnswers = characters.filter((character) => {
+        const nameParts = character.name.toLowerCase().split(' ');
+        const aliasParts = (character.aliases || []).flatMap((alias) => alias.toLowerCase().split(' '));
+        const allParts = [...nameParts, ...aliasParts];
+        return allParts.some((part) => part.startsWith(currentLetter.toLowerCase()));
+    });
 
-    // Réinitialiser le verrou pour la prochaine manche
-    isAnswerSubmitted = false;
+    const isCorrect = validAnswers.some((character) => {
+        const allValidInputs = [character.name.toLowerCase(), ...(character.aliases || []).map((alias) => alias.toLowerCase())];
+        return allValidInputs.some((validInput) =>
+            validInput.startsWith(currentLetter.toLowerCase()) && validInput === playerInput
+        );
+    });
 
-    if (lives > 0 && currentRound < maxRounds) {
-        setTimeout(startRound, 2000); // Délai avant la manche suivante
+    const feedbackElement = document.getElementById('feedback');
+
+    if (isCorrect) {
+        // Ajouter un point au score du joueur actuel
+        playerScores[currentPlayerIndex]++;
+        feedbackElement.textContent = `Bonne réponse ! ${playerNames[currentPlayerIndex]} gagne un point.`;
+        feedbackElement.className = 'feedback success'; // Ajout de la classe success
+
+        // Animation pour le feedback
+        feedbackElement.classList.add('show');
+        setTimeout(() => {
+            feedbackElement.classList.remove('show');
+            feedbackElement.textContent = '';
+        }, 1000);
     } else {
-        endGame(); // Terminer la partie si plus de vies ou toutes les manches jouées
+        // Réduire la vie du joueur actuel
+        playerLives[currentPlayerIndex]--;
+        updateHeartsDisplay(); // Mettre à jour visuellement les cœurs du joueur actuel
+        updateActivePlayerLives(); // Mettre à jour l'affichage des vies du joueur actif
+
+        // Préparer la liste des réponses valides
+        const validNames = validAnswers.map((character) => {
+            const aliasesText = character.aliases && character.aliases.length > 0
+                ? ` (Alias : ${character.aliases.join(', ')})`
+                : '';
+            return `${character.name}${aliasesText}`;
+        }).join(', ');
+
+        // Modifier le feedback pour une mauvaise réponse
+        feedbackElement.textContent = `Mauvaise réponse. Réponses valides : ${validNames}`;
+        feedbackElement.className = 'feedback error'; // Ajout de la classe error
+
+        // Animation pour le feedback
+        feedbackElement.classList.add('show');
+        setTimeout(() => {
+            feedbackElement.classList.remove('show');
+            feedbackElement.textContent = '';
+        }, 1000);
+
+        // Vérifier si le joueur a perdu toutes ses vies
+        if (playerLives[currentPlayerIndex] <= 0) {
+            feedbackElement.textContent = `${playerNames[currentPlayerIndex]} a perdu toutes ses vies !`;
+            feedbackElement.className = 'feedback error';
+
+            // Vérifier si tous les joueurs sont éliminés
+            if (playerLives.every((lives) => lives <= 0)) {
+                endGame(); // Terminer la partie si tous les joueurs sont éliminés
+                return;
+            }
+        }
+    }
+
+    // Afficher le tableau des scores mis à jour
+    updateScoreboard();
+
+    // Passer au round suivant
+    if (currentRound < totalRounds) {
+        setTimeout(() => {
+            isAnswerSubmitted = false; // Réinitialiser le verrou pour la manche suivante
+            startRound();
+        }, 2000); // Délai avant la manche suivante
+    } else {
+        endGame(); // Terminer la partie si toutes les manches jouées
     }
 }
+
 
 function updateScoreboard() {
     const scoreboard = document.getElementById('scoreboard');

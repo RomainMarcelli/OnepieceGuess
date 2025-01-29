@@ -58,7 +58,7 @@
         radio.addEventListener('change', () => {
             // Cacher la sélection des vies
             document.getElementById('lives-selection').style.display = 'none';
-            
+
             // Afficher la sélection de la difficulté avec `flex`
             const difficultySelection = document.getElementById('difficulty-selection');
             difficultySelection.style.display = 'flex'; // Passer en flexbox
@@ -113,20 +113,24 @@
     document.getElementById('confirm-names-button').addEventListener('click', () => {
         const inputs = document.querySelectorAll('.player-name-input');
         playerNames = Array.from(inputs).map((input) => input.value.trim());
-
+    
         if (playerNames.some((name) => name === '')) {
             alert('Veuillez entrer un nom pour chaque joueur.');
             return;
         }
-
+    
         playerLives = Array(numPlayers).fill(3); // Chaque joueur commence avec 3 vies
         playerScores = Array(numPlayers).fill(0); // Initialiser les scores
-
+    
         document.getElementById('player-names-selection').style.display = 'none';
         document.getElementById('round-selection').style.display = 'block';
+    
         console.log('Joueurs:', playerNames);
         console.log('Vies initiales:', playerLives);
+    
+        initializeHearts(); // Ajouter cette ligne pour initialiser les cœurs après confirmation des joueurs
     });
+    
 
 
     // Sélection du nombre de joueurs avec le menu déroulant personnalisé
@@ -216,3 +220,31 @@
             game.style.display = 'block'; // Affiche la div #game
         }
     });
+
+    function initializeHearts() {
+        const heartsContainers = document.getElementById('hearts-containers');
+        heartsContainers.innerHTML = ''; // Réinitialiser les cœurs
+
+        playerLives = Array(numPlayers).fill(3); // Réinitialiser les vies pour chaque joueur
+
+        playerNames.forEach((name, index) => {
+            const playerHearts = document.createElement('div');
+            playerHearts.className = 'player-hearts';
+            playerHearts.id = `player-hearts-${index}`; // Un ID unique pour chaque joueur
+
+            // Ajouter 3 cœurs pleins pour chaque joueur
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('span');
+                heart.className = 'heart full';
+                heart.innerHTML = '&#10084;'; // Symbole de cœur
+                playerHearts.appendChild(heart);
+            }
+
+            // Ajouter un label pour identifier le joueur
+            const playerLabel = document.createElement('p');
+            playerLabel.textContent = `${name} :`;
+            playerHearts.prepend(playerLabel);
+
+            heartsContainers.appendChild(playerHearts);
+        });
+    }
