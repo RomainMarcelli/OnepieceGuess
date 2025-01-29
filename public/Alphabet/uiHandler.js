@@ -5,17 +5,21 @@ function updateTimerDisplay() {
 }
 
 function startTimer() {
-    clearInterval(timerInterval); // Réinitialiser tout ancien timer
+    clearInterval(timerInterval); // Réinitialiser l'ancien intervalle s'il existe
     timerInterval = setInterval(() => {
         timeLeft--;
-        updateTimerDisplay();
 
+        // Mettre à jour l'affichage du timer
+        document.getElementById('timer').textContent = `Temps restant : ${timeLeft}s`;
+
+        // Si le temps est écoulé
         if (timeLeft <= 0) {
             clearInterval(timerInterval); // Arrêter le timer
-            handleTimeout(); // Temps écoulé, gérer l'erreur
+            handleTimeout(); // Gérer la perte de vie et le changement de joueur
         }
-    }, 1000); // Réduction du temps toutes les secondes
+    }, 1000);
 }
+
 
 function checkAnswer() {
     if (isAnswerSubmitted) {

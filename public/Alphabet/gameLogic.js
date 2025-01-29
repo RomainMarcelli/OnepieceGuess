@@ -10,7 +10,7 @@ async function fetchCharacters() {
         if (difficultyLevel === 'easy') {
             characters = allCharacters.filter(c => c.popularity > 80); // Personnages populaires
         } else if (difficultyLevel === 'hard') {
-            characters = allCharacters.filter(c => c.popularity <= 40); // Personnages rares
+            characters = allCharacters.filter(c => c.popularity     = 40); // Personnages rares
         } else {
             characters = allCharacters; // Tous les personnages pour niveau moyen
         }
@@ -463,3 +463,24 @@ function updateActivePlayerHearts() {
 }
 
 
+function handleTimeout() {
+    console.log(`⏳ Temps écoulé ! ${playerNames[currentPlayerIndex]} perd une vie.`);
+
+    // Réduire la vie du joueur actif
+    playerLives[currentPlayerIndex]--;
+    updateActivePlayerHearts();
+
+    // Vérifier si le joueur a perdu toutes ses vies
+    if (playerLives[currentPlayerIndex] <= 0) {
+        console.log(`🚨 ${playerNames[currentPlayerIndex]} a perdu toutes ses vies ! Fin de la partie.`);
+        endGame();
+        return;
+    }
+
+    // Passer au joueur suivant
+    currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
+
+    // Passer au round suivant
+    isAnswerSubmitted = false; // Réinitialiser le verrou pour accepter une nouvelle réponse
+    startRound();
+}
