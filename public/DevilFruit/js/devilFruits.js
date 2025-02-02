@@ -214,25 +214,26 @@ function checkGuess(event) {
     const guess = inputElement.value.trim();
     const resultElement = document.getElementById('result');
 
-    // Clear previous result message
     resultElement.innerText = '';
 
     attempts++;
 
     if (guess.toLowerCase() === characterName.toLowerCase()) {
-        // Display the correct character details
         displayCharacterDetails(characterName);
-        // Display the success card
         displaySuccessCard(characterName);
+
+        // ✅ Afficher les indices SEULEMENT après la première validation correcte
+        if (attempts === 1) {
+            document.getElementById("typeHintInfo").style.display = "block";
+            document.getElementById("traduitFruitHintInfo").style.display = "block";
+        }
     } else {
-        // Add incorrect guess and update the list
         incorrectGuesses.push(guess);
         updateIncorrectGuesses();
     }
 
-    // Clear the input field
     inputElement.value = '';
-    updateHintInfo(); // Met à jour les indices après chaque essai
+    updateHintInfo();
 }
 
 function getImagePath(name) {
@@ -388,6 +389,13 @@ async function updateHintInfo() {
     const attemptsForTraduitHint = 7;
     const remainingAttemptsForTraduitHint = Math.max(0, attemptsForTraduitHint - attempts);
 
+    // ✅ Cacher les indices tant qu'aucune réponse n'est validée
+    if (attempts < 1) {
+        typeHintInfo.style.display = 'none';
+        traduitFruitHintInfo.style.display = 'none';
+        return;
+    }
+
     // ✅ Gestion de l'indice de type
     if (remainingAttemptsForTypeHint > 0) {
         typeHintInfo.textContent = `Dans ${remainingAttemptsForTypeHint} Essais`;
@@ -485,6 +493,12 @@ document.getElementById('typeHint').addEventListener('click', () => {
 
 document.getElementById('traduitFruitHint').addEventListener('click', () => {
     toggleHint('traduitFruitHintDisplay');
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Cache les textes "Dans X essais" dès le chargement
+    document.getElementById("typeHintInfo").style.display = "none";
+    document.getElementById("traduitFruitHintInfo").style.display = "none";
 });
 
 // Fetch a random devil fruit when the page loads
