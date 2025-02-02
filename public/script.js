@@ -105,21 +105,30 @@ async function displaySuggestions(suggestions) {
     suggestionsDiv.innerHTML = '';
 
     let filteredSuggestions = [];
-    let addedNames = new Set(); // Pour éviter les doublons
+    let addedNames = new Set(); // ✅ Empêche les doublons
+
+    // ✅ Récupérer les personnages déjà validés dans `#resultContainer` et `#resultFruitContainer`
+    const selectedNames = new Set(
+        [
+            ...Array.from(document.querySelectorAll('#resultContainer .character-name-label')),
+            ...Array.from(document.querySelectorAll('#resultFruitContainer .character-name-label'))
+        ].map(el => el.textContent.trim().toLowerCase()) // Convertir en minuscule pour éviter la casse
+    );
 
     suggestions.forEach(suggestion => {
-        // Vérifier si le nom ou un alias commence par l'entrée utilisateur
+        // ✅ Vérifier si le nom ou un alias commence par l'entrée utilisateur
         let matchesSearch = suggestion.name.toLowerCase().startsWith(input) ||
                             (suggestion.aliases && suggestion.aliases.some(alias => alias.toLowerCase().startsWith(input)));
 
-        if (matchesSearch && !addedNames.has(suggestion.name)) {
+        // ✅ Vérifier si le personnage est déjà validé (dans `#resultContainer` ou `#resultFruitContainer`)
+        if (matchesSearch && !addedNames.has(suggestion.name) && !selectedNames.has(suggestion.name.toLowerCase())) {
             filteredSuggestions.push({
                 displayName: suggestion.name, // Toujours afficher le nom complet
                 actualName: suggestion.name, // Utilisé pour la validation
                 image: getImagePath(suggestion.name)
             });
 
-            addedNames.add(suggestion.name); // Empêcher les doublons
+            addedNames.add(suggestion.name); // ✅ Empêcher les doublons
         }
     });
 
@@ -128,26 +137,25 @@ async function displaySuggestions(suggestions) {
             const div = document.createElement('div');
             div.className = 'suggestion';
 
-            // Ajouter l'image du personnage
+            // ✅ Ajouter l'image du personnage
             const img = document.createElement('img');
             img.src = suggestion.image;
             img.alt = 'Character Image';
             img.className = 'suggestion-image';
 
-            // Ajouter le nom complet du personnage
+            // ✅ Ajouter le nom complet du personnage
             const nameLabel = document.createElement('span');
             nameLabel.className = 'character-names-label';
             nameLabel.textContent = suggestion.displayName;
 
-            // Ajouter un événement de clic pour sélectionner le personnage
+            // ✅ Ajouter un événement de clic pour sélectionner le personnage
             div.addEventListener('click', () => {
                 document.getElementById('characterInput').value = suggestion.displayName;
                 document.getElementById('characterInput').dataset.actualName = suggestion.actualName;
                 selectedCharacters.push(suggestion.actualName);
 
-                // Mettre à jour les suggestions après sélection
+                // ✅ Mettre à jour les suggestions après sélection
                 currentSuggestions = currentSuggestions.filter(item => item.actualName !== suggestion.actualName);
-
                 displaySuggestions(currentSuggestions);
                 suggestionsDiv.style.display = 'none';
             });
@@ -162,6 +170,7 @@ async function displaySuggestions(suggestions) {
         suggestionsDiv.style.display = 'none';
     }
 }
+
 
 // Ajouter un écouteur d'événement pour le champ de saisie
 document.getElementById('characterInput').addEventListener('input', () => {
