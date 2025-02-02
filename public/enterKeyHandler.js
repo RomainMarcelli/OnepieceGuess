@@ -38,17 +38,22 @@ document.addEventListener('keydown', (event) => {
 
     if (event.key === 'Enter') {
         event.preventDefault(); // Empêcher la soumission par défaut du formulaire
-        
-        if (suggestions.length > 0) {
-            inputField.value = suggestions[0].textContent.trim(); // Sélectionner la première suggestion automatiquement
-            suggestions[0].click(); // Simuler un clic sur la première suggestion
+    
+        if (activeIndex >= 0 && suggestions.length > 0) {
+            // Valider le personnage actif sélectionné avec les flèches
+            inputField.value = suggestions[activeIndex].textContent.trim();
+            suggestions[activeIndex].click();
+        } else if (suggestions.length > 0) {
+            // Si aucune flèche n'a été utilisée, sélectionner automatiquement la première suggestion
+            inputField.value = suggestions[0].textContent.trim();
+            suggestions[0].click();
         } else if (inputField.value.trim() !== '') {
             console.log("🚀 Bouton cliqué via la touche Entrée !");
             submitButton.click(); // Simuler un clic sur le bouton
         } else {
             console.warn("⚠️ L'input est vide, aucune action.");
         }
-    }
+    }    
 });
 
 // ✅ Validation en cliquant sur une suggestion
@@ -68,7 +73,7 @@ document.getElementById('button').addEventListener('click', () => {
     const inputField = document.getElementById('characterInput');
     const suggestionsDiv = document.getElementById('suggestions');
     const suggestions = Array.from(suggestionsDiv.querySelectorAll('.suggestion'));
-    
+
     if (suggestions.length > 0) {
         inputField.value = suggestions[0].textContent.trim(); // Sélectionner la première suggestion automatiquement
     }
