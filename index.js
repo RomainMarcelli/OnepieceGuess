@@ -127,7 +127,7 @@ const characters = [
     { 
         name: 'Marshall D. Teach', 
         aliases: ['Teach', 'Barbe Noire'], // Alias supplémentaires
-        devilFruit: 'Yami Yami no Mi, Gura Gura no Mi', 
+        devilFruit: 'Yami Yami no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Équipage de Barbe Noire', 
         height: '344 cm', 
