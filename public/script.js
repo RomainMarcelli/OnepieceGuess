@@ -1,3 +1,6 @@
+// import { devilFruitsByType, categorizeDevilFruit } from './DevilFruit/js/devilFruitsData';
+
+
 let selectedCharacter = null;
 const history = []; // Array to keep track of character choices
 let devilFruits = []; // Array to store devil fruits
@@ -43,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelector('.devilFruit img').addEventListener('click', () => {
-        window.location.href = 'devilfruit.html';
+        window.location.href = 'DevilFruit/devilfruit.html';
     });
 
     document.querySelector('.vs img').addEventListener('click', () => {
@@ -57,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.guessPerso img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     } else if (currentPage === 'devilfruit.html') {
         document.querySelector('.devilFruit img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
-    }else if (currentPage === '../Alphabet/alphabet.html') {
+    }else if (currentPage === 'alphabet.html') {
         document.querySelector('.vs img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     }
 });
