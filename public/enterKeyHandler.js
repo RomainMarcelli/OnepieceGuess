@@ -60,3 +60,15 @@ document.addEventListener('keydown', (event) => {
         }
     }
 });
+
+// ✅ Validation en cliquant sur une suggestion
+document.addEventListener('click', (event) => {
+    const clickedSuggestion = event.target.closest('.suggestion');
+    if (clickedSuggestion) {
+        const inputField = document.getElementById('characterInput');
+        const submitButton = document.getElementById('button');
+
+        inputField.value = clickedSuggestion.textContent.trim();
+        submitButton.click(); // Valider immédiatement la réponse
+    }
+});
