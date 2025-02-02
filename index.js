@@ -201,6 +201,7 @@ const characters = [
     },
     { 
         name: 'Kizaru', 
+        aliases: ['Borsalino'],
         devilFruit: 'Pika Pika no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Marine', 
@@ -1467,7 +1468,7 @@ const characters = [
     },
     { 
         name: 'César Clown', 
-        aliases: ['César'],
+        aliases: ['Cesar'],
         devilFruit: 'Gasu Gasu no Mi', 
         haki: 'Aucun', 
         affiliation: 'Royaume de Germa', 

@@ -4,8 +4,12 @@
 let selectedCharacter = null;
 const history = []; // Array to keep track of character choices
 let devilFruits = []; // Array to store devil fruits
-let attempts = 0; 
-  // Variable pour stocker les suggestions actuelles
+let attempts = 0;
+// Variable pour stocker les suggestions actuelles
+
+// ✅ Stocke les personnages déjà sélectionnés
+let selectedCharactersSet = new Set();
+
 
 const arcsChronologiques = [
     "Romance Dawn",
@@ -55,12 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Appliquer le filtre CSS sur l'image active
     const currentPage = window.location.pathname.split('/').pop();
-    
+
     if (currentPage === 'index.html') {
         document.querySelector('.guessPerso img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     } else if (currentPage === 'devilfruit.html') {
         document.querySelector('.devilFruit img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
-    }else if (currentPage === 'alphabet.html') {
+    } else if (currentPage === 'alphabet.html') {
         document.querySelector('.vs img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     }
 });
@@ -97,6 +101,22 @@ function getImagePath(characterName) {
     return `public/img/${characterName}.png`;
 }
 
+// ✅ Ajoute un personnage sélectionné à la liste (évite les doublons)
+function addSelectedCharacter(characterName) {
+    selectedCharactersSet.add(characterName.toLowerCase()); // Stocke toujours en minuscule
+}
+
+// ✅ Vérifie si un personnage est déjà sélectionné
+function isCharacterSelected(characterName) {
+    return selectedCharactersSet.has(characterName.toLowerCase());
+}
+
+// ✅ Supprime tous les personnages sélectionnés (utile pour un reset)
+function resetSelectedCharacters() {
+    selectedCharactersSet.clear();
+}
+
+
 async function displaySuggestions(suggestions) {
     currentSuggestions = suggestions;
 
@@ -107,31 +127,26 @@ async function displaySuggestions(suggestions) {
     let filteredSuggestions = [];
     let addedNames = new Set(); // ✅ Empêche les doublons
 
-    // ✅ Récupérer les personnages déjà validés dans `#resultContainer` et `#resultFruitContainer`
-    const selectedNames = new Set(
-        [
-            ...Array.from(document.querySelectorAll('#resultContainer .character-name-label')),
-            ...Array.from(document.querySelectorAll('#resultFruitContainer .character-name-label'))
-        ].map(el => el.textContent.trim().toLowerCase()) // Convertir en minuscule pour éviter la casse
-    );
-
     suggestions.forEach(suggestion => {
+        // ✅ Vérifier si le personnage est déjà sélectionné
+        if (isCharacterSelected(suggestion.name)) return;
+
         // ✅ Vérifier si le nom ou un alias commence par l'entrée utilisateur
         let matchesSearch = suggestion.name.toLowerCase().startsWith(input) ||
                             (suggestion.aliases && suggestion.aliases.some(alias => alias.toLowerCase().startsWith(input)));
 
-        // ✅ Vérifier si le personnage est déjà validé (dans `#resultContainer` ou `#resultFruitContainer`)
-        if (matchesSearch && !addedNames.has(suggestion.name) && !selectedNames.has(suggestion.name.toLowerCase())) {
+        if (matchesSearch && !addedNames.has(suggestion.name.toLowerCase())) {
             filteredSuggestions.push({
                 displayName: suggestion.name, // Toujours afficher le nom complet
                 actualName: suggestion.name, // Utilisé pour la validation
                 image: getImagePath(suggestion.name)
             });
 
-            addedNames.add(suggestion.name); // ✅ Empêcher les doublons
+            addedNames.add(suggestion.name.toLowerCase()); // ✅ Empêcher les doublons
         }
     });
 
+    // ✅ Assurer que les suggestions s'affichent seulement si elles existent
     if (filteredSuggestions.length > 0) {
         filteredSuggestions.forEach(suggestion => {
             const div = document.createElement('div');
@@ -152,10 +167,11 @@ async function displaySuggestions(suggestions) {
             div.addEventListener('click', () => {
                 document.getElementById('characterInput').value = suggestion.displayName;
                 document.getElementById('characterInput').dataset.actualName = suggestion.actualName;
-                selectedCharacters.push(suggestion.actualName);
+                
+                // ✅ Ajouter ce personnage à la liste des sélectionnés
+                addSelectedCharacter(suggestion.actualName);
 
-                // ✅ Mettre à jour les suggestions après sélection
-                currentSuggestions = currentSuggestions.filter(item => item.actualName !== suggestion.actualName);
+                // ✅ Masquer la suggestion et mettre à jour les suggestions
                 displaySuggestions(currentSuggestions);
                 suggestionsDiv.style.display = 'none';
             });
@@ -170,6 +186,14 @@ async function displaySuggestions(suggestions) {
         suggestionsDiv.style.display = 'none';
     }
 }
+
+
+document.getElementById('restartGameButton').addEventListener('click', () => {
+    resetSelectedCharacters(); // ✅ Réinitialise les personnages sélectionnés
+    document.getElementById('characterInput').value = ''; // ✅ Vide l'input
+    document.getElementById('suggestions').innerHTML = ''; // ✅ Vide la liste de suggestions
+    displaySuggestions(currentSuggestions); // ✅ Recharge les suggestions
+});
 
 
 // Ajouter un écouteur d'événement pour le champ de saisie
@@ -231,7 +255,7 @@ function updateHintInfo() {
         firstArcHintInfo.style.display = 'none';
         // Appliquer le filtre après avoir atteint le nombre d'essais
         firstArcHint.style.border = '2px solid #928157';
-        firstArcHintP.style.color = '#928157'; 
+        firstArcHintP.style.color = '#928157';
         firstArcHintImage.style.filter = 'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
     }
 
@@ -292,7 +316,7 @@ document.getElementById('guessForm').addEventListener('submit', async (event) =>
     event.preventDefault();
     const guessedCharacterName = document.getElementById('characterInput').value;
     attempts++;
-    
+
     try {
         const response = await fetch('/api/characters');
         if (response.ok) {
@@ -318,7 +342,7 @@ document.getElementById('guessForm').addEventListener('submit', async (event) =>
     } catch (error) {
         console.error('Error fetching characters:', error);
     }
-    
+
     // Met à jour les indices en fonction du nombre d'essais
     updateHints();
 });
@@ -334,7 +358,7 @@ document.getElementById('devilFruitHint').addEventListener('click', () => {
 
 
 async function startNewGame() {
-    resetGame();    
+    resetGame();
     try {
         const response = await fetch('/api/start-game');
         if (response.ok) {
