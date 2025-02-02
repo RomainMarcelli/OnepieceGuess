@@ -147,7 +147,7 @@ const characters = [
         firstArc: 'Sabaody Archipelago' 
     },
     { 
-        name: 'Trafalgar D. Water Law', 
+        name: 'Trafalgar D. Law', 
         aliases: ['Law'],
         devilFruit: 'Ope Ope no Mi', 
         haki: 'Armement, Vision', 
