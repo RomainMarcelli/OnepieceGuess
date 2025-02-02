@@ -15,16 +15,11 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowDown') {
         event.preventDefault(); // Empêche le comportement par défaut
         if (suggestions.length > 0) {
-            // Désactiver l'élément actif actuel
             if (activeIndex >= 0) {
                 suggestions[activeIndex].classList.remove('active');
             }
-
-            // Activer le suivant (ou le premier)
             activeIndex = (activeIndex + 1) % suggestions.length;
             suggestions[activeIndex].classList.add('active');
-
-            // Mettre à jour la valeur de l'input avec le texte de la suggestion active
             inputField.value = suggestions[activeIndex].textContent.trim();
         }
     }
@@ -32,26 +27,21 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowUp') {
         event.preventDefault(); // Empêche le comportement par défaut
         if (suggestions.length > 0) {
-            // Désactiver l'élément actif actuel
             if (activeIndex >= 0) {
                 suggestions[activeIndex].classList.remove('active');
             }
-
-            // Activer le précédent (ou le dernier)
             activeIndex = (activeIndex - 1 + suggestions.length) % suggestions.length;
             suggestions[activeIndex].classList.add('active');
-
-            // Mettre à jour la valeur de l'input avec le texte de la suggestion active
             inputField.value = suggestions[activeIndex].textContent.trim();
         }
     }
 
     if (event.key === 'Enter') {
         event.preventDefault(); // Empêcher la soumission par défaut du formulaire
-
-        if (activeIndex >= 0 && suggestions.length > 0) {
-            // Simuler un clic sur la suggestion active si elle existe
-            suggestions[activeIndex].click();
+        
+        if (suggestions.length > 0) {
+            inputField.value = suggestions[0].textContent.trim(); // Sélectionner la première suggestion automatiquement
+            suggestions[0].click(); // Simuler un clic sur la première suggestion
         } else if (inputField.value.trim() !== '') {
             console.log("🚀 Bouton cliqué via la touche Entrée !");
             submitButton.click(); // Simuler un clic sur le bouton
@@ -70,5 +60,16 @@ document.addEventListener('click', (event) => {
 
         inputField.value = clickedSuggestion.textContent.trim();
         submitButton.click(); // Valider immédiatement la réponse
+    }
+});
+
+// ✅ Validation automatique en cliquant sur le bouton
+document.getElementById('button').addEventListener('click', () => {
+    const inputField = document.getElementById('characterInput');
+    const suggestionsDiv = document.getElementById('suggestions');
+    const suggestions = Array.from(suggestionsDiv.querySelectorAll('.suggestion'));
+    
+    if (suggestions.length > 0) {
+        inputField.value = suggestions[0].textContent.trim(); // Sélectionner la première suggestion automatiquement
     }
 });
