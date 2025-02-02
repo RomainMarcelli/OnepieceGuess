@@ -97,21 +97,31 @@ function getImagePath(characterName) {
     return `public/img/${characterName}.png`;
 }
 
-function displaySuggestions(suggestions) {
-    // Mettre à jour les suggestions actuelles
+async function displaySuggestions(suggestions) {
     currentSuggestions = suggestions;
 
     const input = document.getElementById('characterInput').value.trim().toLowerCase();
-
-    // Filtrer les suggestions pour exclure les personnages déjà sélectionnés
-    // et pour ne garder que ceux dont le nom commence par la lettre saisie
-    const filteredSuggestions = suggestions.filter(suggestion => 
-        !selectedCharacters.includes(suggestion.name) &&
-        suggestion.name.toLowerCase().startsWith(input)
-    );
-
     const suggestionsDiv = document.getElementById('suggestions');
     suggestionsDiv.innerHTML = '';
+
+    let filteredSuggestions = [];
+    let addedNames = new Set(); // Pour éviter les doublons
+
+    suggestions.forEach(suggestion => {
+        // Vérifier si le nom ou un alias commence par l'entrée utilisateur
+        let matchesSearch = suggestion.name.toLowerCase().startsWith(input) ||
+                            (suggestion.aliases && suggestion.aliases.some(alias => alias.toLowerCase().startsWith(input)));
+
+        if (matchesSearch && !addedNames.has(suggestion.name)) {
+            filteredSuggestions.push({
+                displayName: suggestion.name, // Toujours afficher le nom complet
+                actualName: suggestion.name, // Utilisé pour la validation
+                image: getImagePath(suggestion.name)
+            });
+
+            addedNames.add(suggestion.name); // Empêcher les doublons
+        }
+    });
 
     if (filteredSuggestions.length > 0) {
         filteredSuggestions.forEach(suggestion => {
@@ -120,34 +130,36 @@ function displaySuggestions(suggestions) {
 
             // Ajouter l'image du personnage
             const img = document.createElement('img');
-            img.src = getImagePath(suggestion.name);
+            img.src = suggestion.image;
             img.alt = 'Character Image';
             img.className = 'suggestion-image';
 
-            // Ajouter le nom du personnage directement à droite de l'image
+            // Ajouter le nom complet du personnage
             const nameLabel = document.createElement('span');
             nameLabel.className = 'character-names-label';
-            nameLabel.textContent = suggestion.name;
+            nameLabel.textContent = suggestion.displayName;
 
-            // Ajouter un événement de clic
+            // Ajouter un événement de clic pour sélectionner le personnage
             div.addEventListener('click', () => {
-                document.getElementById('characterInput').value = suggestion.name; // Mettre à jour le champ de saisie avec la suggestion
-                selectedCharacters.push(suggestion.name); // Ajouter le personnage à la liste des sélectionnés
+                document.getElementById('characterInput').value = suggestion.displayName;
+                document.getElementById('characterInput').dataset.actualName = suggestion.actualName;
+                selectedCharacters.push(suggestion.actualName);
 
-                // Mettre à jour currentSuggestions après sélection
-                currentSuggestions = currentSuggestions.filter(item => item.name !== suggestion.name);
+                // Mettre à jour les suggestions après sélection
+                currentSuggestions = currentSuggestions.filter(item => item.actualName !== suggestion.actualName);
 
-                displaySuggestions(currentSuggestions); // Re-render les suggestions après sélection
-                suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion
+                displaySuggestions(currentSuggestions);
+                suggestionsDiv.style.display = 'none';
             });
 
-            div.appendChild(img); // Ajouter l'image au div
-            div.appendChild(nameLabel); // Ajouter le nom au div
-            suggestionsDiv.appendChild(div); // Ajouter le div complet à la barre de suggestion
+            div.appendChild(img);
+            div.appendChild(nameLabel);
+            suggestionsDiv.appendChild(div);
         });
-        suggestionsDiv.style.display = 'block'; // Afficher la barre de suggestion si des suggestions existent
+
+        suggestionsDiv.style.display = 'block'; 
     } else {
-        suggestionsDiv.style.display = 'none'; // Masquer la barre de suggestion si aucune suggestion
+        suggestionsDiv.style.display = 'none';
     }
 }
 
@@ -721,16 +733,28 @@ async function fetchDevilFruit() {
 
 function checkGuess(event) {
     event.preventDefault();
-    const guess = document.getElementById('characterInput').value.trim();
+    const inputElement = document.getElementById('characterInput');
+    const guess = inputElement.dataset.actualName || inputElement.value.trim(); // Récupère le vrai nom si un alias a été sélectionné
     const resultElement = document.getElementById('result');
+
+    // Effacer le message précédent
+    resultElement.innerText = '';
+
+    attempts++;
+
     if (guess.toLowerCase() === characterName.toLowerCase()) {
-        resultElement.innerText = 'Correct !';
-        resultElement.style.color = 'green';
+        displayCharacterDetails(characterName);
+        displaySuccessCard(characterName);
     } else {
-        resultElement.innerText = `Incorrect. Le bon personnage était: ${characterName}`;
-        resultElement.style.color = 'red';
+        incorrectGuesses.push(guess);
+        updateIncorrectGuesses();
     }
+
+    inputElement.value = ''; // Effacer le champ après validation
+    inputElement.removeAttribute('data-actual-name'); // Supprimer le stockage du vrai nom après validation
+    updateHintInfo();
 }
+
 
 function restartGame() {
     document.getElementById('characterInput').value = '';
