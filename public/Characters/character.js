@@ -71,16 +71,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!fruitName || fruitName.toLowerCase() === "aucun") {
                 return "noFruit"; // ✅ Aucun fruit du démon
             }
-        
+
             // 🔥 Assurer que `devilFruitsByType` est bien défini
-            if (!devilFruitsByType || 
-                !devilFruitsByType.zoan || 
-                !devilFruitsByType.paramecia || 
+            if (!devilFruitsByType ||
+                !devilFruitsByType.zoan ||
+                !devilFruitsByType.paramecia ||
                 !devilFruitsByType.logia) {
                 console.error("❌ Erreur : Structure des fruits du démon incorrecte au moment du filtrage", devilFruitsByType);
                 return "unknown"; // ✅ Retourne "unknown" au lieu de planter
             }
-        
+
             // ✅ Vérifie si le fruit appartient à un type
             if (devilFruitsByType.zoan.includes(fruitName)) {
                 return "zoan";
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return "unknown";
             }
         }
-        
+
         function displayCharacters(filteredCharacters) {
             container.innerHTML = ""; // Réinitialisation
 
@@ -184,9 +184,40 @@ document.addEventListener("DOMContentLoaded", async () => {
                         matchesDevilFruit = characterFruitType === selectedDevilFruit;
                     }
                 }
-                
-                return matchesSearch && matchesGender && matchesAffiliation && matchesHaki && matchesBounty && matchesArc && matchesDevilFruit;
+
+                const selectedHeight = document.getElementById("heightFilter").value;
+
+                // 🔹 Convertit la taille du personnage en mètres
+                function getCharacterHeight(heightStr) {
+                    if (!heightStr) return 0;
+                    const heightMatch = heightStr.match(/\d+/g); // Extrait les chiffres
+                    return heightMatch ? parseInt(heightMatch[0], 10) / 100 : 0; // Convertit en mètres
+                }
+
+                // 🔹 Vérifie si la taille correspond au filtre sélectionné
+                function matchesHeight(characterHeight, filter) {
+                    switch (filter) {
+                        case "0-1": return characterHeight >= 0 && characterHeight < 1;
+                        case "1-2": return characterHeight >= 1 && characterHeight < 2;
+                        case "2-3": return characterHeight >= 2 && characterHeight < 3;
+                        case "3-4": return characterHeight >= 3 && characterHeight < 4;
+                        case "4-5": return characterHeight >= 4 && characterHeight < 5;
+                        case "5-6": return characterHeight >= 5 && characterHeight < 6;
+                        case "6-7": return characterHeight >= 6 && characterHeight < 7;
+                        case "7-8": return characterHeight >= 7 && characterHeight < 8;
+                        case "8-9": return characterHeight >= 8 && characterHeight < 9;
+                        case "9-10": return characterHeight >= 9 && characterHeight < 10;
+                        case "10+": return characterHeight >= 10;
+                        default: return true; // "all"
+                    }
+                }
+
+                const characterHeight = getCharacterHeight(character.height);
+                const matchesHeightFilter = matchesHeight(characterHeight, selectedHeight);
+
+                return matchesSearch && matchesGender && matchesAffiliation && matchesHaki && matchesBounty && matchesArc && matchesDevilFruit && matchesHeightFilter;
             });
+
 
             displayCharacters(filteredCharacters);
             updateCharacterCount(filteredCharacters.length);
@@ -200,6 +231,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             hakiFilter.addEventListener("change", filterCharacters);
             document.getElementById("arcFilter").addEventListener("change", filterCharacters);
             document.getElementById("devilFruitFilter").addEventListener("change", filterCharacters);
+            document.getElementById("heightFilter").addEventListener("change", filterCharacters);
+
         }
 
         displayCharacters(characters); // Affichage initial
