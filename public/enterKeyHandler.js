@@ -21,9 +21,12 @@ document.addEventListener('keydown', (event) => {
             activeIndex = (activeIndex + 1) % suggestions.length;
             suggestions[activeIndex].classList.add('active');
             inputField.value = suggestions[activeIndex].textContent.trim();
+    
+            // 🔥 Fait défiler la liste pour rendre l'élément visible
+            scrollIntoViewIfNeeded(suggestionsDiv, suggestions[activeIndex]);
         }
     }
-
+    
     if (event.key === 'ArrowUp') {
         event.preventDefault(); // Empêche le comportement par défaut
         if (suggestions.length > 0) {
@@ -33,8 +36,12 @@ document.addEventListener('keydown', (event) => {
             activeIndex = (activeIndex - 1 + suggestions.length) % suggestions.length;
             suggestions[activeIndex].classList.add('active');
             inputField.value = suggestions[activeIndex].textContent.trim();
+    
+            // 🔥 Fait défiler la liste pour rendre l'élément visible
+            scrollIntoViewIfNeeded(suggestionsDiv, suggestions[activeIndex]);
         }
     }
+    
 
     if (event.key === 'Enter') {
         event.preventDefault(); // Empêcher la soumission par défaut du formulaire
@@ -78,3 +85,15 @@ document.getElementById('button').addEventListener('click', () => {
         inputField.value = suggestions[0].textContent.trim(); // Sélectionner la première suggestion automatiquement
     }
 });
+
+
+function scrollIntoViewIfNeeded(container, element) {
+    const containerRect = container.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+
+    if (elementRect.bottom > containerRect.bottom) {
+        container.scrollTop += elementRect.bottom - containerRect.bottom;
+    } else if (elementRect.top < containerRect.top) {
+        container.scrollTop -= containerRect.top - elementRect.top;
+    }
+}

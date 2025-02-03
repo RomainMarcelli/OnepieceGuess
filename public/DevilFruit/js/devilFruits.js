@@ -78,8 +78,8 @@ let selectedFruit = [// ////////////////////////////
     { name: 'Uta Uta no Mi', type: 'Paramecia' },
     { name: 'Juku Juku no Mi', type: 'Paramecia' },
     { name: 'Choki Choki no Mi', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
+    { name: 'Baku Baku no Mi', type: 'Paramecia' },
+    { name: 'Mato Mato no Mi', type: 'Paramecia' },
     { name: 'au', type: 'Paramecia' },
 
     // ////////////////////////////
@@ -135,7 +135,7 @@ let devilFruitsByType = {
         'Sube Sube no Mi', 'Nomi Nomi no Mi', 'Beta Beta no Mi', 'Pamu Pamu no Mi',
         'Guru Guru no Mi', 'Buki Buki no Mi', 'Hobi Hobi no Mi', 'Nui Nui no Mi',
         'Oto Oto no Mi', 'Kira Kira no Mi', 'Toki Toki no Mi', 'Uta Uta no Mi',
-        'Juku Juku no Mi', 'Choki Choki no Mi'
+        'Juku Juku no Mi', 'Choki Choki no Mi', 'Baku Baku no Mi', 'Mato Mato no Mi'
     ],
     Zoan: [
         'Inu Inu no Mi', 'Ryu Ryu no Mi', 'Ushi Ushi no Mi', 'Tori Tori no Mi',
