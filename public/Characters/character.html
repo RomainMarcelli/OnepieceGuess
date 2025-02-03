@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Personnages</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../responsive.css">
+    <link rel="stylesheet" href="character.css">
+</head>
+
+<body>
+
+    <header>
+        <img class="logo_img" src="../img/One-Piece-Logo.png" alt="Logo">
+
+        <!-- Barre de Navigation entre les différents modes de Jeu -->
+        <nav>
+            <div class="progress_nav">
+                <div class="background"></div>
+                <div class="imagesJeu">
+                    <div class="guessPerso">
+                        <img src="../img/guessPerso.png" alt="">
+                    </div>
+                    <div class="devilFruit">
+                        <img src="../img/devilFruit.png" alt="">
+                    </div>
+                    <div class="vs">
+                        <img src="../img/vs.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h1>Listes de personnages</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Rechercher un personnage...">
+        </div>
+
+        <div class="filters">
+            <label for="genderFilter">Genre :</label>
+            <select id="genderFilter">
+                <option value="all">Tous</option>
+                <option value="Masculin">Masculin</option>
+                <option value="Féminin">Féminin</option>
+            </select>
+        
+            <label for="affiliationFilter">Équipage :</label>
+            <select id="affiliationFilter">
+                <option value="all">Tous</option>
+                <option value="Straw Hat Pirates">Straw Hat Pirates</option>
+                <option value="Marine">Marine</option>
+                <option value="Shichibukai">Shichibukai</option>
+                <option value="Yonko">Yonko</option>
+                <option value="Armée Révolutionnaire">Armée Révolutionnaire</option>
+                <option value="Autre">Autre</option>
+            </select>
+        </div>
+              
+
+        <div id="charactersContainer" class="characters-grid"></div>
+        <!-- Modale pour afficher les détails -->
+        <div id="characterModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-body">
+                    <img id="modalCharacterImage" src="" alt="Personnage">
+                    <h2 id="modalCharacterName"></h2>
+                    <p><strong>Alias :</strong> <span id="modalCharacterAlias"></span></p>
+                    <p><strong>Fruit du démon :</strong> <span id="modalCharacterDevilFruit"></span></p>
+                    <p><strong>Haki :</strong> <span id="modalCharacterHaki"></span></p>
+                    <p><strong>Affiliation :</strong> <span id="modalCharacterAffiliation"></span></p>
+                    <p><strong>Taille :</strong> <span id="modalCharacterHeight"></span></p>
+                    <p><strong>Genre :</strong> <span id="modalCharacterGender"></span></p>
+                    <p><strong>Prime :</strong> <span id="modalCharacterBounty"></span></p>
+                    <p><strong>Premier Arc :</strong> <span id="modalCharacterFirstArc"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <p id="totalCharacters" class="total-characters-count">Nombre de personnages affichés : 0</p>
+
+    </main>
+
+    <script src="character.js"></script>
+</body>
+
+</html>
