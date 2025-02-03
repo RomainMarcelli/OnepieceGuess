@@ -20,6 +20,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await fetch("/api/characters"); // Récupération de l'API
         const characters = await response.json();
 
+        // async function fetchCharacters() {
+        //     try {
+        //         const response = await fetch("/api/characters"); // Récupération de l'API
+        //         characters = await response.json();
+        //         displayCharacters(characters);
+        //     } catch (error) {
+        //         console.error("Erreur lors du chargement des personnages :", error);
+        //     }
+        // }
+
+
         function getImagePath(name) {
             return `/img/${name.toLowerCase()}.png`; // Assumes images are named as character names
         }
@@ -31,6 +42,57 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
 
+        let devilFruitsByType = {};
+
+        async function fetchDevilFruits() {
+            try {
+                const response = await fetch('/api/devilFruitsByType');
+                const data = await response.json();
+
+                if (!data.Zoan || !data.Paramecia || !data.Logia) {
+                    console.error("❌ Structure des fruits du démon incorrecte :", data);
+                    return;
+                }
+
+                // ✅ Stocker les fruits avec leurs clés correctes
+                devilFruitsByType = {
+                    zoan: data.Zoan,
+                    paramecia: data.Paramecia,
+                    logia: data.Logia
+                };
+
+                console.log("✅ Fruits du démon récupérés :", devilFruitsByType);
+            } catch (error) {
+                console.error("Erreur lors du chargement des fruits du démon :", error);
+            }
+        }
+
+        function getDevilFruitType(fruitName) {
+            if (!fruitName || fruitName.toLowerCase() === "aucun") {
+                return "noFruit"; // ✅ Aucun fruit du démon
+            }
+        
+            // 🔥 Assurer que `devilFruitsByType` est bien défini
+            if (!devilFruitsByType || 
+                !devilFruitsByType.zoan || 
+                !devilFruitsByType.paramecia || 
+                !devilFruitsByType.logia) {
+                console.error("❌ Erreur : Structure des fruits du démon incorrecte au moment du filtrage", devilFruitsByType);
+                return "unknown"; // ✅ Retourne "unknown" au lieu de planter
+            }
+        
+            // ✅ Vérifie si le fruit appartient à un type
+            if (devilFruitsByType.zoan.includes(fruitName)) {
+                return "zoan";
+            } else if (devilFruitsByType.paramecia.includes(fruitName)) {
+                return "paramecia";
+            } else if (devilFruitsByType.logia.includes(fruitName)) {
+                return "logia";
+            } else {
+                return "unknown";
+            }
+        }
+        
         function displayCharacters(filteredCharacters) {
             container.innerHTML = ""; // Réinitialisation
 
@@ -70,87 +132,75 @@ document.addEventListener("DOMContentLoaded", async () => {
             updateCharacterCount(filteredCharacters.length);
         }
 
-        function filterCharacters() {
+        async function filterCharacters() {
+            if (!devilFruitsByType.zoan || !devilFruitsByType.paramecia || !devilFruitsByType.logia) {
+                console.warn("⚠️ Fruits du démon non chargés, récupération en cours...");
+                await fetchDevilFruits(); // Recharge les fruits du démon si nécessaire
+            }
             const searchTerm = searchInput.value.toLowerCase();
             const selectedGender = genderFilter.value;
             const selectedAffiliation = affiliationFilter.value;
             const selectedHaki = hakiFilter.value;
             const selectedArc = document.getElementById("arcFilter").value;
-        
+            const selectedDevilFruit = document.getElementById("devilFruitFilter").value;
+
             const minBounty = parseInt(bountyMinSlider.value) || 0;
             const maxBounty = parseInt(bountyMaxSlider.value) || 5000000000;
-            
-            const predefinedAffiliations = [
-                "Straw Hat Pirates", "Marine", "Armée Révolutionnaire",
-                "Équipage de Barbe Blanche", "Équipage des Pirates de Roger",
-                "Équipe aux Cent Bêtes", "Équipage du Roux", "Équipage de Barbe Noire",
-                "Guilde de la Croix", "Kid Pirates", "Équipage du Heart", "Équipage de Big Mom",
-                "Donquichote Pirates", "Gouvernement Mondial", "CP-AIGIS0",
-                "Famille Kozuki", "Famille Riku", "Famille Vinsmoke",
-                "Principauté de Mokomo", "Famille Neptune"
-            ];
-        
+
             let filteredCharacters = characters.filter(character => {
-                // 🔹 Vérifie si le personnage correspond à la recherche
                 const matchesSearch = character.name.toLowerCase().includes(searchTerm) ||
                     (Array.isArray(character.aliases) && character.aliases.some(alias => alias.toLowerCase().includes(searchTerm)));
-        
-                // 🔹 Vérifie si le personnage correspond au genre sélectionné
+
                 const matchesGender = selectedGender === "all" || character.gender === selectedGender;
-        
-                // 🔹 Vérifie si le personnage appartient à l'affiliation sélectionnée
-                let matchesAffiliation = false;
-                if (selectedAffiliation === "all") {
-                    matchesAffiliation = true; // Afficher tout
-                } else if (selectedAffiliation === "Autre") {
-                    matchesAffiliation = !predefinedAffiliations.includes(character.affiliation);
-                } else {
-                    matchesAffiliation = character.affiliation === selectedAffiliation;
-                }
-        
-                // 🔹 Vérifie si le personnage correspond au filtre de Haki
+                const matchesAffiliation = selectedAffiliation === "all" || (character.affiliation && character.affiliation === selectedAffiliation);
+
                 const hakiArray = character.haki ? character.haki.split(', ') : [];
                 const hakiCount = hakiArray.length;
-                let matchesHaki = false;
-        
-                if (selectedHaki === "all") {
-                    matchesHaki = true;
-                } else if (selectedHaki === "3" && hakiCount === 3) {
-                    matchesHaki = true;
-                } else if (selectedHaki === "2" && hakiCount === 2) {
-                    matchesHaki = true;
-                } else if (selectedHaki === "1" && hakiCount === 1) {
-                    matchesHaki = hakiArray.includes("Armement") || hakiArray.includes("Vision");
-                } else if (selectedHaki === "0") {
-                    matchesHaki = !character.haki || character.haki.trim() === "" || character.haki.toLowerCase() === "aucun";
-                }
-        
-                // 🔹 Vérifie si la prime est dans l'intervalle défini
+                let matchesHaki = selectedHaki === "all" ||
+                    (selectedHaki === "3" && hakiCount === 3) ||
+                    (selectedHaki === "2" && hakiCount === 2) ||
+                    (selectedHaki === "1" && hakiCount === 1 && (hakiArray.includes("Armement") || hakiArray.includes("Vision"))) ||
+                    (selectedHaki === "0" && (!character.haki || character.haki.trim() === "" || character.haki.toLowerCase() === "aucun"));
+
                 let matchesBounty = true;
                 if (character.bounty) {
                     const bountyValue = parseInt(character.bounty.replace(/[^0-9]/g, ""), 10) || 0;
                     matchesBounty = bountyValue >= minBounty && bountyValue <= maxBounty;
                 }
-        
-                // ✅ **Nouveau** : Vérifie si le personnage appartient à l'arc sélectionné
+
                 const matchesArc = selectedArc === "all" || character.firstArc === selectedArc;
-        
-                return matchesSearch && matchesGender && matchesAffiliation && matchesHaki && matchesBounty && matchesArc;
+
+                let matchesDevilFruit = true;
+                if (selectedDevilFruit !== "all") {
+                    if (selectedDevilFruit === "noFruit") {
+                        // ✅ Afficher ceux qui n'ont PAS de fruit du démon
+                        matchesDevilFruit = !character.devilFruit || character.devilFruit.toLowerCase() === "aucun";
+                    } else if (selectedDevilFruit === "hasFruit") {
+                        // ✅ Afficher ceux qui ont un fruit du démon
+                        matchesDevilFruit = character.devilFruit && character.devilFruit.toLowerCase() !== "aucun";
+                    } else {
+                        // ✅ Vérifier le type de fruit du démon
+                        const characterFruitType = getDevilFruitType(character.devilFruit);
+                        matchesDevilFruit = characterFruitType === selectedDevilFruit;
+                    }
+                }
+                
+                return matchesSearch && matchesGender && matchesAffiliation && matchesHaki && matchesBounty && matchesArc && matchesDevilFruit;
             });
-        
+
             displayCharacters(filteredCharacters);
             updateCharacterCount(filteredCharacters.length);
-        }        
 
-        // Appliquer le filtre sur la recherche et la sélection du genre
-        searchInput.addEventListener("input", filterCharacters);
-        genderFilter.addEventListener("change", filterCharacters);
-        affiliationFilter.addEventListener("change", filterCharacters);
-        hakiFilter.addEventListener("change", filterCharacters);
-        document.getElementById("bountyMin").addEventListener("input", filterCharacters);
-        document.getElementById("bountyMax").addEventListener("input", filterCharacters);
-        document.getElementById("arcFilter").addEventListener("change", filterCharacters);
+            await fetchDevilFruits();
+            // await fetchCharacters();
 
+            searchInput.addEventListener("input", filterCharacters);
+            genderFilter.addEventListener("change", filterCharacters);
+            affiliationFilter.addEventListener("change", filterCharacters);
+            hakiFilter.addEventListener("change", filterCharacters);
+            document.getElementById("arcFilter").addEventListener("change", filterCharacters);
+            document.getElementById("devilFruitFilter").addEventListener("change", filterCharacters);
+        }
 
         displayCharacters(characters); // Affichage initial
 

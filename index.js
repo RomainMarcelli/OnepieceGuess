@@ -364,7 +364,7 @@ const characters = [
     },
     { 
         name: 'Stussy', 
-        devilFruit: 'Aucun', 
+        devilFruit: 'Batto Batto no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'CP-AIGIS0', 
         height: '179 cm', 
@@ -416,7 +416,7 @@ const characters = [
     { 
         name: 'Kurozumi Kanjuro', 
         aliases: ['Kanuro'],
-        devilFruit: 'Aucun', 
+        devilFruit: 'Fude Fude no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Famille Kurozumi', 
         height: '347 cm', 
@@ -1493,7 +1493,7 @@ const characters = [
     { 
         name: 'Capone Bege',
         aliases: ['Bege'], 
-        devilFruit: 'Aucun', 
+        devilFruit: 'Shiro Shiro no Mi', 
         haki: 'Aucun', 
         affiliation: 'Équipage du Fire Tank', 
         height: '166 cm', 
@@ -2104,6 +2104,11 @@ const devilFruits = [
     { name: 'Choki Choki no Mi', type: 'Paramecia' },
     { name: 'Mato Mato no Mi', type: 'Paramecia' },
     { name: 'Baku Baku no Mi', type: 'Paramecia' },
+    { name: 'Shiro Shiro no Mi', type: 'Paramecia' },
+    { name: 'Fude Fude no Mi', type: 'Paramecia' },
+    { name: 'au', type: 'Paramecia' },
+    { name: 'au', type: 'Paramecia' },
+    { name: 'au', type: 'Paramecia' },
     { name: 'au', type: 'Paramecia' },
 
     // ////////////////////////////
@@ -2134,7 +2139,7 @@ const devilFruits = [
     { name: 'Hebi Hebi no Mi, Modèle: Yamata no Orochi', type: 'Zoan' },
     // { name: 'Ato Ato no Mi', type: 'Zoan' },
     { name: 'Hito Hito no Mi, Modèle: Daibutsu', type: 'Zoan' },
-    { name: 'au', type: 'Zoan' },
+    { name: 'Batto Batto no Mi', type: 'Zoan' },
     { name: 'au', type: 'Zoan' },
     { name: 'Smile', type: 'Zoan' }
 ];
@@ -2161,7 +2166,7 @@ const devilFruitsByType = {
         'Sube Sube no Mi', 'Nomi Nomi no Mi', 'Beta Beta no Mi', 'Pamu Pamu no Mi', 
         'Guru Guru no Mi', 'Buki Buki no Mi', 'Hobi Hobi no Mi', 'Nui Nui no Mi', 
         'Oto Oto no Mi', 'Kira Kira no Mi', 'Toki Toki no Mi', 'Uta Uta no Mi', 
-        'Juku Juku no Mi', 'Choki Choki no Mi', 'Mato Mato no Mi', 'Baku Baku no Mi'
+        'Juku Juku no Mi', 'Choki Choki no Mi', 'Mato Mato no Mi', 'Baku Baku no Mi', 'Shiro Shiro no Mi', 'Fude Fude no Mi'
     ],
     Zoan: [
         'Inu Inu no Mi', 'Ryu Ryu no Mi', 'Ushi Ushi no Mi', 'Tori Tori no Mi', 
@@ -2172,7 +2177,7 @@ const devilFruitsByType = {
         'Zo Zo no Mi, Modèle: Mammouth', 'Ryu Ryu no Mi, Modèle: Tricératops', 
         'Kumo Kumo no Mi, Modèle: Rosamygale Grauvogeli', 'Tama Tama no Mi', 
         'Hebi Hebi no Mi, Modèle: Yamata no Orochi', 'Hito Hito no Mi, Modèle: Daibutsu', 
-        'Smile'
+        'Smile', 'Batto Batto no Mi'
     ]
 };
 
@@ -2251,7 +2256,9 @@ const devilFruitsTranslated = {
         { name: 'Juku Juku no Mi', translation: 'Fruit de la Maturation' },
         { name: 'Mato Mato no Mi', translation: 'Fruit du Dans le Mille' },
         { name: 'Baku Baku no Mi', translation: 'Fruit du Glouton' },
-        { name: 'Choki Choki no Mi', translation: 'Fruit des Ciseaux' }
+        { name: 'Choki Choki no Mi', translation: 'Fruit des Ciseaux' },
+        { name: 'Shiro Shiro no Mi', translation: 'Fruit du Château' },
+        { name: 'Fude Fude no Mi', translation: 'Fruit du Pinceau' },
     ],
     Zoan: [
         { name: 'Inu Inu no Mi', translation: 'Fruit du Chien' },
@@ -2274,7 +2281,8 @@ const devilFruitsTranslated = {
         { name: 'Tama Tama no Mi', translation: 'Fruit de l’Oeuf' },
         { name: 'Hebi Hebi no Mi, Modèle: Yamata no Orochi', translation: null },
         { name: 'Hito Hito no Mi, Modèle: Daibutsu', translation: null },
-        { name: 'Smile', translation: 'Fruit Artificiel' }
+        { name: 'Smile', translation: 'Fruit Artificiel' },
+        { name: 'Batto Batto no Mi', translation: 'Fruit de la Chauve-Souris' }
     ]
 };
 
