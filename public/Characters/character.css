@@ -163,59 +163,166 @@ h1 {
     margin-top: 10px;
 }
 
+/* Fourchette Prime Filtre  */
 .bounty-filter {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px; /* Séparation avec les autres filtres */
+    margin-top: 20px;
     width: 100%;
 }
 
+.bounty-filter label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+/* Conteneur des sliders */
 .range-container {
     position: relative;
-    width: 50%;
-    margin: 10px auto;
+    width: 60%;
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 40px;
 }
 
-.bounty-values {
-    display: flex;
-    justify-content: space-between;
-    width: 50%;
-    margin-top: 5px;
-    font-weight: bold;
+/* Barre de fond entre les deux curseurs */
+.range-container::before {
+    content: "";
+    position: absolute;
+    height: 8px;
+    width: 100%;
+    background: #dcdcdc;
+    border-radius: 10px;
+    z-index: 1;
 }
 
+/* Barre colorée dynamique entre les curseurs */
+.range-progress {
+    position: absolute;
+    height: 8px;
+    background: linear-gradient(90deg, #f4c542, #ff9800);
+    border-radius: 10px;
+    z-index: 2;
+}
+
+/* Styles des sliders */
 input[type="range"] {
     position: absolute;
     width: 100%;
     appearance: none;
     background: transparent;
-    pointer-events: none; /* Empêche les sliders de se bloquer l'un l'autre */
+    pointer-events: none;
+    z-index: 3;
+    border: 0;
+    margin-bottom: 15px;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
-    height: 5px;
-    background: #ddd;
-    border-radius: 5px;
+    height: 8px;
+    background: transparent;
 }
 
 input[type="range"]::-webkit-slider-thumb {
     appearance: none;
-    width: 15px;
-    height: 15px;
-    background: white;
+    width: 22px;
+    height: 22px;
+    background: #ffcc00;
+    border: 3px solid #ff9800;
     border-radius: 50%;
     cursor: pointer;
     pointer-events: auto;
     position: relative;
-    margin-top: -5px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    transition: 0.2s;
 }
 
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #ff9800;
+    border-color: #fff;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    background: #ffcc00;
+    border: 3px solid #ff9800;
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Valeurs affichées */
 .bounty-values {
     display: flex;
     justify-content: space-between;
+    width: 60%;
     margin-top: 10px;
     font-weight: bold;
+    font-size: 22px;
+    color: #ffcc00;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Ajout d'un élément pour la barre de progression */
+.range-container {
+    position: relative;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+}
+
+/* Barre grise de fond */
+.range-container::before {
+    content: "";
+    position: absolute;
+    height: 8px;
+    width: 100%;
+    background: #dcdcdc;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+/* Barre colorée dynamique entre les curseurs */
+.range-progress {
+    position: absolute;
+    height: 8px;
+    background: linear-gradient(90deg, #f4c542, #ff9800);
+    border-radius: 10px;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    transition: 0.3s;
+}
+
+/* FIN FILTRE PRIME */
+
+/* FILTRE ARC  */
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.filter-container label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+#arcFilter {
+    width: 200px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    cursor: pointer;
 }

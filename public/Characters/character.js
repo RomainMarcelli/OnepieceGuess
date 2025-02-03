@@ -75,11 +75,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             const selectedGender = genderFilter.value;
             const selectedAffiliation = affiliationFilter.value;
             const selectedHaki = hakiFilter.value;
-
+            const selectedArc = document.getElementById("arcFilter").value;
+        
             const minBounty = parseInt(bountyMinSlider.value) || 0;
-            const maxBounty = parseInt(bountyMaxSlider.value) || 6000000000;
-
-
+            const maxBounty = parseInt(bountyMaxSlider.value) || 5000000000;
+            
             const predefinedAffiliations = [
                 "Straw Hat Pirates", "Marine", "Armée Révolutionnaire",
                 "Équipage de Barbe Blanche", "Équipage des Pirates de Roger",
@@ -89,15 +89,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 "Famille Kozuki", "Famille Riku", "Famille Vinsmoke",
                 "Principauté de Mokomo", "Famille Neptune"
             ];
-
+        
             let filteredCharacters = characters.filter(character => {
                 // 🔹 Vérifie si le personnage correspond à la recherche
                 const matchesSearch = character.name.toLowerCase().includes(searchTerm) ||
                     (Array.isArray(character.aliases) && character.aliases.some(alias => alias.toLowerCase().includes(searchTerm)));
-
+        
                 // 🔹 Vérifie si le personnage correspond au genre sélectionné
                 const matchesGender = selectedGender === "all" || character.gender === selectedGender;
-
+        
                 // 🔹 Vérifie si le personnage appartient à l'affiliation sélectionnée
                 let matchesAffiliation = false;
                 if (selectedAffiliation === "all") {
@@ -107,12 +107,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 } else {
                     matchesAffiliation = character.affiliation === selectedAffiliation;
                 }
-
+        
                 // 🔹 Vérifie si le personnage correspond au filtre de Haki
                 const hakiArray = character.haki ? character.haki.split(', ') : [];
                 const hakiCount = hakiArray.length;
                 let matchesHaki = false;
-
+        
                 if (selectedHaki === "all") {
                     matchesHaki = true;
                 } else if (selectedHaki === "3" && hakiCount === 3) {
@@ -122,24 +122,25 @@ document.addEventListener("DOMContentLoaded", async () => {
                 } else if (selectedHaki === "1" && hakiCount === 1) {
                     matchesHaki = hakiArray.includes("Armement") || hakiArray.includes("Vision");
                 } else if (selectedHaki === "0") {
-                    // ✅ Vérification stricte pour les personnages sans Haki
                     matchesHaki = !character.haki || character.haki.trim() === "" || character.haki.toLowerCase() === "aucun";
                 }
-
+        
                 // 🔹 Vérifie si la prime est dans l'intervalle défini
-                const bountyValue = character.bounty
-                    ? parseInt(character.bounty.replace(/[^0-9]/g, ""), 10) || 0
-                    : 0;
-                const matchesBounty = bountyValue >= minBounty && bountyValue <= maxBounty;
-
-
-                return matchesSearch && matchesGender && matchesAffiliation && matchesHaki && matchesBounty;
+                let matchesBounty = true;
+                if (character.bounty) {
+                    const bountyValue = parseInt(character.bounty.replace(/[^0-9]/g, ""), 10) || 0;
+                    matchesBounty = bountyValue >= minBounty && bountyValue <= maxBounty;
+                }
+        
+                // ✅ **Nouveau** : Vérifie si le personnage appartient à l'arc sélectionné
+                const matchesArc = selectedArc === "all" || character.firstArc === selectedArc;
+        
+                return matchesSearch && matchesGender && matchesAffiliation && matchesHaki && matchesBounty && matchesArc;
             });
-
+        
             displayCharacters(filteredCharacters);
             updateCharacterCount(filteredCharacters.length);
-        }
-
+        }        
 
         // Appliquer le filtre sur la recherche et la sélection du genre
         searchInput.addEventListener("input", filterCharacters);
@@ -148,6 +149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         hakiFilter.addEventListener("change", filterCharacters);
         document.getElementById("bountyMin").addEventListener("input", filterCharacters);
         document.getElementById("bountyMax").addEventListener("input", filterCharacters);
+        document.getElementById("arcFilter").addEventListener("change", filterCharacters);
 
 
         displayCharacters(characters); // Affichage initial
@@ -178,33 +180,66 @@ document.addEventListener("DOMContentLoaded", async () => {
         const bountyMaxSlider = document.getElementById("bountyMax");
         const bountyMinValue = document.getElementById("bountyMinValue");
         const bountyMaxValue = document.getElementById("bountyMaxValue");
+        const rangeProgress = document.getElementById("rangeProgress"); // ✅ Barre dynamique
 
+        // Fonction pour ajuster dynamiquement l'échelle des primes
+        function adjustBountyStep(slider) {
+            let value = parseInt(slider.value, 10);
+
+            if (value < 1000000) {
+                slider.step = 100000; // Petits pas avant 1M
+            } else if (value < 100000000) {
+                slider.step = 1000000; // Pas moyen entre 1M et 100M
+            } else if (value < 1000000000) {
+                slider.step = 10000000; // Pas grand entre 100M et 1B
+            } else {
+                slider.step = 100000000; // Pas très grand après 1B
+            }
+        }
+
+        // ✅ Fonction pour mettre à jour la barre de progression
+        function updateProgressBar() {
+            const minVal = parseInt(bountyMinSlider.value, 10);
+            const maxVal = parseInt(bountyMaxSlider.value, 10);
+            const minRange = parseInt(bountyMinSlider.min, 10);
+            const maxRange = parseInt(bountyMaxSlider.max, 10);
+
+            const leftPercent = ((minVal - minRange) / (maxRange - minRange)) * 100;
+            const rightPercent = ((maxVal - minRange) / (maxRange - minRange)) * 100;
+
+            rangeProgress.style.left = leftPercent + "%";
+            rangeProgress.style.width = (rightPercent - leftPercent) + "%";
+        }
+
+        // ✅ Met à jour les valeurs affichées et ajuste l'échelle
         function updateBountyValues() {
-            let minValue = parseInt(bountyMinSlider.value);
-            let maxValue = parseInt(bountyMaxSlider.value);
+            adjustBountyStep(bountyMinSlider);
+            adjustBountyStep(bountyMaxSlider);
 
-            // Assurer que le slider min ne dépasse pas le max et vice versa
+            let minValue = parseInt(bountyMinSlider.value, 10);
+            let maxValue = parseInt(bountyMaxSlider.value, 10);
+
+            // Empêcher les curseurs de se croiser
             if (minValue > maxValue) {
-                let temp = minValue;
-                minValue = maxValue;
-                maxValue = temp;
+                [minValue, maxValue] = [maxValue, minValue];
                 bountyMinSlider.value = minValue;
                 bountyMaxSlider.value = maxValue;
             }
 
-            // 🔹 Formatage pour afficher en milliards/millions/k
             bountyMinValue.textContent = formatBounty(minValue);
             bountyMaxValue.textContent = formatBounty(maxValue);
 
-            // 🔹 Filtrer les personnages en fonction de la prime
-            filterCharacters();
+            updateProgressBar(); // ✅ Met à jour la barre dynamique
+
+            filterCharacters(); // Filtrer les personnages après changement
         }
 
+        // Fonction pour afficher la prime en milliards / millions
         function formatBounty(value) {
             if (value >= 1000000000) {
-                return (value / 1000000000).toFixed(1) + "B"; // Milliards
+                return (value / 1000000000).toFixed(2) + " B"; // Milliards
             } else if (value >= 1000000) {
-                return (value / 1000000).toFixed(1) + "M"; // Millions
+                return (value / 1000000).toFixed(1) + " M"; // Millions
             } else {
                 return value.toLocaleString() + " Berries"; // Valeur normale
             }
@@ -213,6 +248,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         // 🔹 Ajout des écouteurs d'événements
         bountyMinSlider.addEventListener("input", updateBountyValues);
         bountyMaxSlider.addEventListener("input", updateBountyValues);
+
+        // ✅ Mise à jour initiale pour éviter un affichage incorrect au chargement
+        updateBountyValues();
 
     } catch (error) {
         console.error("Erreur lors du chargement des personnages :", error);

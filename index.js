@@ -1765,7 +1765,7 @@ const characters = [
         height: '197 cm', 
         gender: 'Féminin', 
         bounty: '0', 
-        firstArc: 'Alabasta' 
+        firstArc: 'Sabaody Archipelago' 
     },
     { 
         name: 'Bepo', 

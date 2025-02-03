@@ -80,21 +80,58 @@
                 <option value="2">Armement & Vision</option>
                 <option value="1">Vision ou Armement</option>
                 <option value="0">Aucun</option>
-            </select>         
+            </select>     
+            
+            <div class="filter-container">
+                <label for="arcFilter">Arc :</label>
+                <select id="arcFilter">
+                    <option value="all">Tous</option>
+                    <option value="Romance Dawn">Romance Dawn</option>
+                    <option value="Orange Town">Orange Town</option>
+                    <option value="Syrup Village">Syrup Village</option>
+                    <option value="Baratie">Baratie</option>
+                    <option value="Arlong Park">Arlong Park</option>
+                    <option value="Loguetown">Loguetown</option>
+                    <option value="Reverse Mountain">Reverse Mountain</option>
+                    <option value="Whisky Peak">Whisky Peak</option>
+                    <option value="Little Garden">Little Garden</option>
+                    <option value="Drum Island">Drum Island</option>
+                    <option value="Alabasta">Alabasta</option>
+                    <option value="Jaya">Jaya</option>
+                    <option value="Skypiea">Skypiea</option>
+                    <option value="Water 7">Water 7</option>
+                    <option value="Enies Lobby">Enies Lobby</option>
+                    <option value="Thriller Bark">Thriller Bark</option>
+                    <option value="Sabaody Archipelago">Sabaody Archipelago</option>
+                    <option value="Amazon Lily">Amazon Lily</option>
+                    <option value="Impel Down">Impel Down</option>
+                    <option value="Marineford">Marineford</option>
+                    <option value="Post-War">Post-War</option>
+                    <option value="Fishman Island">Fishman Island</option>
+                    <option value="Punk Hazard">Punk Hazard</option>
+                    <option value="Dressrosa">Dressrosa</option>
+                    <option value="Zou">Zou</option>
+                    <option value="Whole Cake Island">Whole Cake Island</option>
+                    <option value="Film Red">Film Red</option>
+                    <option value="Wano">Wano</option>
+                    <option value="Egg Head">Egg Head</option>
+                </select>
+            </div>            
             
         </div>
 
         <div class="bounty-filter">
             <label for="bountyRange">Fourchette de prime :</label>
             <div class="range-container">
-                <input type="range" id="bountyMin" min="0" max="6000000000" step="1000000" value="0">
-                <input type="range" id="bountyMax" min="0" max="6000000000" step="1000000" value="6000000000">
+                <div class="range-progress" id="rangeProgress"></div>
+                <input type="range" id="bountyMin" min="0" max="6000000000" step="100000" value="0">
+                <input type="range" id="bountyMax" min="0" max="6000000000" step="100000" value="6000000000">
             </div>
             <div class="bounty-values">
                 <span id="bountyMinValue">0 B</span>
                 <span id="bountyMaxValue">6 B</span>
             </div>
-        </div>
+        </div>                     
 
         <div id="charactersContainer" class="characters-grid"></div>
         <!-- Modale pour afficher les détails -->
