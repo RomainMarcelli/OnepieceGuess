@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (totalCharactersElement) {
                 totalCharactersElement.textContent = `Nombre de personnages affichés : ${count}`;
             }
-        }  
+        }
 
         function displayCharacters(filteredCharacters) {
             container.innerHTML = ""; // Réinitialisation
@@ -74,26 +74,53 @@ document.addEventListener("DOMContentLoaded", async () => {
             const searchTerm = searchInput.value.toLowerCase();
             const selectedGender = genderFilter.value;
             const selectedAffiliation = affiliationFilter.value;
-        
-            const filteredCharacters = characters.filter(character =>
-                (character.name.toLowerCase().includes(searchTerm) ||
-                (Array.isArray(character.aliases) && character.aliases.some(alias => alias.toLowerCase().includes(searchTerm)))) &&
-                (selectedGender === "all" || character.gender === selectedGender) &&
-                (selectedAffiliation === "all" || 
-                 (selectedAffiliation === "Autre" 
-                    ? !["Straw Hat Pirates", "Marines", "Shichibukai", "Yonko", "Revolutionary Army"].includes(character.affiliation) 
-                    : character.affiliation === selectedAffiliation))
-            );
-        
+            const selectedHaki = hakiFilter.value;
+
+            const filteredCharacters = characters.filter(character => {
+                // Vérifie si le personnage correspond à la recherche
+                const matchesSearch = character.name.toLowerCase().includes(searchTerm) ||
+                    (Array.isArray(character.aliases) && character.aliases.some(alias => alias.toLowerCase().includes(searchTerm)));
+
+                // Vérifie si le personnage correspond au genre sélectionné
+                const matchesGender = selectedGender === "all" || character.gender === selectedGender;
+
+                // Vérifie si le personnage appartient à l'équipage sélectionné
+                const matchesAffiliation = selectedAffiliation === "all" ||
+                    (selectedAffiliation === "Autre"
+                        ? !["Straw Hat Pirates", "Marines", "Shichibukai", "Yonko", "Revolutionary Army"].includes(character.affiliation)
+                        : character.affiliation === selectedAffiliation);
+
+                // Vérifie si le personnage correspond au filtre de Haki
+                const hakiArray = character.haki ? character.haki.split(', ') : [];
+                const hakiCount = hakiArray.length;
+                let matchesHaki = false;
+
+                if (selectedHaki === "all") {
+                    matchesHaki = true;
+                } else if (selectedHaki === "3" && hakiCount === 3) {
+                    matchesHaki = true;
+                } else if (selectedHaki === "2" && hakiCount === 2) {
+                    matchesHaki = true;
+                } else if (selectedHaki === "1" && hakiCount === 1) {
+                    matchesHaki = hakiArray.includes("Armement") || hakiArray.includes("Vision");
+                } else if (selectedHaki === "0") {
+                    // ✅ Vérification stricte pour les personnages sans Haki
+                    matchesHaki = !character.haki || character.haki === "" || character.haki.toLowerCase() === "aucun";
+                }
+
+
+                return matchesSearch && matchesGender && matchesAffiliation && matchesHaki;
+            });
+
             displayCharacters(filteredCharacters);
             updateCharacterCount(filteredCharacters.length);
         }
-            
 
         // Appliquer le filtre sur la recherche et la sélection du genre
         searchInput.addEventListener("input", filterCharacters);
         genderFilter.addEventListener("change", filterCharacters);
         affiliationFilter.addEventListener("change", filterCharacters);
+        hakiFilter.addEventListener("change", filterCharacters);
 
         displayCharacters(characters); // Affichage initial
 

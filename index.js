@@ -173,7 +173,7 @@ const characters = [
         aliases: ['BigMom'],
         devilFruit: 'Soru Soru no Mi', 
         haki: 'Rois, Armement, Vision', 
-        affiliation: 'Big Mom Pirates', 
+        affiliation: 'Équipage de Big Mom', 
         height: '880 cm', 
         gender: 'Féminin', 
         bounty: '4,388,000,000 Berries', 
@@ -1639,7 +1639,7 @@ const characters = [
     { 
         name: 'Koby', 
         devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
+        haki: 'Rois, Armement, Vision', 
         affiliation: 'Marine', 
         height: '167 cm', 
         gender: 'Masculin', 
