@@ -76,21 +76,39 @@ document.addEventListener("DOMContentLoaded", async () => {
             const selectedAffiliation = affiliationFilter.value;
             const selectedHaki = hakiFilter.value;
 
-            const filteredCharacters = characters.filter(character => {
-                // Vérifie si le personnage correspond à la recherche
+            const minBounty = parseInt(bountyMinSlider.value) || 0;
+            const maxBounty = parseInt(bountyMaxSlider.value) || 6000000000;
+
+
+            const predefinedAffiliations = [
+                "Straw Hat Pirates", "Marine", "Armée Révolutionnaire",
+                "Équipage de Barbe Blanche", "Équipage des Pirates de Roger",
+                "Équipe aux Cent Bêtes", "Équipage du Roux", "Équipage de Barbe Noire",
+                "Guilde de la Croix", "Kid Pirates", "Équipage du Heart", "Équipage de Big Mom",
+                "Donquichote Pirates", "Gouvernement Mondial", "CP-AIGIS0",
+                "Famille Kozuki", "Famille Riku", "Famille Vinsmoke",
+                "Principauté de Mokomo", "Famille Neptune"
+            ];
+
+            let filteredCharacters = characters.filter(character => {
+                // 🔹 Vérifie si le personnage correspond à la recherche
                 const matchesSearch = character.name.toLowerCase().includes(searchTerm) ||
                     (Array.isArray(character.aliases) && character.aliases.some(alias => alias.toLowerCase().includes(searchTerm)));
 
-                // Vérifie si le personnage correspond au genre sélectionné
+                // 🔹 Vérifie si le personnage correspond au genre sélectionné
                 const matchesGender = selectedGender === "all" || character.gender === selectedGender;
 
-                // Vérifie si le personnage appartient à l'équipage sélectionné
-                const matchesAffiliation = selectedAffiliation === "all" ||
-                    (selectedAffiliation === "Autre"
-                        ? !["Straw Hat Pirates", "Marines", "Shichibukai", "Yonko", "Revolutionary Army"].includes(character.affiliation)
-                        : character.affiliation === selectedAffiliation);
+                // 🔹 Vérifie si le personnage appartient à l'affiliation sélectionnée
+                let matchesAffiliation = false;
+                if (selectedAffiliation === "all") {
+                    matchesAffiliation = true; // Afficher tout
+                } else if (selectedAffiliation === "Autre") {
+                    matchesAffiliation = !predefinedAffiliations.includes(character.affiliation);
+                } else {
+                    matchesAffiliation = character.affiliation === selectedAffiliation;
+                }
 
-                // Vérifie si le personnage correspond au filtre de Haki
+                // 🔹 Vérifie si le personnage correspond au filtre de Haki
                 const hakiArray = character.haki ? character.haki.split(', ') : [];
                 const hakiCount = hakiArray.length;
                 let matchesHaki = false;
@@ -105,22 +123,32 @@ document.addEventListener("DOMContentLoaded", async () => {
                     matchesHaki = hakiArray.includes("Armement") || hakiArray.includes("Vision");
                 } else if (selectedHaki === "0") {
                     // ✅ Vérification stricte pour les personnages sans Haki
-                    matchesHaki = !character.haki || character.haki === "" || character.haki.toLowerCase() === "aucun";
+                    matchesHaki = !character.haki || character.haki.trim() === "" || character.haki.toLowerCase() === "aucun";
                 }
 
+                // 🔹 Vérifie si la prime est dans l'intervalle défini
+                const bountyValue = character.bounty
+                    ? parseInt(character.bounty.replace(/[^0-9]/g, ""), 10) || 0
+                    : 0;
+                const matchesBounty = bountyValue >= minBounty && bountyValue <= maxBounty;
 
-                return matchesSearch && matchesGender && matchesAffiliation && matchesHaki;
+
+                return matchesSearch && matchesGender && matchesAffiliation && matchesHaki && matchesBounty;
             });
 
             displayCharacters(filteredCharacters);
             updateCharacterCount(filteredCharacters.length);
         }
 
+
         // Appliquer le filtre sur la recherche et la sélection du genre
         searchInput.addEventListener("input", filterCharacters);
         genderFilter.addEventListener("change", filterCharacters);
         affiliationFilter.addEventListener("change", filterCharacters);
         hakiFilter.addEventListener("change", filterCharacters);
+        document.getElementById("bountyMin").addEventListener("input", filterCharacters);
+        document.getElementById("bountyMax").addEventListener("input", filterCharacters);
+
 
         displayCharacters(characters); // Affichage initial
 
@@ -145,6 +173,46 @@ document.addEventListener("DOMContentLoaded", async () => {
             );
             displayCharacters(filteredCharacters);
         });
+
+        const bountyMinSlider = document.getElementById("bountyMin");
+        const bountyMaxSlider = document.getElementById("bountyMax");
+        const bountyMinValue = document.getElementById("bountyMinValue");
+        const bountyMaxValue = document.getElementById("bountyMaxValue");
+
+        function updateBountyValues() {
+            let minValue = parseInt(bountyMinSlider.value);
+            let maxValue = parseInt(bountyMaxSlider.value);
+
+            // Assurer que le slider min ne dépasse pas le max et vice versa
+            if (minValue > maxValue) {
+                let temp = minValue;
+                minValue = maxValue;
+                maxValue = temp;
+                bountyMinSlider.value = minValue;
+                bountyMaxSlider.value = maxValue;
+            }
+
+            // 🔹 Formatage pour afficher en milliards/millions/k
+            bountyMinValue.textContent = formatBounty(minValue);
+            bountyMaxValue.textContent = formatBounty(maxValue);
+
+            // 🔹 Filtrer les personnages en fonction de la prime
+            filterCharacters();
+        }
+
+        function formatBounty(value) {
+            if (value >= 1000000000) {
+                return (value / 1000000000).toFixed(1) + "B"; // Milliards
+            } else if (value >= 1000000) {
+                return (value / 1000000).toFixed(1) + "M"; // Millions
+            } else {
+                return value.toLocaleString() + " Berries"; // Valeur normale
+            }
+        }
+
+        // 🔹 Ajout des écouteurs d'événements
+        bountyMinSlider.addEventListener("input", updateBountyValues);
+        bountyMaxSlider.addEventListener("input", updateBountyValues);
 
     } catch (error) {
         console.error("Erreur lors du chargement des personnages :", error);

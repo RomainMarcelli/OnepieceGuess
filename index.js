@@ -140,7 +140,7 @@ const characters = [
         aliases: ['Kid'], 
         devilFruit: 'Jiki Jiki no Mi', 
         haki: 'Rois, Armement, Vision', 
-        affiliation: 'Kid Pirates', 
+        affiliation: 'Équipage de Kid', 
         height: '205 cm', 
         gender: 'Masculin', 
         bounty: '3,000,000,000 Berries', 

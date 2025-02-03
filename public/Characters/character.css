@@ -162,3 +162,60 @@ h1 {
     color: #333;
     margin-top: 10px;
 }
+
+.bounty-filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px; /* Séparation avec les autres filtres */
+    width: 100%;
+}
+
+.range-container {
+    position: relative;
+    width: 50%;
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.bounty-values {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+input[type="range"] {
+    position: absolute;
+    width: 100%;
+    appearance: none;
+    background: transparent;
+    pointer-events: none; /* Empêche les sliders de se bloquer l'un l'autre */
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 5px;
+    background: #ddd;
+    border-radius: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    margin-top: -5px;
+}
+
+.bounty-values {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-weight: bold;
+}

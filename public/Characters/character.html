@@ -59,7 +59,7 @@
                 <option value="Équipage du Roux">Équipage du Roux</option>
                 <option value="Équipage de Barbe Noire">Équipage de Barbe Noire</option>
                 <option value="Guilde de la Croix">Guilde de la Croix</option>
-                <option value="Kid Pirates">Kid Pirates</option>
+                <option value="Équipage de Kid">Équipage de Kid</option>
                 <option value="Équipage du Heart">Équipage du Heart</option>
                 <option value="Équipage de Big Mom">Équipage de Big Mom</option>
                 <option value="Donquichote Pirates">Donquichote Pirates</option>
@@ -80,10 +80,21 @@
                 <option value="2">Armement & Vision</option>
                 <option value="1">Vision ou Armement</option>
                 <option value="0">Aucun</option>
-            </select>
-
+            </select>         
+            
         </div>
 
+        <div class="bounty-filter">
+            <label for="bountyRange">Fourchette de prime :</label>
+            <div class="range-container">
+                <input type="range" id="bountyMin" min="0" max="6000000000" step="1000000" value="0">
+                <input type="range" id="bountyMax" min="0" max="6000000000" step="1000000" value="6000000000">
+            </div>
+            <div class="bounty-values">
+                <span id="bountyMinValue">0 B</span>
+                <span id="bountyMaxValue">6 B</span>
+            </div>
+        </div>
 
         <div id="charactersContainer" class="characters-grid"></div>
         <!-- Modale pour afficher les détails -->
