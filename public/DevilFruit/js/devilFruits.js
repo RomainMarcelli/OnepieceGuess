@@ -206,6 +206,29 @@ async function fetchDevilFruit() {
     }
 }
 
+// Gestion de la navigation entre les modes de jeu
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.guessPerso img').addEventListener('click', () => {
+        window.location.href = '../index.html';
+    });
+
+    document.querySelector('.devilFruit img').addEventListener('click', () => {
+        window.location.href = 'devilfruit.html';
+    });
+
+    document.querySelector('.vs img').addEventListener('click', () => {
+        window.location.href = '../Alphabet/alphabet.html';
+    });
+
+    const currentPage = window.location.pathname.split('/').pop();
+    if (currentPage === 'index.html') {
+        document.querySelector('.guessPerso img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
+    } else if (currentPage === '../DevilFruit/devilfruit.html') {
+        document.querySelector('.devilFruit img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
+    } else if (currentPage === '../Alphabet/alphabet.html') {
+        document.querySelector('.vs img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
+    }
+});
 
 
 function checkGuess(event) {
