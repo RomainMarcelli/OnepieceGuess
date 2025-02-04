@@ -129,21 +129,23 @@
                     <option value="noFruit">Aucun fruit du démon</option>
                 </select>
             </div>   
-            
-            <select id="heightFilter">
-                <option value="all">Toutes les tailles</option>
-                <option value="0-1">0m à 1m</option>
-                <option value="1-2">1m à 2m</option>
-                <option value="2-3">2m à 3m</option>
-                <option value="3-4">3m à 4m</option>
-                <option value="4-5">4m à 5m</option>
-                <option value="5-6">5m à 6m</option>
-                <option value="6-7">6m à 7m</option>
-                <option value="7-8">7m à 8m</option>
-                <option value="8-9">8m à 9m</option>
-                <option value="10+">10m ou plus</option>
-            </select>
-            
+
+            <div class="filter-container">
+                <label for="Taille">Tailles :</label>
+                <select id="heightFilter">
+                    <option value="all">Toutes les tailles</option>
+                    <option value="0-1">0m à 1m</option>
+                    <option value="1-2">1m à 2m</option>
+                    <option value="2-3">2m à 3m</option>
+                    <option value="3-4">3m à 4m</option>
+                    <option value="4-5">4m à 5m</option>
+                    <option value="5-6">5m à 6m</option>
+                    <option value="6-7">6m à 7m</option>
+                    <option value="7-8">7m à 8m</option>
+                    <option value="8-9">8m à 9m</option>
+                    <option value="10+">10m ou plus</option>
+                </select>       
+            </div>
             
         </div>
 
@@ -185,6 +187,7 @@
     </main>
 
     <script src="character.js"></script>
+    <script src="filterAnimations.js"></script>
 </body>
 
 </html>
