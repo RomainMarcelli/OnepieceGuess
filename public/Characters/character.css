@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap'); /* Police élégante et lisible */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -5,8 +6,23 @@ body {
 }
 
 h1 {
+    font-family: 'Cinzel', sherif; /* Police One Piece */
+    font-size: 44px;
+    text-transform: uppercase;
+    color: #FFD700; /* Doré */
+    text-shadow: 4px 4px 0px #000, 
+                 6px 6px 5px rgba(0, 0, 0, 0.6);
+    letter-spacing: 2px;
     margin-top: 20px;
-    color: #333;
+    text-align: center;
+    display: inline-block; /* ✅ Empêche l'élargissement du conteneur */
+    transition: transform 0.2s ease-in-out, text-shadow 0.2s ease-in-out;
+}
+
+/* ✨ Animation subtile au survol */
+h1:hover {
+    transform: scale(1.05);
+    text-shadow: 4px 4px 0px #000, 6px 6px 5px rgba(0, 0, 0, 0.8);
 }
 
 #searchInput {
@@ -34,6 +50,7 @@ h1 {
     border-radius: 10px;
     text-align: center;
     transition: transform 0.2s;
+    cursor: pointer;
 }
 
 .character-card:hover {
@@ -59,8 +76,6 @@ h1 {
     margin: 5px 0;
     font-size: 14px;
 }
-
-
 
 .character-name {
     font-size: 18px;
@@ -121,72 +136,136 @@ h1 {
 /* ///////////////////////////////////////////////////////////////// */
 
 
+/* 🌟 Conteneur principal des filtres */
 .filters {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap; /* ✅ Permet de bien afficher si trop de filtres */
+    padding: 15px;
+    border-radius: 15px;
+    position: relative; /* ✅ De base, les filtres restent à leur position normale */
+    transition: all 0.3s ease-in-out;
+}
+
+.filters.fixed {
+    position: fixed; /* ✅ Fixe les filtres en haut après scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* ✅ Toujours visible */
+    background-color: black;
+    border-radius: 0;
+}
+
+/* 🏷️ Style des labels */
+.filters label {
+    font-size: 14px;
+    font-weight: bold;
+    color: white; /* Couleur dorée inspirée de One Piece */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 📌 Conteneur pour chaque filtre */
+.filter-container {
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
-.filters label {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#genderFilter {
-    padding: 8px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-.filters {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.filters label {
-    font-weight: bold;
-}
-
+/* 📜 Style des sélections */
 .filters select {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    width: 180px;
+    border-radius: 8px;
+    background: white;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    appearance: none; /* Supprime le style natif */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    position: relative;
+}
+
+/* ✨ Effet au survol */
+.filters select:hover {
+    transform: scale(1.05);
+}
+
+/* ✨ Animation quand un élément est sélectionné */
+.filters select:focus {
+    outline: none;
+    transform: scale(1.08);
+}
+
+/* 🔽 Ajout d'une icône pour la flèche du select */
+.filters select::after {
+    content: "▼";
+    font-size: 12px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff9900;
+    pointer-events: none;
+}
+
+/* 🎨 Style des options dans le select */
+.filters select option {
+    background: white;
+    color: black;
+    font-weight: bold;
+    padding: 8px;
+}
+
+/* 🎯 Effet sur l’option sélectionnée */
+.filters select option:checked {
+    background: black;
+    color: white;
+    font-weight: bold;
 }
 
 
+/* 🌊 Animation d’apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
+.filters {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 🎯 Taille spécifique pour le filtre des arcs */
+#arcFilter {
+    width: 200px;
+}
+
+/* 🏆 Compteur du nombre de personnages affichés */
 .total-characters-count {
     font-size: 16px;
     font-weight: bold;
-    color: #333;
+    color: white;
     margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    display: inline-block;
 }
 
-/* FILTRE ARC  */
-
-.filter-container {
-    margin: 10px 0;
-}
-
-.filter-container label {
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-#arcFilter {
-    width: 200px;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    cursor: pointer;
-}
 
 /* ///////////////////////////////////////////////////////////////// */
 /* ///////////            LES FILTRES     ///////////////////////*/
@@ -206,7 +285,7 @@ h1 {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #444;
+    color: white;
 }
 
 /* Conteneur des sliders */
@@ -333,3 +412,41 @@ input[type="range"]::-moz-range-thumb {
 
 
 /* FIN FILTRE PRIME */
+
+
+/* 📌 Conteneur des flèches */
+.scroll-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+/* 🎯 Style des boutons */
+.scroll-btn {
+    width: 20px;
+    height: 20px;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: none; /* Caché par défaut */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Effet au survol */
+.scroll-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* Afficher quand nécessaire */
+.scroll-btn.visible {
+    display: flex;
+}

@@ -22,3 +22,17 @@ style.innerHTML = `
 }
 `;
 document.head.appendChild(style);
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const filters = document.querySelector(".filters");
+    const filtersOffset = filters.offsetTop; // Position initiale des filtres
+
+    window.addEventListener("scroll", function () {
+        if (window.scrollY > filtersOffset) {
+            filters.classList.add("fixed");
+        } else {
+            filters.classList.remove("fixed");
+        }
+    });
+});

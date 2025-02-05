@@ -1,3 +1,4 @@
+let characters = []; // ✅ Déclaration globale
 document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("charactersContainer");
     const searchInput = document.getElementById("searchInput");
@@ -94,9 +95,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         function displayCharacters(filteredCharacters) {
-            container.innerHTML = ""; // Réinitialisation
+            console.log("🎭 Affichage des personnages :", filteredCharacters);
+            console.log("📢 Appel de displayCharacters() avec :", filteredCharacters);
+
+            // 🔥 Assurer que le conteneur est bien sélectionné
+            const container = document.getElementById("charactersContainer");
+            if (!container) {
+                console.error("❌ Erreur : Le conteneur des personnages (charactersContainer) est introuvable !");
+                return;
+            }
+
+            container.innerHTML = ""; // 🔄 Réinitialisation
+
+            if (filteredCharacters.length === 0) {
+                console.warn("⚠️ Aucun personnage trouvé !");
+                container.innerHTML = "<p>Aucun personnage ne correspond à votre recherche.</p>";
+                return;
+            }
 
             filteredCharacters.forEach((character) => {
+                console.log("✅ Affichage de :", character.name);
                 const characterCard = document.createElement("div");
                 characterCard.classList.add("character-card");
 
@@ -104,14 +122,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 characterCard.innerHTML = `
                     <div class="character-image-container">
-                        <img src="${imagePath}" alt="${character.name}" class="character-image" onerror="this.onerror=null; this.src='/img/default.png';">
+                        <img src="${imagePath}" alt="${character.name}" class="character-image" 
+                             onerror="this.onerror=null; this.src='/img/default.png';">
                     </div>
                     <h2 class="character-name">${character.name}</h2>
                 `;
 
-                // Ajouter un événement au clic sur la carte du personnage
+                // Ajoute un événement pour afficher la modale
                 characterCard.addEventListener("click", () => {
-                    // Mettre à jour les informations de la modale
+                    console.log("📌 Clic sur", character.name);
                     modalImage.src = imagePath;
                     modalName.textContent = character.name;
                     modalAlias.textContent = Array.isArray(character.aliases) ? character.aliases.join(", ") : "Aucun";
@@ -122,38 +141,62 @@ document.addEventListener("DOMContentLoaded", async () => {
                     modalGender.textContent = character.gender;
                     modalBounty.textContent = character.bounty;
                     modalFirstArc.textContent = character.firstArc;
-
-                    // Afficher la modale
                     modal.style.display = "flex";
                 });
 
                 container.appendChild(characterCard);
             });
+
             updateCharacterCount(filteredCharacters.length);
         }
 
+        
+
         async function filterCharacters() {
+            console.log("🔍 Filtrage en cours...");
+
+            // Vérifie si les personnages sont bien chargés
+            if (!characters || characters.length === 0) {
+                console.error("⚠️ Aucun personnage chargé !");
+                return;
+            }
+            console.log("📦 Personnages chargés :", characters);
+
+            // Vérifie si les fruits du démon sont bien chargés
             if (!devilFruitsByType.zoan || !devilFruitsByType.paramecia || !devilFruitsByType.logia) {
                 console.warn("⚠️ Fruits du démon non chargés, récupération en cours...");
                 await fetchDevilFruits(); // Recharge les fruits du démon si nécessaire
             }
+
+            // 🔎 Récupère les valeurs des filtres
             const searchTerm = searchInput.value.toLowerCase();
             const selectedGender = genderFilter.value;
             const selectedAffiliation = affiliationFilter.value;
             const selectedHaki = hakiFilter.value;
             const selectedArc = document.getElementById("arcFilter").value;
             const selectedDevilFruit = document.getElementById("devilFruitFilter").value;
-
+            const selectedHeight = document.getElementById("heightFilter").value;
             const minBounty = parseInt(bountyMinSlider.value) || 0;
             const maxBounty = parseInt(bountyMaxSlider.value) || 5000000000;
 
+            // Filtrage des personnages
             let filteredCharacters = characters.filter(character => {
+                // 🔎 Recherche avancée (nom, alias, fruit du démon, haki, affiliation, prime, taille, arc)
                 const matchesSearch = character.name.toLowerCase().includes(searchTerm) ||
-                    (Array.isArray(character.aliases) && character.aliases.some(alias => alias.toLowerCase().includes(searchTerm)));
+                    (Array.isArray(character.aliases) && character.aliases.some(alias => alias.toLowerCase().includes(searchTerm))) ||
+                    (character.devilFruit && character.devilFruit.toLowerCase().includes(searchTerm)) ||
+                    (character.haki && character.haki.toLowerCase().includes(searchTerm)) ||
+                    (character.affiliation && character.affiliation.toLowerCase().includes(searchTerm)) ||
+                    (character.bounty && character.bounty.toLowerCase().includes(searchTerm)) ||
+                    (character.height && character.height.toString().toLowerCase().includes(searchTerm)) ||
+                    (character.firstArc && character.firstArc.toLowerCase().includes(searchTerm));
 
+
+                // ✅ Vérifie les autres filtres (genre, affiliation, haki, arc, prime, taille, etc.)
                 const matchesGender = selectedGender === "all" || character.gender === selectedGender;
                 const matchesAffiliation = selectedAffiliation === "all" || (character.affiliation && character.affiliation === selectedAffiliation);
 
+                // ✅ Vérifie le Haki
                 const hakiArray = character.haki ? character.haki.split(', ') : [];
                 const hakiCount = hakiArray.length;
                 let matchesHaki = selectedHaki === "all" ||
@@ -162,54 +205,43 @@ document.addEventListener("DOMContentLoaded", async () => {
                     (selectedHaki === "1" && hakiCount === 1 && (hakiArray.includes("Armement") || hakiArray.includes("Vision"))) ||
                     (selectedHaki === "0" && (!character.haki || character.haki.trim() === "" || character.haki.toLowerCase() === "aucun"));
 
+                // ✅ Vérifie la Prime
                 let matchesBounty = true;
                 if (character.bounty) {
                     const bountyValue = parseInt(character.bounty.replace(/[^0-9]/g, ""), 10) || 0;
                     matchesBounty = bountyValue >= minBounty && bountyValue <= maxBounty;
                 }
 
+                // ✅ Vérifie l'Arc
                 const matchesArc = selectedArc === "all" || character.firstArc === selectedArc;
 
+                // ✅ Vérifie le Fruit du Démon
                 let matchesDevilFruit = true;
                 if (selectedDevilFruit !== "all") {
                     if (selectedDevilFruit === "noFruit") {
-                        // ✅ Afficher ceux qui n'ont PAS de fruit du démon
                         matchesDevilFruit = !character.devilFruit || character.devilFruit.toLowerCase() === "aucun";
                     } else if (selectedDevilFruit === "hasFruit") {
-                        // ✅ Afficher ceux qui ont un fruit du démon
                         matchesDevilFruit = character.devilFruit && character.devilFruit.toLowerCase() !== "aucun";
                     } else {
-                        // ✅ Vérifier le type de fruit du démon
                         const characterFruitType = getDevilFruitType(character.devilFruit);
                         matchesDevilFruit = characterFruitType === selectedDevilFruit;
                     }
                 }
 
-                const selectedHeight = document.getElementById("heightFilter").value;
-
-                // 🔹 Convertit la taille du personnage en mètres
+                // ✅ Vérifie la Taille
                 function getCharacterHeight(heightStr) {
                     if (!heightStr) return 0;
-                    const heightMatch = heightStr.match(/\d+/g); // Extrait les chiffres
-                    return heightMatch ? parseInt(heightMatch[0], 10) / 100 : 0; // Convertit en mètres
+                    const heightMatch = heightStr.match(/\d+/g);
+                    return heightMatch ? parseInt(heightMatch[0], 10) / 100 : 0;
                 }
 
-                // 🔹 Vérifie si la taille correspond au filtre sélectionné
                 function matchesHeight(characterHeight, filter) {
-                    switch (filter) {
-                        case "0-1": return characterHeight >= 0 && characterHeight < 1;
-                        case "1-2": return characterHeight >= 1 && characterHeight < 2;
-                        case "2-3": return characterHeight >= 2 && characterHeight < 3;
-                        case "3-4": return characterHeight >= 3 && characterHeight < 4;
-                        case "4-5": return characterHeight >= 4 && characterHeight < 5;
-                        case "5-6": return characterHeight >= 5 && characterHeight < 6;
-                        case "6-7": return characterHeight >= 6 && characterHeight < 7;
-                        case "7-8": return characterHeight >= 7 && characterHeight < 8;
-                        case "8-9": return characterHeight >= 8 && characterHeight < 9;
-                        case "9-10": return characterHeight >= 9 && characterHeight < 10;
-                        case "10+": return characterHeight >= 10;
-                        default: return true; // "all"
-                    }
+                    const heightRanges = {
+                        "0-1": [0, 1], "1-2": [1, 2], "2-3": [2, 3], "3-4": [3, 4],
+                        "4-5": [4, 5], "5-6": [5, 6], "6-7": [6, 7], "7-8": [7, 8],
+                        "8-9": [8, 9], "9-10": [9, 10], "10+": [10, Infinity]
+                    };
+                    return filter === "all" || (characterHeight >= heightRanges[filter][0] && characterHeight < heightRanges[filter][1]);
                 }
 
                 const characterHeight = getCharacterHeight(character.height);
@@ -218,22 +250,37 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return matchesSearch && matchesGender && matchesAffiliation && matchesHaki && matchesBounty && matchesArc && matchesDevilFruit && matchesHeightFilter;
             });
 
+            if (filteredCharacters.length === 0) {
+                console.warn("⚠️ Aucun personnage trouvé après filtrage !");
+            }
 
+            console.log("🔎 Terme de recherche :", searchTerm);
+            console.log("👀 Personnages trouvés :", filteredCharacters);
+            console.log("🛠️ Contenu de filteredCharacters avant affichage :", JSON.stringify(filteredCharacters, null, 2));
+
+            setTimeout(() => {
+                displayCharacters(filteredCharacters);
+            }, 300);
+            
+
+            // ✅ Mise à jour des personnages affichés
             displayCharacters(filteredCharacters);
             updateCharacterCount(filteredCharacters.length);
 
-            await fetchDevilFruits();
-            // await fetchCharacters();
-
-            searchInput.addEventListener("input", filterCharacters);
-            genderFilter.addEventListener("change", filterCharacters);
-            affiliationFilter.addEventListener("change", filterCharacters);
-            hakiFilter.addEventListener("change", filterCharacters);
-            document.getElementById("arcFilter").addEventListener("change", filterCharacters);
-            document.getElementById("devilFruitFilter").addEventListener("change", filterCharacters);
-            document.getElementById("heightFilter").addEventListener("change", filterCharacters);
-
+            console.log("🔎 Terme de recherche :", searchTerm);
+            console.log("👀 Personnages trouvés :", filteredCharacters);
         }
+
+
+        // ✅ Vérifie que les filtres sont bien appliqués en temps réel
+        searchInput.addEventListener("input", filterCharacters);
+        genderFilter.addEventListener("change", filterCharacters);
+        affiliationFilter.addEventListener("change", filterCharacters);
+        hakiFilter.addEventListener("change", filterCharacters);
+        document.getElementById("arcFilter").addEventListener("change", filterCharacters);
+        document.getElementById("devilFruitFilter").addEventListener("change", filterCharacters);
+        document.getElementById("heightFilter").addEventListener("change", filterCharacters);
+
 
         displayCharacters(characters); // Affichage initial
 

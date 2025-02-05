@@ -5,9 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Personnages</title>
+    <link rel="icon" href="../img/favicon-32x32.png" type="image/png">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../responsive.css">
     <link rel="stylesheet" href="character.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 </head>
 
 <body>
@@ -34,54 +38,60 @@
         </nav>
     </header>
     <main>
-        <h1>Listes de personnages</h1>
+        <h1>Listes des personnages</h1>
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Rechercher un personnage...">
         </div>
 
         <div class="filters">
-            <label for="genderFilter">Genre :</label>
-            <select id="genderFilter">
-                <option value="all">Tous</option>
-                <option value="Masculin">Masculin</option>
-                <option value="Féminin">Féminin</option>
-            </select>
+            <div class="filter-container">
+                <label for="genderFilter">Genre :</label>
+                <select id="genderFilter">
+                    <option value="all">Tous</option>
+                    <option value="Masculin">Masculin</option>
+                    <option value="Féminin">Féminin</option>
+                </select>
+            </div>
 
-            <label for="affiliationFilter">Équipage :</label>
-            <select id="affiliationFilter">
-                <option value="all">Tous</option>
-                <option value="Straw Hat Pirates">Straw Hat Pirates</option>
-                <option value="Marine">Marine</option>
-                <option value="Armée Révolutionnaire">Armée Révolutionnaire</option>
-                <option value="Équipage de Barbe Blanche">Équipage de Barbe Blanche</option>
-                <option value="Équipage des Pirates de Roger">Équipage des Pirates de Roger</option>
-                <option value="Équipe aux Cent Bêtes">Équipe aux Cent Bêtes</option>
-                <option value="Équipage du Roux">Équipage du Roux</option>
-                <option value="Équipage de Barbe Noire">Équipage de Barbe Noire</option>
-                <option value="Guilde de la Croix">Guilde de la Croix</option>
-                <option value="Équipage de Kid">Équipage de Kid</option>
-                <option value="Équipage du Heart">Équipage du Heart</option>
-                <option value="Équipage de Big Mom">Équipage de Big Mom</option>
-                <option value="Donquichote Pirates">Donquichote Pirates</option>
-                <option value="Gouvernement Mondial">Gouvernement Mondial</option>
-                <option value="CP-AIGIS0">CP-AIGIS0</option>
-                <option value="Famille Kozuki">Famille Kozuki</option>
-                <option value="Famille Riku">Famille Riku</option>
-                <option value="Famille Vinsmoke">Famille Vinsmoke</option>
-                <option value="Principauté de Mokomo">Principauté de Mokomo</option>
-                <option value="Famille Neptune">Famille Neptune</option>
-                <option value="Autre">Autre</option>
-            </select>
+            <div class="filter-container">
+                <label for="affiliationFilter">Équipage :</label>
+                <select id="affiliationFilter">
+                    <option value="all">Tous</option>
+                    <option value="Straw Hat Pirates">Straw Hat Pirates</option>
+                    <option value="Marine">Marine</option>
+                    <option value="Armée Révolutionnaire">Armée Révolutionnaire</option>
+                    <option value="Équipage de Barbe Blanche">Équipage de Barbe Blanche</option>
+                    <option value="Équipage de Roger">Équipage de Roger</option>
+                    <option value="Équipe aux Cent Bêtes">Équipe aux Cent Bêtes</option>
+                    <option value="Équipage du Roux">Équipage du Roux</option>
+                    <option value="Équipage de Barbe Noire">Équipage de Barbe Noire</option>
+                    <option value="Guilde de la Croix">Guilde de la Croix</option>
+                    <option value="Équipage de Kid">Équipage de Kid</option>
+                    <option value="Équipage du Heart">Équipage du Heart</option>
+                    <option value="Équipage de Big Mom">Équipage de Big Mom</option>
+                    <option value="Donquichote Pirates">Donquichote Pirates</option>
+                    <option value="Gouvernement Mondial">Gouvernement Mondial</option>
+                    <option value="CP-AIGIS0">CP-AIGIS0</option>
+                    <option value="Famille Kozuki">Famille Kozuki</option>
+                    <option value="Famille Riku">Famille Riku</option>
+                    <option value="Famille Vinsmoke">Famille Vinsmoke</option>
+                    <option value="Principauté de Mokomo">Principauté de Mokomo</option>
+                    <option value="Famille Neptune">Famille Neptune</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
 
-            <label for="hakiFilter">Haki :</label>
-            <select id="hakiFilter">
-                <option value="all">Tous</option>
-                <option value="3">Rois, Armement, Vision</option>
-                <option value="2">Armement & Vision</option>
-                <option value="1">Vision ou Armement</option>
-                <option value="0">Aucun</option>
-            </select>     
-            
+            <div class="filter-container">
+                <label for="hakiFilter">Haki :</label>
+                <select id="hakiFilter">
+                    <option value="all">Tous</option>
+                    <option value="3">Rois, Armement, Vision</option>
+                    <option value="2">Armement & Vision</option>
+                    <option value="1">Vision ou Armement</option>
+                    <option value="0">Aucun</option>
+                </select>
+            </div>
+
             <div class="filter-container">
                 <label for="arcFilter">Arc :</label>
                 <select id="arcFilter">
@@ -116,8 +126,8 @@
                     <option value="Wano">Wano</option>
                     <option value="Egg Head">Egg Head</option>
                 </select>
-            </div>    
-            
+            </div>
+
             <div class="filter-container">
                 <label for="devilFruitFilter">Fruit du Démon :</label>
                 <select id="devilFruitFilter">
@@ -128,7 +138,7 @@
                     <option value="logia">Logia</option>
                     <option value="noFruit">Aucun fruit du démon</option>
                 </select>
-            </div>   
+            </div>
 
             <div class="filter-container">
                 <label for="Taille">Tailles :</label>
@@ -144,9 +154,9 @@
                     <option value="7-8">7m à 8m</option>
                     <option value="8-9">8m à 9m</option>
                     <option value="10+">10m ou plus</option>
-                </select>       
+                </select>
             </div>
-            
+
         </div>
 
         <div class="bounty-filter">
@@ -160,7 +170,14 @@
                 <span id="bountyMinValue">0 B</span>
                 <span id="bountyMaxValue">6 B</span>
             </div>
-        </div>                     
+        </div>
+
+        <!-- Flèches de navigation -->
+        <div class="scroll-buttons">
+            <button id="scrollDown" class="scroll-btn"><i class="fa-solid fa-circle-arrow-down"></i></button>
+            <button id="scrollUp" class="scroll-btn"><i class="fa-solid fa-circle-arrow-up"></i></button>
+        </div>
+
 
         <div id="charactersContainer" class="characters-grid"></div>
         <!-- Modale pour afficher les détails -->
@@ -188,6 +205,8 @@
 
     <script src="character.js"></script>
     <script src="filterAnimations.js"></script>
+    <script src="scrollNavigation.js"></script>
+
 </body>
 
 </html>
