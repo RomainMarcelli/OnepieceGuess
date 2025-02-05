@@ -207,7 +207,7 @@ const characters = [
         affiliation: 'Marine', 
         height: '302 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '3,000,000,000 Berries', 
         firstArc: 'Sabaody Archipelago' 
     },
     { 
@@ -218,7 +218,7 @@ const characters = [
         affiliation: 'Marine', 
         height: '306 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '5,000,000,000 Berries', 
         firstArc: 'Enies Lobby' 
     },
     { 
@@ -238,7 +238,7 @@ const characters = [
         affiliation: 'Marine', 
         height: '330 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '3,000,000,000 Berries', 
         firstArc: 'Wano' 
     },
     { 
@@ -994,7 +994,7 @@ const characters = [
         affiliation: 'Marine', 
         height: '270 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '3,000,000,000 Berries', 
         firstArc: 'Dressrosa' 
     },
     { 
@@ -1169,7 +1169,7 @@ const characters = [
         affiliation: 'Marine', 
         height: '287 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '3,000,000,000 Berries', 
         firstArc: 'Arlong Park' 
     },
     { 
@@ -1645,7 +1645,7 @@ const characters = [
         affiliation: 'Marine', 
         height: '167 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '500,000,000 Berries', 
         firstArc: 'Romance Dawn' 
     },
     { 
@@ -1655,7 +1655,7 @@ const characters = [
         affiliation: 'Marine', 
         height: '179 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '100,000,000 Berries', 
         firstArc: 'Romance Dawn' 
     },
     { 
@@ -1665,8 +1665,18 @@ const characters = [
         affiliation: 'Marine', 
         height: '279 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '500.000.000 Berries', 
         firstArc: 'Sabaody Archipelago' 
+    },
+    { 
+        name: 'Tsuru', 
+        devilFruit: 'Woshu Woshu no Mi', 
+        haki: 'Armement, Vision', 
+        affiliation: 'Marine', 
+        height: '204 cm', 
+        gender: 'Féminin', 
+        bounty: '0', 
+        firstArc: 'Jaya' 
     },
     { 
         name: 'Killer', 
@@ -2106,7 +2116,7 @@ const devilFruits = [
     { name: 'Baku Baku no Mi', type: 'Paramecia' },
     { name: 'Shiro Shiro no Mi', type: 'Paramecia' },
     { name: 'Fude Fude no Mi', type: 'Paramecia' },
-    { name: 'au', type: 'Paramecia' },
+    { name: 'Woshu Woshu no Mi', type: 'Paramecia' },
     { name: 'au', type: 'Paramecia' },
     { name: 'au', type: 'Paramecia' },
     { name: 'au', type: 'Paramecia' },
@@ -2166,7 +2176,8 @@ const devilFruitsByType = {
         'Sube Sube no Mi', 'Nomi Nomi no Mi', 'Beta Beta no Mi', 'Pamu Pamu no Mi', 
         'Guru Guru no Mi', 'Buki Buki no Mi', 'Hobi Hobi no Mi', 'Nui Nui no Mi', 
         'Oto Oto no Mi', 'Kira Kira no Mi', 'Toki Toki no Mi', 'Uta Uta no Mi', 
-        'Juku Juku no Mi', 'Choki Choki no Mi', 'Mato Mato no Mi', 'Baku Baku no Mi', 'Shiro Shiro no Mi', 'Fude Fude no Mi'
+        'Juku Juku no Mi', 'Choki Choki no Mi', 'Mato Mato no Mi', 'Baku Baku no Mi', 'Shiro Shiro no Mi', 'Fude Fude no Mi',
+        'Woshu Woshu no Mi'
     ],
     Zoan: [
         'Inu Inu no Mi', 'Ryu Ryu no Mi', 'Ushi Ushi no Mi', 'Tori Tori no Mi', 
@@ -2259,6 +2270,7 @@ const devilFruitsTranslated = {
         { name: 'Choki Choki no Mi', translation: 'Fruit des Ciseaux' },
         { name: 'Shiro Shiro no Mi', translation: 'Fruit du Château' },
         { name: 'Fude Fude no Mi', translation: 'Fruit du Pinceau' },
+        { name: 'Woshu Woshu no Mi', translation: 'Fruit de la Lessive' },
     ],
     Zoan: [
         { name: 'Inu Inu no Mi', translation: 'Fruit du Chien' },
