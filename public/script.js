@@ -56,6 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.vs img').addEventListener('click', () => {
         window.location.href = 'Alphabet/alphabet.html';
     });
+    document.querySelector('.characters img').addEventListener('click', () => {
+        window.location.href = 'Characters/character.html';
+    });
 
     // Appliquer le filtre CSS sur l'image active
     const currentPage = window.location.pathname.split('/').pop();
@@ -66,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.devilFruit img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     } else if (currentPage === 'alphabet.html') {
         document.querySelector('.vs img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
+    } else if (currentPage === 'character.html') {
+        document.querySelector('.characters img').style.filter = 'drop-shadow(0 0 10px #faf9f3)';
     }
 });
 

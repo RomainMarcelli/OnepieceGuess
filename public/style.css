@@ -860,7 +860,7 @@ img {
     margin: 0 auto;
     margin-bottom: 10px;
     width: 100%;
-    max-width: 400px;
+    max-width: 510px;
 }
 
 .background{
@@ -882,7 +882,7 @@ img {
     height: 100%;
 }
 
-.guessPerso, .devilFruit, .vs{
+.guessPerso, .devilFruit, .vs, .characters{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -893,7 +893,7 @@ img {
     /* filter: drop-shadow(0 0 10px #faf9f3); */
 }
 
-.guessPerso img, .devilFruit img, .vs img{
+.guessPerso img, .devilFruit img, .vs img, .characters img{
     display: block;
     width: 100%;
     height: 100%;

@@ -212,6 +212,7 @@ const characters = [
     },
     { 
         name: 'Akainu', 
+        aliases: ['Sakazuki'],
         devilFruit: 'Magu Magu no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Marine', 
@@ -1243,6 +1244,7 @@ const characters = [
     },
     { 
         name: 'Léo', 
+        aliases: ['Leo'],
         devilFruit: 'Nui Nui no Mi', 
         haki: 'Aucun', 
         affiliation: 'Royaume de Tontatta', 
@@ -2018,8 +2020,6 @@ const characters = [
         bounty: '0',
         firstArc: 'Drum Island'
     },
-
-
 ];
 
 
