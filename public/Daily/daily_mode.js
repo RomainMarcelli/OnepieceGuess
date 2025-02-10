@@ -49,16 +49,28 @@ document.getElementById("guessForm").addEventListener("submit", async (event) =>
 
     const guessedCharacter = await fetchCharacterByName(guess);
     if (!guessedCharacter) {
-        document.getElementById("resultContainer").innerHTML = `<p>❌ Mauvaise réponse ! Le personnage était ${window.dailyCharacter.name}.</p>`;
+        document.getElementById("resultContainer").insertAdjacentHTML(
+            'beforeend',
+            `<p>❌ Mauvaise réponse ! Essayez encore.</p>`
+        );
+        document.getElementById("characterInput").value = ""; // Efface l'input pour une nouvelle tentative
         return;
     }
 
-    displayComparisonResult(guessedCharacter, window.dailyCharacter);
-    
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem("lastPlayedDate", today);
-    document.getElementById("guessForm").style.display = "none";
+    // ✅ Ajoute un nouvel élément sans supprimer les anciens
+    displayResult(guessedCharacter, window.dailyCharacter);
+
+    // ✅ Si la réponse est correcte, empêcher de rejouer
+    if (guessedCharacter.name === window.dailyCharacter.name) {
+        document.getElementById("guessForm").style.display = "none"; // Cache l'input uniquement si c'est correct
+        const today = new Date().toISOString().split('T')[0];
+        localStorage.setItem("lastPlayedDate", today);
+    } else {
+        document.getElementById("characterInput").value = ""; // Efface seulement l'input pour une nouvelle tentative
+    }
 });
+
+
 
 async function fetchCharacterByName(name) {
     try {
@@ -69,50 +81,6 @@ async function fetchCharacterByName(name) {
         console.error("Erreur lors de la récupération des personnages", error);
         return null;
     }
-}
-
-function displayComparisonResult(guessedCharacter, correctCharacter) {
-    const resultContainer = document.getElementById("resultContainer");
-    resultContainer.innerHTML = "";
-
-    const fields = [
-        { key: "name", label: "Nom" },
-        { key: "gender", label: "Genre" },
-        { key: "affiliation", label: "Affiliation" },
-        { key: "devilFruit", label: "Fruit du Démon" },
-        { key: "haki", label: "Haki" },
-        { key: "bounty", label: "Prime" },
-        { key: "height", label: "Taille" },
-        { key: "firstArc", label: "Premier Arc" }
-    ];
-
-    const resultDiv = document.createElement("div");
-    resultDiv.className = "resultat";
-
-    fields.forEach(field => {
-        const itemDiv = document.createElement("div");
-        itemDiv.className = "result-item";
-        
-        const guessedValue = guessedCharacter[field.key] || "Aucun";
-        const correctValue = correctCharacter[field.key] || "Aucun";
-        
-        const isMatch = guessedValue === correctValue;
-        itemDiv.classList.add(isMatch ? "correct" : "incorrect");
-        
-        if (field.key === "name") {
-            const img = document.createElement("img");
-            img.src = getImagePath(correctCharacter[field.key]);
-            img.alt = "Character Image";
-            img.className = "character-image";
-            itemDiv.appendChild(img);
-        } else {
-            itemDiv.textContent = `${field.label}: ${correctValue}`;
-        }
-
-        resultDiv.appendChild(itemDiv);
-    });
-
-    resultContainer.appendChild(resultDiv);
 }
 
 document.getElementById("resetDailyButton").addEventListener("click", async () => {
