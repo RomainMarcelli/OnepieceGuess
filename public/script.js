@@ -138,7 +138,7 @@ async function displaySuggestions(suggestions) {
 
         // ✅ Vérifier si le nom ou un alias commence par l'entrée utilisateur
         let matchesSearch = suggestion.name.toLowerCase().startsWith(input) ||
-                            (suggestion.aliases && suggestion.aliases.some(alias => alias.toLowerCase().startsWith(input)));
+            (suggestion.aliases && suggestion.aliases.some(alias => alias.toLowerCase().startsWith(input)));
 
         if (matchesSearch && !addedNames.has(suggestion.name.toLowerCase())) {
             filteredSuggestions.push({
@@ -172,7 +172,7 @@ async function displaySuggestions(suggestions) {
             div.addEventListener('click', () => {
                 document.getElementById('characterInput').value = suggestion.displayName;
                 document.getElementById('characterInput').dataset.actualName = suggestion.actualName;
-                
+
                 // ✅ Ajouter ce personnage à la liste des sélectionnés
                 addSelectedCharacter(suggestion.actualName);
 
@@ -186,7 +186,7 @@ async function displaySuggestions(suggestions) {
             suggestionsDiv.appendChild(div);
         });
 
-        suggestionsDiv.style.display = 'block'; 
+        suggestionsDiv.style.display = 'block';
     } else {
         suggestionsDiv.style.display = 'none';
     }

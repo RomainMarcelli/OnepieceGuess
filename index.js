@@ -1184,6 +1184,7 @@ const characters = [
     },
     { 
         name: 'Trébol', 
+        aliases: ['Trebol'],
         devilFruit: 'Beta Beta no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Donquichote Pirates', 

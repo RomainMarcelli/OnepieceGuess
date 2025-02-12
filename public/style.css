@@ -234,7 +234,7 @@ button img {
     height: 35px;
 }
 
-#resultContainer {
+#resultContainer, #dailyResultContainer {
     display: flex;
     margin-top: 20px;
     width: 80%;

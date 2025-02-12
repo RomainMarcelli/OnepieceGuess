@@ -27,3 +27,7 @@
 h2, p{
     color: white;
 }
+
+.success-card button{
+    display: none;
+}

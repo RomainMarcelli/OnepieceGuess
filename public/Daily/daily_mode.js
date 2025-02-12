@@ -1,3 +1,5 @@
+// Daily/daily_mode.js 
+
 function getImagePath(characterName) {
     return `../img/${characterName}.png`;
 }
@@ -57,8 +59,7 @@ document.getElementById("guessForm").addEventListener("submit", async (event) =>
         return;
     }
 
-    // ✅ Ajoute un nouvel élément sans supprimer les anciens
-    displayResult(guessedCharacter, window.dailyCharacter);
+    displayDailyResult(guessedCharacter, window.dailyCharacter);
 
     // ✅ Si la réponse est correcte, empêcher de rejouer
     if (guessedCharacter.name === window.dailyCharacter.name) {
@@ -103,3 +104,117 @@ document.getElementById("resetDailyButton").addEventListener("click", async () =
         alert("⚠️ Impossible de contacter le serveur.");
     }
 });
+
+async function displayDailyResult(guessedCharacter, selectedCharacter) {
+    const hakiImages = await fetchHakiImages();
+
+    const dailyResultContainer = document.getElementById('dailyResultContainer'); // ✅ Nouvelle div pour les résultats Daily Mode
+
+    // ✅ Vérifie si ce personnage a déjà été inscrit dans le Daily Mode pour éviter les doublons
+    const existingResult = dailyResultContainer.querySelector(`.resultat[data-character="${guessedCharacter.name}"]`);
+    if (existingResult) {
+        return; // 🔄 Empêche d'afficher un doublon
+    }
+
+    const fields = [
+        { key: 'name', label: 'Nom' },
+        { key: 'gender', label: 'Genre' },
+        { key: 'affiliation', label: 'Affiliation' },
+        { key: 'devilFruit', label: 'Fruit du Démon' },
+        { key: 'haki', label: 'Haki' },
+        { key: 'bounty', label: 'Prime', type: 'bounty' },
+        { key: 'height', label: 'Taille', type: 'height' },
+        { key: 'firstArc', label: 'Premier Arc', type: 'firstArc' }
+    ];
+
+    const resultDiv = document.createElement('div');
+    resultDiv.className = 'resultat'; 
+    resultDiv.dataset.character = guessedCharacter.name; // ✅ Ajoute un attribut pour éviter les doublons
+
+    if (guessedCharacter.name === selectedCharacter.name) {
+        resultDiv.classList.add('correct-guess'); // ✅ Ajoute une classe d'animation si le personnage est correct
+    }
+
+    const promises = fields.map((field, index) => {
+        return new Promise((resolve) => {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'result-category';
+
+            const categoryTitle = document.createElement('h3');
+            categoryTitle.textContent = field.label;
+            categoryDiv.appendChild(categoryTitle);
+
+            const categoryHr = document.createElement('hr');
+            categoryDiv.appendChild(categoryHr);
+
+            const resultBar = document.createElement('div');
+            resultBar.className = `result-bar ${field.type || ''}`;
+            categoryDiv.appendChild(resultBar);
+
+            resultDiv.appendChild(categoryDiv);
+
+            setTimeout(() => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `result-item ${field.type || ''} ${getResultClass(guessedCharacter, selectedCharacter, field)} flip`;
+
+                let comparisonClass = '';
+
+                if (field.key === 'name') {
+                    // ✅ Afficher l'image du personnage à la place du texte
+                    const img = document.createElement('img');
+                    img.src = getImagePath(guessedCharacter[field.key]); 
+                    img.alt = 'Character Image';
+                    img.className = 'character-image';
+                    itemDiv.appendChild(img);
+
+                    // ✅ Ajouter un élément pour afficher le nom sur hover
+                    const nameLabel = document.createElement('span');
+                    nameLabel.className = 'character-name-label';
+                    nameLabel.textContent = guessedCharacter[field.key];
+                    itemDiv.appendChild(nameLabel);
+                } else if (field.key === 'devilFruit') {
+                    itemDiv.textContent = categorizeDevilFruit(guessedCharacter[field.key]);
+                } else if (field.key === 'haki') {
+                    itemDiv.textContent = formatHaki(guessedCharacter[field.key]);
+                    if (guessedCharacter[field.key].length === selectedCharacter[field.key].length) {
+                        itemDiv.classList.add('correct');
+                    } else if (guessedCharacter[field.key].length > 0) {
+                        itemDiv.classList.add('partial');
+                    } else {
+                        itemDiv.classList.add('incorrect');
+                    }
+                } else if (field.key === 'height' || field.key === 'bounty') {
+                    comparisonClass = compareValues(selectedCharacter[field.key], guessedCharacter[field.key]);
+                    itemDiv.innerHTML = field.key === 'bounty' ?
+                        `<img src="/img/argent.png" alt="Bounty Icon" style="width: 15px; height: 20px; margin-right: 5px; border: 0px;">${formatBounty(guessedCharacter[field.key]) || 'Aucun'}` :
+                        `${guessedCharacter[field.key] || 'Aucun'}`;
+                } else if (field.key === 'firstArc') {
+                    comparisonClass = compareArcs(selectedCharacter[field.key], guessedCharacter[field.key]);
+                    itemDiv.textContent = guessedCharacter[field.key] || 'Aucun';
+                } else {
+                    itemDiv.textContent = guessedCharacter[field.key] || 'Aucun';
+                }
+
+                if (comparisonClass) {
+                    itemDiv.classList.add(comparisonClass);
+                }
+
+                resultBar.appendChild(itemDiv);
+
+                setTimeout(() => {
+                    itemDiv.classList.add('flip-in');
+                    resolve();
+                }, 100);
+            }, index * 300);
+        });
+    });
+
+    dailyResultContainer.appendChild(resultDiv);
+
+    if (guessedCharacter.name === selectedCharacter.name) {
+        await Promise.all(promises);
+        displaySuccessCard(selectedCharacter.name, history.length);
+        document.getElementById('restartGameButton').style.display = 'block';
+        document.querySelector('.success-card').scrollIntoView({ behavior: 'smooth' });
+    }
+}
