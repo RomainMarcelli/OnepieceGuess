@@ -28,6 +28,34 @@ h2, p{
     color: white;
 }
 
+/* Succes CARD */
+
+.success-card h3{
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
 .success-card button{
     display: none;
+}
+
+#countdownTimer {
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    color: #534e41;
+    margin: 0;
+}
+
+.success-card hr {
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 1rem;
+    margin: 1rem 0;
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    border-bottom: 2px solid #534e41;
 }

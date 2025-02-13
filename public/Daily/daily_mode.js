@@ -218,3 +218,38 @@ async function displayDailyResult(guessedCharacter, selectedCharacter) {
         document.querySelector('.success-card').scrollIntoView({ behavior: 'smooth' });
     }
 }
+
+
+function startCountdown() {
+    setTimeout(() => {
+        const countdownElement = document.getElementById("countdownTimer");
+
+        if (!countdownElement) return;
+
+        const now = new Date();
+        const nextReset = new Date();
+        nextReset.setHours(24, 0, 0, 0); // Minuit UTC+2
+
+        const updateTimer = () => {
+            const currentTime = new Date();
+            const timeLeft = nextReset - currentTime;
+
+            if (timeLeft <= 0) {
+                countdownElement.textContent = "00:00:00";
+                return;
+            }
+
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        };
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    }, 200);
+}
+
+// ✅ Lance le compte à rebours au chargement
+document.addEventListener("DOMContentLoaded", startCountdown);

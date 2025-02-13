@@ -376,13 +376,12 @@ function displaySuccessCard(characterName) {
 }
 
 function restartGame() {
-    document.getElementById('characterInput').value = '';
-    document.getElementById('result').innerText = '';
-    incorrectGuesses = [];
-    document.getElementById('resultFruitContainer').innerHTML = '';
-    fetchDevilFruit();
-    updateHintInfo(); // Réinitialiser l'indice lors du redémarrage du jeu
+    console.log("🔄 Rechargement de la page...");
+    
+    // ✅ Recharge toute la page pour tout réinitialiser
+    location.reload();
 }
+
 
 function getDevilFruitType(fruitName) {
     for (const type in devilFruitsByType) {

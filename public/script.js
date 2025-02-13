@@ -673,6 +673,10 @@ function displaySuccessCard(characterName) {
     successTitle.textContent = 'Bravo!';
     successCard.appendChild(successTitle);
 
+    const successparagraph = document.createElement('p');
+    successparagraph.textContent = 'Vous avez trouvé';
+    successCard.appendChild(successparagraph);
+
     // Création d'un conteneur pour le nom et l'image du personnage
     const characterContainer = document.createElement('div');
     characterContainer.className = 'character-container';
@@ -699,12 +703,69 @@ function displaySuccessCard(characterName) {
     attemptsMessage.textContent = `Nombre d'essais réalisés : ${attempts}`;
     successCard.appendChild(attemptsMessage);
 
+    const isDailyMode = window.location.pathname.includes("Daily/daily.html");
+
+    if (isDailyMode) {
+        // ✅ Conteneur du compte à rebours (uniquement en Daily Mode)
+        const countdownContainer = document.createElement("div");
+        countdownContainer.className = "countdown-container";
+        countdownContainer.innerHTML = `
+            <h3>Personnage suivant dans</h3>
+            <p id="countdownTimer">00:00:00</p>
+        `;
+        successCard.appendChild(countdownContainer);
+    }
+
+    const separation = document.createElement('hr');
+    successCard.appendChild(separation);
+
+    const modesuivant = document.createElement('h3');
+    modesuivant.textContent = `Mode Suivant :`;
+    successCard.appendChild(modesuivant);
+
+    // ✅ Ajouter la navbar DANS la success-card
+    const navbar = document.createElement('nav');
+    navbar.className = 'nextModeNav'; // Ajout d'une classe spécifique pour styliser si besoin
+    navbar.innerHTML = `
+    <div class="progress_nav">
+        <div class="background"></div>
+        <div class="imagesJeu">
+            <div class="guessPerso">
+                <a href="index.html">
+                    <img src="../img/guessPerso.png" alt="Deviner un personnage">
+                </a>
+            </div>
+            <div class="devilFruit">
+                <a href="DevilFruit/devilFruit.html">
+                    <img src="../img/devilFruit.png" alt="Jeu des Fruits du Démon">
+                </a>
+            </div>
+            <div class="vs">
+                <a href="Alphabet/alphabet.html">
+                    <img src="../img/vs.png" alt="Mode VS">
+                </a>
+            </div>
+            <div class="characters">
+                <a href="Characters/character.html">
+                    <img src="../img/logo_characters.png" alt="Liste des personnages">
+                </a>
+            </div>
+        </div>
+    </div>
+`;
+
+    successCard.appendChild(navbar); // ✅ Ajout de la navbar dans la success-card
+
+
+    // ✅ Bouton "Recommencer la partie"
     const restartButton = document.createElement('button');
     restartButton.textContent = 'Recommencer la partie';
+    restartButton.className = 'restart-btn';
     restartButton.addEventListener('click', () => {
         restartGame(); // Appel de restartGame pour réinitialiser le jeu
     });
-    successCard.appendChild(restartButton);
+
+    successCard.appendChild(restartButton); 
 
 
     // A voir si il faut le mettre : 
@@ -717,9 +778,28 @@ function displaySuccessCard(characterName) {
 
     // Défilement vers la carte de succès
     successCard.scrollIntoView({ behavior: 'smooth' });
+
+
+    // ✅ Démarrer le compte à rebours uniquement en mode Daily
+    if (isDailyMode) {
+        setTimeout(startCountdown, 100);
+    }
+
+    // ✅ Ajouter un effet de transition
+    successCard.style.opacity = '0';
+    setTimeout(() => {
+        successCard.style.opacity = '1';
+        successCard.style.transform = 'scale(1)';
+    }, 100);
 }
 
 
+function restartGame() {
+    console.log("🔄 Rechargement de la page...");
+    
+    // ✅ Recharge toute la page pour tout réinitialiser
+    location.reload();
+}
 
 document.getElementById('restartGameButton').addEventListener('click', () => {
     document.getElementById('characterInput').value = ''; // Effacer le texte du champ de saisie
@@ -794,11 +874,7 @@ function checkGuess(event) {
 }
 
 
-function restartGame() {
-    document.getElementById('characterInput').value = '';
-    document.getElementById('result').innerText = '';
-    fetchDevilFruit();
-}
+
 
 // Fetch a random devil fruit when the page loads
 window.onload = fetchDevilFruit;

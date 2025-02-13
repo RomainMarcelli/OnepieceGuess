@@ -695,17 +695,52 @@ img {
 .success-card button {
     background-color: #d53633;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     color: white;
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 12px 25px;
     margin-top: 15px;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
+/* Effet au survol */
 .success-card button:hover {
-    background-color: #45a049;
+    background-color: #d53633;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
 }
+
+/* Effet de clic */
+.success-card button:active {
+    transform: scale(0.95);
+}
+
+/* Effet animé en arrière-plan */
+.success-card button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, transparent 60%);
+    transition: all 0.4s ease;
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+}
+
+.success-card button:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+}
+
 
 @keyframes slide-up {
     from {

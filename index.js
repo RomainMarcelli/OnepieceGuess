@@ -914,7 +914,7 @@ const characters = [
         affiliation: 'Thriller Pirates de lécorce', 
         height: '692 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '320,000,000 Berries', 
         firstArc: 'Thriller Bark' 
     },
     { 
