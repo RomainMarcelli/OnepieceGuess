@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const modalBounty = document.getElementById("modalCharacterBounty");
     const modalFirstArc = document.getElementById("modalCharacterFirstArc");
 
+    const resetButton = document.getElementById("resetFiltersButton");
+
     try {
         const response = await fetch("/api/characters"); // Récupération de l'API
         const characters = await response.json();
@@ -381,6 +383,39 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // ✅ Mise à jour initiale pour éviter un affichage incorrect au chargement
         updateBountyValues();
+
+        if (resetButton) {
+            resetButton.addEventListener("click", function () {
+                console.log("🔄 Réinitialisation des filtres...");
+    
+                // Réinitialiser le champ de recherche
+                document.getElementById("searchInput").value = "";
+    
+                // Réinitialiser les filtres de sélection
+                document.getElementById("genderFilter").value = "all";
+                document.getElementById("affiliationFilter").value = "all";
+                document.getElementById("hakiFilter").value = "all";
+                document.getElementById("arcFilter").value = "all";
+                document.getElementById("devilFruitFilter").value = "all";
+                document.getElementById("heightFilter").value = "all";
+    
+                // Réinitialiser les curseurs de prime
+                document.getElementById("bountyMin").value = 0;
+                document.getElementById("bountyMax").value = 6000000000;
+                document.getElementById("bountyMinValue").textContent = "0 B";
+                document.getElementById("bountyMaxValue").textContent = "6 B";
+    
+                // Réappliquer le style de la barre de progression de prime
+                const rangeProgress = document.getElementById("rangeProgress");
+                rangeProgress.style.left = "0%";
+                rangeProgress.style.right = "0%";
+    
+                // Rafraîchir l'affichage des personnages
+                filterCharacters();
+                
+                console.log("✅ Filtres réinitialisés !");
+            });
+        }
 
     } catch (error) {
         console.error("Erreur lors du chargement des personnages :", error);

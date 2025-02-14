@@ -914,7 +914,7 @@ const characters = [
         affiliation: 'Thriller Pirates de lécorce', 
         height: '692 cm', 
         gender: 'Masculin', 
-        bounty: '0', 
+        bounty: '320,000,000 Berries', 
         firstArc: 'Thriller Bark' 
     },
     { 
@@ -1184,6 +1184,7 @@ const characters = [
     },
     { 
         name: 'Trébol', 
+        aliases: ['Trebol'],
         devilFruit: 'Beta Beta no Mi', 
         haki: 'Armement, Vision', 
         affiliation: 'Donquichote Pirates', 
@@ -2298,6 +2299,53 @@ const devilFruitsTranslated = {
     ]
 };
 
+let dailyCharacter = null;
+let lastCharacterIndex = -1; // Empêche d'avoir le même personnage 2 fois d'affilée
+
+// Fonction pour choisir un personnage aléatoire du jour
+function chooseDailyCharacter() {
+    if (!characters || characters.length === 0) {
+        console.error("❌ Erreur : Liste des personnages non disponible !");
+        return;
+    }
+
+    let newIndex;
+    do {
+        newIndex = Math.floor(Math.random() * characters.length); // Génère un index aléatoire
+    } while (newIndex === lastCharacterIndex); // Empêche de retomber sur le même personnage
+
+    lastCharacterIndex = newIndex; // Stocke le dernier personnage choisi
+    dailyCharacter = characters[newIndex];
+
+    console.log("🎯 Nouveau personnage du jour :", dailyCharacter.name);
+}
+
+// Génère un personnage au démarrage
+chooseDailyCharacter();
+
+// Route pour obtenir tous les personnages
+app.get('/api/characters', (req, res) => {
+    res.json(characters);
+});
+
+// API pour récupérer le personnage du jour
+app.get("/api/daily-character", (req, res) => {
+    if (!dailyCharacter || !dailyCharacter.name) {
+        return res.status(500).json({ error: "Aucun personnage du jour trouvé" });
+    }
+    res.json({ character: dailyCharacter });
+});
+
+// API pour réinitialiser le personnage du jour
+app.post("/api/reset-daily", (req, res) => {
+    chooseDailyCharacter(); // 🔄 Re-génère un personnage
+    console.log("🔄 Nouveau personnage généré :", dailyCharacter.name);
+
+    res.json({ 
+        message: "Personnage du jour réinitialisé", 
+        character: dailyCharacter 
+    });
+});
 
 
 // // Fonction pour catégoriser le fruit du démon
@@ -2316,11 +2364,6 @@ app.get('/api/random-devil-fruit', (req, res) => {
 app.get('/api/start-game', (req, res) => {
     const randomIndex = Math.floor(Math.random() * characters.length);
     res.json(characters[randomIndex]);
-});
-
-// Route pour obtenir tous les personnages
-app.get('/api/characters', (req, res) => {
-    res.json(characters);
 });
 
 // Route pour rechercher des personnages par nom

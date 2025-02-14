@@ -1,5 +1,5 @@
 @media (max-width: 1380px){
-    #resultContainer {
+    #resultContainer, #dailyResultContainer {
         width: 100%;
     }
 }
@@ -34,7 +34,7 @@
         height: 106px;
     } */
 
-    #resultContainer {            /* Définit la largeur du conteneur */
+    #resultContainer, #dailyResultContainer {            /* Définit la largeur du conteneur */
         overflow-x: auto;         /* Active le défilement horizontal si nécessaire */      /* Empêche le contenu de se plier à la ligne */
         padding: 10px 0;          /* Un peu de marge en haut et en bas */
     }
