@@ -1,7 +1,7 @@
 // Daily/daily_mode.js 
 
 function getImagePath(characterName) {
-    return `../img/${characterName}.png`;
+    return `/img/${characterName}.png`;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

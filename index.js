@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path'); // Ajoutez cette ligne
+const fs = require('fs');
 const app = express();
 const port = 3000;
 
@@ -7,1929 +8,1936 @@ const port = 3000;
 app.use(express.static('public'));
 app.use('/img', express.static(path.join(__dirname, 'public/img')));
 
+const dailyDevilFruitFile = path.join(__dirname, "public/data/dailyDevilFruit.json");
+
+// ✅ Vérifier si le dossier `data` existe, sinon le créer
+if (!fs.existsSync(path.dirname(dailyDevilFruitFile))) {
+    fs.mkdirSync(path.dirname(dailyDevilFruitFile), { recursive: true });
+}
+
 // Liste des personnages
 const characters = [
-    { 
-        name: 'Monkey D. Luffy', 
+    {
+        name: 'Monkey D. Luffy',
         aliases: ['Luffy'],
-        devilFruit: 'Gomu Gomu no Mi', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '174 cm', 
-        gender: 'Masculin', 
-        bounty: '3,000,000,000 Berries', 
-        firstArc: 'Romance Dawn' 
-    },
-    { 
-        name: 'Roronoa Zoro', 
-        aliases: ['Zoro'],
-        devilFruit: 'Aucun', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '181 cm', 
-        gender: 'Masculin', 
-        bounty: '1,111,000,000 Berries', 
-        firstArc: 'Romance Dawn' 
-    },
-    { 
-        name: 'Nami', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '170 cm', 
-        gender: 'Féminin', 
-        bounty: '366,000,000 Berries', 
-        firstArc: 'Arlong Park' 
-    },
-    { 
-        name: 'Nico Robin',
-        aliases: ['Robin'], 
-        devilFruit: 'Hana Hana no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '188 cm', 
-        gender: 'Féminin', 
-        bounty: '930,000,000 Berries', 
-        firstArc: 'Alabasta' 
-    },
-    { 
-        name: 'Sanji', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '180 cm', 
-        gender: 'Masculin', 
-        bounty: '1,032,000,000 Berries', 
-        firstArc: 'Baratie' 
-    },
-    { 
-        name: 'Tony Tony Chopper', 
-        aliases: ['Chopper'],
-        devilFruit: 'Hito Hito no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '90 cm', 
-        gender: 'Masculin', 
-        bounty: '1000 Berries', 
-        firstArc: 'Drum Island' 
-    },
-    { 
-        name: 'Franky', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '240 cm', 
-        gender: 'Masculin', 
-        bounty: '394,000,000 Berries', 
-        firstArc: 'Water 7' 
-    },
-    { 
-        name: 'Brook', 
-        devilFruit: 'Yomi Yomi no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '277 cm', 
-        gender: 'Masculin', 
-        bounty: '383,000,000 Berries', 
-        firstArc: 'Thriller Bark' 
-    },
-    { 
-        name: 'Jinbe', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '301 cm', 
-        gender: 'Masculin', 
-        bounty: '1,100,000,000 Berries', 
-        firstArc: 'Impel Down' 
-    },
-    { 
-        name: 'Gol D. Roger', 
-        aliases: ['Roger'],
-        devilFruit: 'Aucun', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Équipage de Roger', 
-        height: '274 cm', 
-        gender: 'Masculin', 
-        bounty: '5,564,800,000 Berries', 
-        firstArc: 'Romance Dawn' 
-    },
-    { 
-        name: 'Shanks', 
-        devilFruit: 'Aucun', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Équipage du Roux', 
-        height: '199 cm', 
-        gender: 'Masculin', 
-        bounty: '4,000,000,000 Berries', 
-        firstArc: 'Romance Dawn' 
-    },
-    { 
-        name: 'Marshall D. Teach', 
-        aliases: ['Teach', 'Barbe Noire'], // Alias supplémentaires
-        devilFruit: 'Yami Yami no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Barbe Noire', 
-        height: '344 cm', 
-        gender: 'Masculin', 
-        bounty: '2,247,600,000 Berries', 
-        firstArc: 'Jaya' 
-    },
-    { 
-        name: 'Eustass Kid',
-        aliases: ['Kid'], 
-        devilFruit: 'Jiki Jiki no Mi', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Équipage de Kid', 
-        height: '205 cm', 
-        gender: 'Masculin', 
-        bounty: '3,000,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
-    },
-    { 
-        name: 'Trafalgar D. Law', 
-        aliases: ['Law'],
-        devilFruit: 'Ope Ope no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage du Heart', 
-        height: '191 cm', 
-        gender: 'Masculin', 
-        bounty: '3,000,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
-    },
-    { 
-        name: 'Donquichote Doflamingo', 
-        aliases: ['Doflamingo'],
-        devilFruit: 'String String Fruit', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Donquichote Pirates', 
-        height: '305 cm', 
-        gender: 'Masculin', 
-        bounty: '340,000,000 Berries', 
-        firstArc: 'Jaya' 
-    },
-    { 
-        name: 'Big Mom', 
-        aliases: ['BigMom'],
-        devilFruit: 'Soru Soru no Mi', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Équipage de Big Mom', 
-        height: '880 cm', 
-        gender: 'Féminin', 
-        bounty: '4,388,000,000 Berries', 
-        firstArc: 'Fishman Island' 
-    },
-    { 
-        name: 'Kaido', 
-        devilFruit: 'Uo Uo no Mi', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Équipe aux Cent Bêtes', 
-        height: '710 cm', 
-        gender: 'Masculin', 
-        bounty: '4,611,100,000 Berries', 
-        firstArc: 'Dressrosa' 
-    },
-    { 
-        name: 'Smoker', 
-        devilFruit: 'Moku Moku no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '209 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Loguetown' 
-    },
-    { 
-        name: 'Kizaru', 
-        aliases: ['Borsalino'],
-        devilFruit: 'Pika Pika no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '302 cm', 
-        gender: 'Masculin', 
-        bounty: '3,000,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
-    },
-    { 
-        name: 'Akainu', 
-        aliases: ['Sakazuki'],
-        devilFruit: 'Magu Magu no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '306 cm', 
-        gender: 'Masculin', 
-        bounty: '5,000,000,000 Berries', 
-        firstArc: 'Enies Lobby' 
-    },
-    { 
-        name: 'Aokiji', 
-        devilFruit: 'Hie Hie no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Barbe Noire', 
-        height: '298 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Enies Lobby' 
-    },
-    { 
-        name: 'Aramaki', 
-        devilFruit: 'Mori Mori no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '330 cm', 
-        gender: 'Masculin', 
-        bounty: '3,000,000,000 Berries', 
-        firstArc: 'Wano' 
-    },
-    { 
-        name: 'Haguar D. Sauro', 
-        aliases: ['Sauro'],
-        devilFruit: 'Aucun', 
-        haki: 'Armement', 
-        affiliation: 'Marine', 
-        height: '1950 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Enies Lobby' 
-    },
-    { 
-        name: 'Morgan', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Marine', 
-        height: '285 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
+        devilFruit: 'Gomu Gomu no Mi',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Straw Hat Pirates',
+        height: '174 cm',
+        gender: 'Masculin',
+        bounty: '3,000,000,000 Berries',
         firstArc: 'Romance Dawn'
     },
-    { 
-        name: 'Vegapunk', 
-        devilFruit: 'Nomi Nomi no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Gouvernement Mondial', 
-        height: '180 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
+    {
+        name: 'Roronoa Zoro',
+        aliases: ['Zoro'],
+        devilFruit: 'Aucun',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Straw Hat Pirates',
+        height: '181 cm',
+        gender: 'Masculin',
+        bounty: '1,111,000,000 Berries',
+        firstArc: 'Romance Dawn'
+    },
+    {
+        name: 'Nami',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Straw Hat Pirates',
+        height: '170 cm',
+        gender: 'Féminin',
+        bounty: '366,000,000 Berries',
+        firstArc: 'Arlong Park'
+    },
+    {
+        name: 'Nico Robin',
+        aliases: ['Robin'],
+        devilFruit: 'Hana Hana no Mi',
+        haki: 'Aucun',
+        affiliation: 'Straw Hat Pirates',
+        height: '188 cm',
+        gender: 'Féminin',
+        bounty: '930,000,000 Berries',
+        firstArc: 'Alabasta'
+    },
+    {
+        name: 'Sanji',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Straw Hat Pirates',
+        height: '180 cm',
+        gender: 'Masculin',
+        bounty: '1,032,000,000 Berries',
+        firstArc: 'Baratie'
+    },
+    {
+        name: 'Tony Tony Chopper',
+        aliases: ['Chopper'],
+        devilFruit: 'Hito Hito no Mi',
+        haki: 'Aucun',
+        affiliation: 'Straw Hat Pirates',
+        height: '90 cm',
+        gender: 'Masculin',
+        bounty: '1000 Berries',
+        firstArc: 'Drum Island'
+    },
+    {
+        name: 'Franky',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Straw Hat Pirates',
+        height: '240 cm',
+        gender: 'Masculin',
+        bounty: '394,000,000 Berries',
+        firstArc: 'Water 7'
+    },
+    {
+        name: 'Brook',
+        devilFruit: 'Yomi Yomi no Mi',
+        haki: 'Aucun',
+        affiliation: 'Straw Hat Pirates',
+        height: '277 cm',
+        gender: 'Masculin',
+        bounty: '383,000,000 Berries',
+        firstArc: 'Thriller Bark'
+    },
+    {
+        name: 'Jinbe',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Straw Hat Pirates',
+        height: '301 cm',
+        gender: 'Masculin',
+        bounty: '1,100,000,000 Berries',
+        firstArc: 'Impel Down'
+    },
+    {
+        name: 'Gol D. Roger',
+        aliases: ['Roger'],
+        devilFruit: 'Aucun',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Équipage de Roger',
+        height: '274 cm',
+        gender: 'Masculin',
+        bounty: '5,564,800,000 Berries',
+        firstArc: 'Romance Dawn'
+    },
+    {
+        name: 'Shanks',
+        devilFruit: 'Aucun',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Équipage du Roux',
+        height: '199 cm',
+        gender: 'Masculin',
+        bounty: '4,000,000,000 Berries',
+        firstArc: 'Romance Dawn'
+    },
+    {
+        name: 'Marshall D. Teach',
+        aliases: ['Teach', 'Barbe Noire'], // Alias supplémentaires
+        devilFruit: 'Yami Yami no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Barbe Noire',
+        height: '344 cm',
+        gender: 'Masculin',
+        bounty: '2,247,600,000 Berries',
+        firstArc: 'Jaya'
+    },
+    {
+        name: 'Eustass Kid',
+        aliases: ['Kid'],
+        devilFruit: 'Jiki Jiki no Mi',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Équipage de Kid',
+        height: '205 cm',
+        gender: 'Masculin',
+        bounty: '3,000,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
+    },
+    {
+        name: 'Trafalgar D. Law',
+        aliases: ['Law'],
+        devilFruit: 'Ope Ope no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage du Heart',
+        height: '191 cm',
+        gender: 'Masculin',
+        bounty: '3,000,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
+    },
+    {
+        name: 'Donquichote Doflamingo',
+        aliases: ['Doflamingo'],
+        devilFruit: 'String String Fruit',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Donquichote Pirates',
+        height: '305 cm',
+        gender: 'Masculin',
+        bounty: '340,000,000 Berries',
+        firstArc: 'Jaya'
+    },
+    {
+        name: 'Big Mom',
+        aliases: ['BigMom'],
+        devilFruit: 'Soru Soru no Mi',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Équipage de Big Mom',
+        height: '880 cm',
+        gender: 'Féminin',
+        bounty: '4,388,000,000 Berries',
+        firstArc: 'Fishman Island'
+    },
+    {
+        name: 'Kaido',
+        devilFruit: 'Uo Uo no Mi',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Équipe aux Cent Bêtes',
+        height: '710 cm',
+        gender: 'Masculin',
+        bounty: '4,611,100,000 Berries',
+        firstArc: 'Dressrosa'
+    },
+    {
+        name: 'Smoker',
+        devilFruit: 'Moku Moku no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Marine',
+        height: '209 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Loguetown'
+    },
+    {
+        name: 'Kizaru',
+        aliases: ['Borsalino'],
+        devilFruit: 'Pika Pika no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Marine',
+        height: '302 cm',
+        gender: 'Masculin',
+        bounty: '3,000,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
+    },
+    {
+        name: 'Akainu',
+        aliases: ['Sakazuki'],
+        devilFruit: 'Magu Magu no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Marine',
+        height: '306 cm',
+        gender: 'Masculin',
+        bounty: '5,000,000,000 Berries',
+        firstArc: 'Enies Lobby'
+    },
+    {
+        name: 'Aokiji',
+        devilFruit: 'Hie Hie no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Barbe Noire',
+        height: '298 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Enies Lobby'
+    },
+    {
+        name: 'Aramaki',
+        devilFruit: 'Mori Mori no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Marine',
+        height: '330 cm',
+        gender: 'Masculin',
+        bounty: '3,000,000,000 Berries',
+        firstArc: 'Wano'
+    },
+    {
+        name: 'Haguar D. Sauro',
+        aliases: ['Sauro'],
+        devilFruit: 'Aucun',
+        haki: 'Armement',
+        affiliation: 'Marine',
+        height: '1950 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Enies Lobby'
+    },
+    {
+        name: 'Morgan',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Marine',
+        height: '285 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Romance Dawn'
+    },
+    {
+        name: 'Vegapunk',
+        devilFruit: 'Nomi Nomi no Mi',
+        haki: 'Aucun',
+        affiliation: 'Gouvernement Mondial',
+        height: '180 cm',
+        gender: 'Masculin',
+        bounty: '0',
         firstArc: 'Egg Head'
     },
-    { 
-        name: 'Shaka', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Vegapunk', 
-        height: '211 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
+    {
+        name: 'Shaka',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Vegapunk',
+        height: '211 cm',
+        gender: 'Masculin',
+        bounty: '0',
         firstArc: 'Egg Head'
     },
-    { 
-        name: 'Lilith', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Vegapunk', 
-        height: '205 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
+    {
+        name: 'Lilith',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Vegapunk',
+        height: '205 cm',
+        gender: 'Féminin',
+        bounty: '0',
         firstArc: 'Egg Head'
     },
-    { 
-        name: 'Edison', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Vegapunk', 
-        height: '160 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
+    {
+        name: 'Edison',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Vegapunk',
+        height: '160 cm',
+        gender: 'Masculin',
+        bounty: '0',
         firstArc: 'Egg Head'
     },
-    { 
-        name: 'Pythagoras', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Vegapunk', 
-        height: '180 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
+    {
+        name: 'Pythagoras',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Vegapunk',
+        height: '180 cm',
+        gender: 'Masculin',
+        bounty: '0',
         firstArc: 'Egg Head'
     },
-    { 
-        name: 'Atlas', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Vegapunk', 
-        height: '891 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
+    {
+        name: 'Atlas',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Vegapunk',
+        height: '891 cm',
+        gender: 'Féminin',
+        bounty: '0',
         firstArc: 'Egg Head'
     },
-    { 
-        name: 'York', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Vegapunk', 
-        height: '606 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
+    {
+        name: 'York',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Vegapunk',
+        height: '606 cm',
+        gender: 'Féminin',
+        bounty: '0',
         firstArc: 'Egg Head'
     },
-    { 
-        name: 'Rob Lucci', 
+    {
+        name: 'Rob Lucci',
         aliases: ['Lucci'],
-        devilFruit: 'Neko Neko no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'CP-AIGIS0', 
-        height: '212 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Water 7' 
+        devilFruit: 'Neko Neko no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'CP-AIGIS0',
+        height: '212 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Water 7'
     },
-    { 
-        name: 'Kaku', 
-        devilFruit: 'Ushi Ushi no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'CP-AIGIS0', 
-        height: '193 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Water 7' 
+    {
+        name: 'Kaku',
+        devilFruit: 'Ushi Ushi no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'CP-AIGIS0',
+        height: '193 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Water 7'
     },
-    { 
-        name: 'Kalifa', 
-        devilFruit: 'Awa Awa no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'CP-AIGIS0', 
-        height: '185 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Water 7' 
+    {
+        name: 'Kalifa',
+        devilFruit: 'Awa Awa no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'CP-AIGIS0',
+        height: '185 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Water 7'
     },
-    { 
-        name: 'Stussy', 
-        devilFruit: 'Batto Batto no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'CP-AIGIS0', 
-        height: '179 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+    {
+        name: 'Stussy',
+        devilFruit: 'Batto Batto no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'CP-AIGIS0',
+        height: '179 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Blueno', 
-        devilFruit: 'Doa Doa no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'CP-AIGIS0', 
-        height: '258 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Water 7' 
+    {
+        name: 'Blueno',
+        devilFruit: 'Doa Doa no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'CP-AIGIS0',
+        height: '258 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Water 7'
     },
-    { 
-        name: 'Jabra', 
-        devilFruit: 'Inu Inu no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'CP9', 
-        height: '212 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Enies Lobby' 
+    {
+        name: 'Jabra',
+        devilFruit: 'Inu Inu no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'CP9',
+        height: '212 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Enies Lobby'
     },
-    { 
-        name: 'Kinemon', 
-        devilFruit: 'Fuku Fuku no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Famille Kozuki', 
-        height: '295 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Punk Hazard' 
+    {
+        name: 'Kinemon',
+        devilFruit: 'Fuku Fuku no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Famille Kozuki',
+        height: '295 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Punk Hazard'
     },
-    { 
-        name: 'Kozuki Momonosuke', 
+    {
+        name: 'Kozuki Momonosuke',
         aliases: ['Momonosuke'],
-        devilFruit: 'Fruit de Kozuki Momonosuke (Fruit Artificiel)', 
-        haki: 'Vision', 
-        affiliation: 'Famille Kozuki', 
-        height: '110 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Punk Hazard' 
+        devilFruit: 'Fruit de Kozuki Momonosuke (Fruit Artificiel)',
+        haki: 'Vision',
+        affiliation: 'Famille Kozuki',
+        height: '110 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Punk Hazard'
     },
-    { 
-        name: 'Kurozumi Kanjuro', 
+    {
+        name: 'Kurozumi Kanjuro',
         aliases: ['Kanuro'],
-        devilFruit: 'Fude Fude no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Famille Kurozumi', 
-        height: '347 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Dressrosa' 
+        devilFruit: 'Fude Fude no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Famille Kurozumi',
+        height: '347 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Kurozumi Orochi', 
+    {
+        name: 'Kurozumi Orochi',
         aliases: ['Orochi'],
-        devilFruit: 'Hebi Hebi no Mi, Modèle: Yamata no Orochi', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Kurozumi', 
-        height: '350 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+        devilFruit: 'Hebi Hebi no Mi, Modèle: Yamata no Orochi',
+        haki: 'Aucun',
+        affiliation: 'Famille Kurozumi',
+        height: '350 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Kurozumi Tama', 
+    {
+        name: 'Kurozumi Tama',
         aliases: ['Tama'],
-        devilFruit: 'Kibi Kibi no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Kurozumi', 
-        height: '108 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+        devilFruit: 'Kibi Kibi no Mi',
+        haki: 'Aucun',
+        affiliation: 'Famille Kurozumi',
+        height: '108 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Diamante', 
-        devilFruit: 'Hira Hira no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Donquichote Pirates', 
-        height: '525 cm', 
-        gender: 'Masculin', 
-        bounty: '99,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Diamante',
+        devilFruit: 'Hira Hira no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Donquichote Pirates',
+        height: '525 cm',
+        gender: 'Masculin',
+        bounty: '99,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
+    {
         name: 'Viola',
-        aliases: ['Viola'], 
-        devilFruit: 'Giro Giro no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Riku', 
-        height: '178 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Dressrosa' 
+        aliases: ['Viola'],
+        devilFruit: 'Giro Giro no Mi',
+        haki: 'Aucun',
+        affiliation: 'Famille Riku',
+        height: '178 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Rebecca', 
-        devilFruit: 'Aucun', 
-        haki: 'Vision', 
-        affiliation: 'Famille Riku', 
-        height: '171 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Rebecca',
+        devilFruit: 'Aucun',
+        haki: 'Vision',
+        affiliation: 'Famille Riku',
+        height: '171 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Kyros', 
-        devilFruit: 'Aucun', 
-        haki: 'Vision', 
-        affiliation: 'Famille Riku', 
-        height: '298 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Kyros',
+        devilFruit: 'Aucun',
+        haki: 'Vision',
+        affiliation: 'Famille Riku',
+        height: '298 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Zeff', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Baratie', 
-        height: '189 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Baratie' 
+    {
+        name: 'Zeff',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Baratie',
+        height: '189 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Baratie'
     },
-    { 
+    {
         name: 'Portgas D. Ace',
-        aliases: ['Ace'], 
-        devilFruit: 'Mera Mera no Mi', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Équipage de Barbe Blanche', 
-        height: '185 cm', 
-        gender: 'Masculin', 
-        bounty: '550,000,000 Berries', 
-        firstArc: 'Drum Island' 
+        aliases: ['Ace'],
+        devilFruit: 'Mera Mera no Mi',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Équipage de Barbe Blanche',
+        height: '185 cm',
+        gender: 'Masculin',
+        bounty: '550,000,000 Berries',
+        firstArc: 'Drum Island'
     },
-    { 
-        name: 'Izou', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Barbe Blanche', 
-        height: '192 cm', 
-        gender: 'Masculin', 
-        bounty: '510,000,000 Berries', 
-        firstArc: 'Marineford' 
+    {
+        name: 'Izou',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Barbe Blanche',
+        height: '192 cm',
+        gender: 'Masculin',
+        bounty: '510,000,000 Berries',
+        firstArc: 'Marineford'
     },
-    { 
-        name: 'Joz', 
-        devilFruit: 'Kira Kira no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Barbe Blanche', 
-        height: '503 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Marineford' 
+    {
+        name: 'Joz',
+        devilFruit: 'Kira Kira no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Barbe Blanche',
+        height: '503 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Marineford'
     },
-    { 
-        name: 'Little Oars Jr.', 
+    {
+        name: 'Little Oars Jr.',
         aliases: ['OarsJR'],
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage de Barbe Blanche', 
-        height: '6000 cm', 
-        gender: 'Masculin', 
-        bounty: '550,000,000 Berries', 
-        firstArc: 'Marineford' 
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage de Barbe Blanche',
+        height: '6000 cm',
+        gender: 'Masculin',
+        bounty: '550,000,000 Berries',
+        firstArc: 'Marineford'
     },
-    { 
-        name: 'Marco', 
-        devilFruit: 'Tori Tori no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Barbe Blanche', 
-        height: '203 cm', 
-        gender: 'Masculin', 
-        bounty: '1,400,000,000 Berries', 
-        firstArc: 'Jaya' 
+    {
+        name: 'Marco',
+        devilFruit: 'Tori Tori no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Barbe Blanche',
+        height: '203 cm',
+        gender: 'Masculin',
+        bounty: '1,400,000,000 Berries',
+        firstArc: 'Jaya'
     },
-    { 
+    {
         name: 'Barbe Blanche',
-        aliases: ['Edward NewGate'], 
-        devilFruit: 'Gura Gura no Mi', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Équipage de Barbe Blanche', 
-        height: '666 cm', 
-        gender: 'Masculin', 
-        bounty: '5,000,000,000 Berries', 
-        firstArc: 'Alabasta' 
+        aliases: ['Edward NewGate'],
+        devilFruit: 'Gura Gura no Mi',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Équipage de Barbe Blanche',
+        height: '666 cm',
+        gender: 'Masculin',
+        bounty: '5,000,000,000 Berries',
+        firstArc: 'Alabasta'
     },
-    { 
-        name: 'Cavendish', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage des Magnifiques Pirates', 
-        height: '208 cm', 
-        gender: 'Masculin', 
-        bounty: '330,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Cavendish',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage des Magnifiques Pirates',
+        height: '208 cm',
+        gender: 'Masculin',
+        bounty: '330,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Arlong', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage Arlong', 
-        height: '263 cm', 
-        gender: 'Masculin', 
-        bounty: '20,000,000 Berries', 
-        firstArc: 'Arlong Park' 
+    {
+        name: 'Arlong',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage Arlong',
+        height: '263 cm',
+        gender: 'Masculin',
+        bounty: '20,000,000 Berries',
+        firstArc: 'Arlong Park'
     },
-    { 
-        name: 'Kuro', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage du Chat Noir', 
-        height: '207 cm', 
-        gender: 'Masculin', 
-        bounty: '16,000,000 Berries', 
-        firstArc: 'Syrup Village' 
+    {
+        name: 'Kuro',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage du Chat Noir',
+        height: '207 cm',
+        gender: 'Masculin',
+        bounty: '16,000,000 Berries',
+        firstArc: 'Syrup Village'
     },
-    { 
-        name: 'Foxy', 
-        devilFruit: 'Noro Noro no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage de Foxy', 
-        height: '180 cm', 
-        gender: 'Masculin', 
-        bounty: '24,000,000 Berries', 
-        firstArc: 'Enies Lobby' 
+    {
+        name: 'Foxy',
+        devilFruit: 'Noro Noro no Mi',
+        haki: 'Aucun',
+        affiliation: 'Équipage de Foxy',
+        height: '180 cm',
+        gender: 'Masculin',
+        bounty: '24,000,000 Berries',
+        firstArc: 'Enies Lobby'
     },
-    { 
-        name: 'Caribou', 
-        devilFruit: 'Numa Numa no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage de Caribou', 
-        height: '228 cm', 
-        gender: 'Masculin', 
-        bounty: '210,000,000 Berries', 
-        firstArc: 'Post-War' 
+    {
+        name: 'Caribou',
+        devilFruit: 'Numa Numa no Mi',
+        haki: 'Aucun',
+        affiliation: 'Équipage de Caribou',
+        height: '228 cm',
+        gender: 'Masculin',
+        bounty: '210,000,000 Berries',
+        firstArc: 'Post-War'
     },
-    { 
+    {
         name: 'Ashura Doji',
-        aliases: ['Ashura'], 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Voleurs Atamayama', 
-        height: '544 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+        aliases: ['Ashura'],
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Voleurs Atamayama',
+        height: '544 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Enel', 
-        devilFruit: 'Goro Goro no Mi', 
-        haki: 'Vision', 
-        affiliation: 'Spaceys', 
-        height: '266 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Skypiea' 
+    {
+        name: 'Enel',
+        devilFruit: 'Goro Goro no Mi',
+        haki: 'Vision',
+        affiliation: 'Spaceys',
+        height: '266 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Skypiea'
     },
-    { 
-        name: 'Dracule Mihawk', 
+    {
+        name: 'Dracule Mihawk',
         aliases: ['Mihawk'],
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Guilde de la Croix', 
-        height: '198 cm', 
-        gender: 'Masculin', 
-        bounty: '3,590,000,000 Berries', 
-        firstArc: 'Baratie' 
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Guilde de la Croix',
+        height: '198 cm',
+        gender: 'Masculin',
+        bounty: '3,590,000,000 Berries',
+        firstArc: 'Baratie'
     },
-    { 
-        name: 'Emporio Ivankov', 
+    {
+        name: 'Emporio Ivankov',
         aliases: ['Ivankov'],
-        devilFruit: 'Horu Horu no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Armée Révolutionnaire', 
-        height: '449 cm', 
-        gender: 'Masculin', 
-        bounty: '100,000,000 Berries', 
-        firstArc: 'Impel Down' 
+        devilFruit: 'Horu Horu no Mi',
+        haki: 'Aucun',
+        affiliation: 'Armée Révolutionnaire',
+        height: '449 cm',
+        gender: 'Masculin',
+        bounty: '100,000,000 Berries',
+        firstArc: 'Impel Down'
     },
-    { 
-        name: 'Inazuma', 
-        devilFruit: 'Choki Choki no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Armée Révolutionnaire', 
-        height: '229 cm', 
-        gender: 'Masculin', 
-        bounty: '100,000,000 Berries', 
-        firstArc: 'Impel Down' 
+    {
+        name: 'Inazuma',
+        devilFruit: 'Choki Choki no Mi',
+        haki: 'Aucun',
+        affiliation: 'Armée Révolutionnaire',
+        height: '229 cm',
+        gender: 'Masculin',
+        bounty: '100,000,000 Berries',
+        firstArc: 'Impel Down'
     },
-    { 
-        name: 'Hack', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Armée Révolutionnaire', 
-        height: '280 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Hack',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Armée Révolutionnaire',
+        height: '280 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Bartholomew Kuma', 
+    {
+        name: 'Bartholomew Kuma',
         aliases: ['kuma'],
-        devilFruit: 'Nikyu Nikyu no Mi', 
-        haki: 'Armement', 
-        affiliation: 'Armée Révolutionnaire', 
-        height: '689 cm', 
-        gender: 'Masculin', 
-        bounty: '296,000,000 Berries', 
-        firstArc: 'Jaya' 
+        devilFruit: 'Nikyu Nikyu no Mi',
+        haki: 'Armement',
+        affiliation: 'Armée Révolutionnaire',
+        height: '689 cm',
+        gender: 'Masculin',
+        bounty: '296,000,000 Berries',
+        firstArc: 'Jaya'
     },
-    { 
-        name: 'Bartolomeo', 
-        devilFruit: 'Bari Bari no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Barto Club', 
-        height: '220 cm', 
-        gender: 'Masculin', 
-        bounty: '200,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Bartolomeo',
+        devilFruit: 'Bari Bari no Mi',
+        haki: 'Aucun',
+        affiliation: 'Barto Club',
+        height: '220 cm',
+        gender: 'Masculin',
+        bounty: '200,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
+    {
         name: 'Vinsmoke Ichiji',
-        aliases: ['Ichiji'], 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Vinsmoke', 
-        height: '186 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+        aliases: ['Ichiji'],
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Famille Vinsmoke',
+        height: '186 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Vinsmoke Niji', 
+    {
+        name: 'Vinsmoke Niji',
         aliases: ['Niji'],
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Vinsmoke', 
-        height: '185 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Famille Vinsmoke',
+        height: '185 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Vinsmoke Yonji', 
+    {
+        name: 'Vinsmoke Yonji',
         aliases: ['Yonji'],
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Vinsmoke', 
-        height: '194 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Famille Vinsmoke',
+        height: '194 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Vinsmoke Reiju', 
+    {
+        name: 'Vinsmoke Reiju',
         aliases: ['Reiju'],
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Vinsmoke', 
-        height: '173 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Famille Vinsmoke',
+        height: '173 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
+    {
         name: 'Silvers Rayleigh',
-        aliases: ['Rayleigh'], 
-        devilFruit: 'Aucun', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Équipage de Roger', 
-        height: '188 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Orange Town' 
+        aliases: ['Rayleigh'],
+        devilFruit: 'Aucun',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Équipage de Roger',
+        height: '188 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Orange Town'
     },
-    { 
-        name: 'Don Quichotte Rossinante', 
+    {
+        name: 'Don Quichotte Rossinante',
         aliases: ['Rossinante'],
-        devilFruit: 'Nagi Nagi no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Marine', 
-        height: '293 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Dressrosa' 
+        devilFruit: 'Nagi Nagi no Mi',
+        haki: 'Aucun',
+        affiliation: 'Marine',
+        height: '293 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'X Drake', 
+    {
+        name: 'X Drake',
         aliases: ['XDrake'],
-        devilFruit: 'Ryu Ryu no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '233 cm', 
-        gender: 'Masculin', 
-        bounty: '222,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
+        devilFruit: 'Ryu Ryu no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Marine',
+        height: '233 cm',
+        gender: 'Masculin',
+        bounty: '222,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
     },
-    { 
-        name: 'Monkey D. Dragon', 
+    {
+        name: 'Monkey D. Dragon',
         aliases: ['Dragon'],
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Armée Révolutionnaire', 
-        height: '256 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Loguetown' 
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Armée Révolutionnaire',
+        height: '256 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Loguetown'
     },
-    { 
-        name: 'Inuarashi', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Principauté de Mokomo', 
-        height: '511 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Zou' 
+    {
+        name: 'Inuarashi',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Principauté de Mokomo',
+        height: '511 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Zou'
     },
-    { 
-        name: 'Nekomamushi', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Principauté de Mokomo', 
-        height: '522 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Zou' 
+    {
+        name: 'Nekomamushi',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Principauté de Mokomo',
+        height: '522 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Zou'
     },
-    { 
-        name: 'Shishilian', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Principauté de Mokomo', 
-        height: '196 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Zou' 
+    {
+        name: 'Shishilian',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Principauté de Mokomo',
+        height: '196 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Zou'
     },
-    { 
-        name: 'Carrot', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Principauté de Mokomo', 
-        height: '161 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Zou' 
+    {
+        name: 'Carrot',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Principauté de Mokomo',
+        height: '161 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Zou'
     },
-    { 
-        name: 'Wanda', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Principauté de Mokomo', 
-        height: '181 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Zou' 
+    {
+        name: 'Wanda',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Principauté de Mokomo',
+        height: '181 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Zou'
     },
-    { 
-        name: 'Pedro', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Principauté de Mokomo', 
-        height: '233 cm', 
-        gender: 'Masculin', 
-        bounty: '382,000,000 Berries', 
-        firstArc: 'Zou' 
+    {
+        name: 'Pedro',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Principauté de Mokomo',
+        height: '233 cm',
+        gender: 'Masculin',
+        bounty: '382,000,000 Berries',
+        firstArc: 'Zou'
     },
-    { 
-        name: 'Mont Blanc Noland', 
+    {
+        name: 'Mont Blanc Noland',
         aliases: ['Noland'],
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Royaume de Luvneel', 
-        height: '220 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Skypiea' 
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Royaume de Luvneel',
+        height: '220 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Skypiea'
     },
-    { 
+    {
         name: 'Mont Blanc Cricket',
-        aliases: ['Cricket'], 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Forces Spéciales Simiesques', 
-        height: '242 cm', 
-        gender: 'Masculin', 
-        bounty: '25,000,000 Berries', 
-        firstArc: 'Jaya' 
+        aliases: ['Cricket'],
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Forces Spéciales Simiesques',
+        height: '242 cm',
+        gender: 'Masculin',
+        bounty: '25,000,000 Berries',
+        firstArc: 'Jaya'
     },
-    { 
-        name: 'Raizo', 
-        devilFruit: 'Maki Maki no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Famille Kozuki', 
-        height: '311 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Zou' 
+    {
+        name: 'Raizo',
+        devilFruit: 'Maki Maki no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Famille Kozuki',
+        height: '311 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Zou'
     },
-    { 
-        name: 'Brogy', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage des Géants', 
-        height: '2130 cm', 
-        gender: 'Masculin', 
-        bounty: '100,000,000 Berries', 
-        firstArc: 'Little Garden' 
+    {
+        name: 'Brogy',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage des Géants',
+        height: '2130 cm',
+        gender: 'Masculin',
+        bounty: '100,000,000 Berries',
+        firstArc: 'Little Garden'
     },
-    { 
-        name: 'Dorry', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage des Géants', 
-        height: '2260 cm', 
-        gender: 'Masculin', 
-        bounty: '100,000,000 Berries', 
-        firstArc: 'Little Garden' 
+    {
+        name: 'Dorry',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage des Géants',
+        height: '2260 cm',
+        gender: 'Masculin',
+        bounty: '100,000,000 Berries',
+        firstArc: 'Little Garden'
     },
-    { 
-        name: 'Shimotsuki Ryuma', 
+    {
+        name: 'Shimotsuki Ryuma',
         aliases: ['Ryuma'],
-        devilFruit: 'Aucun', 
-        haki: 'Armement', 
-        affiliation: 'Thriller Pirates de lécorce', 
-        height: '179 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Thriller Bark' 
+        devilFruit: 'Aucun',
+        haki: 'Armement',
+        affiliation: 'Thriller Pirates de lécorce',
+        height: '179 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Thriller Bark'
     },
-    { 
-        name: 'Gecko Moria', 
+    {
+        name: 'Gecko Moria',
         aliases: ['Moria'],
-        devilFruit: 'Kage Kage no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Thriller Pirates de lécorce', 
-        height: '692 cm', 
-        gender: 'Masculin', 
-        bounty: '320,000,000 Berries', 
-        firstArc: 'Thriller Bark' 
+        devilFruit: 'Kage Kage no Mi',
+        haki: 'Aucun',
+        affiliation: 'Thriller Pirates de lécorce',
+        height: '692 cm',
+        gender: 'Masculin',
+        bounty: '320,000,000 Berries',
+        firstArc: 'Thriller Bark'
     },
-    { 
-        name: 'Oars', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Thriller Pirates de lécorce', 
-        height: '6700 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Thriller Bark' 
+    {
+        name: 'Oars',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Thriller Pirates de lécorce',
+        height: '6700 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Thriller Bark'
     },
-    { 
-        name: 'Tashigi', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '170 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Loguetown' 
+    {
+        name: 'Tashigi',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Marine',
+        height: '170 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Loguetown'
     },
-    { 
-        name: 'Yamato', 
-        devilFruit: 'Inu Inu no Mi', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Alliance des Ninjas-Pirates-Minks-Samouraïs', 
-        height: '263 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+    {
+        name: 'Yamato',
+        devilFruit: 'Inu Inu no Mi',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Alliance des Ninjas-Pirates-Minks-Samouraïs',
+        height: '263 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Kawamatsu', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Famille Kozuki', 
-        height: '271 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+    {
+        name: 'Kawamatsu',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Famille Kozuki',
+        height: '271 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Usopp', 
-        devilFruit: 'Aucun', 
-        haki: 'Vision', 
-        affiliation: 'Straw Hat Pirates', 
-        height: '176 cm', 
-        gender: 'Masculin', 
-        bounty: '500,000,000 Berries', 
-        firstArc: 'Syrup Village' 
+    {
+        name: 'Usopp',
+        devilFruit: 'Aucun',
+        haki: 'Vision',
+        affiliation: 'Straw Hat Pirates',
+        height: '176 cm',
+        gender: 'Masculin',
+        bounty: '500,000,000 Berries',
+        firstArc: 'Syrup Village'
     },
-    { 
-        name: 'Krieg', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Armada Pirate de Don Krieg', 
-        height: '243 cm', 
-        gender: 'Masculin', 
-        bounty: '17,000,000 Berries', 
-        firstArc: 'Baratie' 
+    {
+        name: 'Krieg',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Armada Pirate de Don Krieg',
+        height: '243 cm',
+        gender: 'Masculin',
+        bounty: '17,000,000 Berries',
+        firstArc: 'Baratie'
     },
-    { 
-        name: 'Gin', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Armada Pirate de Don Krieg', 
-        height: '186 cm', 
-        gender: 'Masculin', 
-        bounty: '12,000,000 Berries', 
-        firstArc: 'Baratie' 
+    {
+        name: 'Gin',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Armada Pirate de Don Krieg',
+        height: '186 cm',
+        gender: 'Masculin',
+        bounty: '12,000,000 Berries',
+        firstArc: 'Baratie'
     },
-    { 
-        name: 'Issho', 
-        devilFruit: 'Zushi Zushi no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '270 cm', 
-        gender: 'Masculin', 
-        bounty: '3,000,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Issho',
+        devilFruit: 'Zushi Zushi no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Marine',
+        height: '270 cm',
+        gender: 'Masculin',
+        bounty: '3,000,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Icebarg', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Galley-La Company', 
-        height: '199 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Water 7' 
+    {
+        name: 'Icebarg',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Galley-La Company',
+        height: '199 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Water 7'
     },
-    { 
-        name: 'Pauly', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Galley-La Company', 
-        height: '195 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Water 7' 
+    {
+        name: 'Pauly',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Galley-La Company',
+        height: '195 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Water 7'
     },
-    { 
-        name: 'Urouge', 
-        devilFruit: 'Fruit Urouge', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage des Moines Dépravés ', 
-        height: '389 cm', 
-        gender: 'Masculin', 
-        bounty: '108,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
+    {
+        name: 'Urouge',
+        devilFruit: 'Fruit Urouge',
+        haki: 'Aucun',
+        affiliation: 'Équipage des Moines Dépravés ',
+        height: '389 cm',
+        gender: 'Masculin',
+        bounty: '108,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
     },
-    { 
-        name: 'Kozuki Oden', 
+    {
+        name: 'Kozuki Oden',
         aliases: ['Oden'],
-        devilFruit: 'Aucun', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Famille Kozuki', 
-        height: '382 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+        devilFruit: 'Aucun',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Famille Kozuki',
+        height: '382 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Denjiro', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Famille Kozuki', 
-        height: '306 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+    {
+        name: 'Denjiro',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Famille Kozuki',
+        height: '306 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Kiku', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Famille Kozuki', 
-        height: '287 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+    {
+        name: 'Kiku',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Famille Kozuki',
+        height: '287 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
+    {
         name: 'Boa Hancock',
-        aliases: ['Hancock'], 
-        devilFruit: 'Mero Mero no Mi', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Kujas', 
-        height: '191 cm', 
-        gender: 'Féminin', 
-        bounty: '1,659,000,000 Berries', 
-        firstArc: 'Amazon Lily' 
+        aliases: ['Hancock'],
+        devilFruit: 'Mero Mero no Mi',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Kujas',
+        height: '191 cm',
+        gender: 'Féminin',
+        bounty: '1,659,000,000 Berries',
+        firstArc: 'Amazon Lily'
     },
-    { 
-        name: 'Perona', 
-        devilFruit: 'Horo Horo no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Dracule Mihawk', 
-        height: '160 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Thriller Bark' 
+    {
+        name: 'Perona',
+        devilFruit: 'Horo Horo no Mi',
+        haki: 'Aucun',
+        affiliation: 'Dracule Mihawk',
+        height: '160 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Thriller Bark'
     },
-    { 
-        name: 'Shirahoshi', 
-        devilFruit: 'Aucun', 
-        haki: 'Vision', 
-        affiliation: 'Famille Neptune', 
-        height: '1187 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Fishman Island' 
+    {
+        name: 'Shirahoshi',
+        devilFruit: 'Aucun',
+        haki: 'Vision',
+        affiliation: 'Famille Neptune',
+        height: '1187 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Otohime', 
-        devilFruit: 'Aucun', 
-        haki: 'Vision', 
-        affiliation: 'Famille Neptune', 
-        height: '224 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Fishman Island' 
+    {
+        name: 'Otohime',
+        devilFruit: 'Aucun',
+        haki: 'Vision',
+        affiliation: 'Famille Neptune',
+        height: '224 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Neptune', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Neptune', 
-        height: '1220 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Fishman Island' 
+    {
+        name: 'Neptune',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Famille Neptune',
+        height: '1220 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Fukaboshi', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Neptune', 
-        height: '604 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Fishman Island' 
+    {
+        name: 'Fukaboshi',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Famille Neptune',
+        height: '604 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Nefertari Vivi', 
+    {
+        name: 'Nefertari Vivi',
         aliases: ['Vivi'],
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Royaume Alabasta', 
-        height: '169 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Reverse Mountain' 
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Royaume Alabasta',
+        height: '169 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Reverse Mountain'
     },
-    { 
-        name: 'Pell', 
-        devilFruit: 'Tori Tori no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Royaume Alabasta', 
-        height: '169 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Alabasta' 
+    {
+        name: 'Pell',
+        devilFruit: 'Tori Tori no Mi',
+        haki: 'Aucun',
+        affiliation: 'Royaume Alabasta',
+        height: '169 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Alabasta'
     },
-    { 
-        name: 'Nefertari Cobra', 
+    {
+        name: 'Nefertari Cobra',
         aliases: ['Cobra'],
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Royaume Alabasta', 
-        height: '182 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Alabasta' 
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Royaume Alabasta',
+        height: '182 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Alabasta'
     },
-    { 
-        name: 'Igaram', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Royaume Alabasta', 
-        height: '218 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Whisky Peak' 
+    {
+        name: 'Igaram',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Royaume Alabasta',
+        height: '218 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Whisky Peak'
     },
-    { 
-        name: 'Monkey D. Garp', 
+    {
+        name: 'Monkey D. Garp',
         aliases: ['Garp'],
-        devilFruit: 'Aucun', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '287 cm', 
-        gender: 'Masculin', 
-        bounty: '3,000,000,000 Berries', 
-        firstArc: 'Arlong Park' 
+        devilFruit: 'Aucun',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Marine',
+        height: '287 cm',
+        gender: 'Masculin',
+        bounty: '3,000,000,000 Berries',
+        firstArc: 'Arlong Park'
     },
-    { 
-        name: 'Señor Pink', 
-        devilFruit: 'Sui Sui no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Donquichote Pirates', 
-        height: '244 cm', 
-        gender: 'Masculin', 
-        bounty: '58,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Señor Pink',
+        devilFruit: 'Sui Sui no Mi',
+        haki: 'Aucun',
+        affiliation: 'Donquichote Pirates',
+        height: '244 cm',
+        gender: 'Masculin',
+        bounty: '58,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Trébol', 
+    {
+        name: 'Trébol',
         aliases: ['Trebol'],
-        devilFruit: 'Beta Beta no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Donquichote Pirates', 
-        height: '349 cm', 
-        gender: 'Masculin', 
-        bounty: '99,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+        devilFruit: 'Beta Beta no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Donquichote Pirates',
+        height: '349 cm',
+        gender: 'Masculin',
+        bounty: '99,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Lao G', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Donquichote Pirates', 
-        height: '233 cm', 
-        gender: 'Masculin', 
-        bounty: '61,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Lao G',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Donquichote Pirates',
+        height: '233 cm',
+        gender: 'Masculin',
+        bounty: '61,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Dellinger', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement', 
-        affiliation: 'Donquichote Pirates', 
-        height: '160 cm', 
-        gender: 'Masculin', 
-        bounty: '15,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Dellinger',
+        devilFruit: 'Aucun',
+        haki: 'Armement',
+        affiliation: 'Donquichote Pirates',
+        height: '160 cm',
+        gender: 'Masculin',
+        bounty: '15,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Gladius', 
-        devilFruit: 'Pamu Pamu no Mi', 
-        haki: 'Armement', 
-        affiliation: 'Donquichote Pirates', 
-        height: '260 cm', 
-        gender: 'Masculin', 
-        bounty: '31,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Gladius',
+        devilFruit: 'Pamu Pamu no Mi',
+        haki: 'Armement',
+        affiliation: 'Donquichote Pirates',
+        height: '260 cm',
+        gender: 'Masculin',
+        bounty: '31,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Sai', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Flotte de Happou', 
-        height: '242 cm', 
-        gender: 'Masculin', 
-        bounty: '210,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Sai',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Flotte de Happou',
+        height: '242 cm',
+        gender: 'Masculin',
+        bounty: '210,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Chinjao', 
-        devilFruit: 'Aucun', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Flotte de Happou', 
-        height: '520 cm', 
-        gender: 'Masculin', 
-        bounty: '542,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Chinjao',
+        devilFruit: 'Aucun',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Flotte de Happou',
+        height: '520 cm',
+        gender: 'Masculin',
+        bounty: '542,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Léo', 
+    {
+        name: 'Léo',
         aliases: ['Leo'],
-        devilFruit: 'Nui Nui no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Royaume de Tontatta', 
-        height: '23 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Dressrosa' 
+        devilFruit: 'Nui Nui no Mi',
+        haki: 'Aucun',
+        affiliation: 'Royaume de Tontatta',
+        height: '23 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Hajrudin', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Erbaf', 
-        height: '2200 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Hajrudin',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Erbaf',
+        height: '2200 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Buffalo', 
-        devilFruit: 'Guru Guru no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Donquichote Pirates', 
-        height: '696 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Punk Hazard' 
+    {
+        name: 'Buffalo',
+        devilFruit: 'Guru Guru no Mi',
+        haki: 'Aucun',
+        affiliation: 'Donquichote Pirates',
+        height: '696 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Punk Hazard'
     },
-    { 
-        name: 'Baby 5', 
-        devilFruit: 'Buki Buki no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Donquichote Pirates', 
-        height: '181 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Punk Hazard' 
+    {
+        name: 'Baby 5',
+        devilFruit: 'Buki Buki no Mi',
+        haki: 'Aucun',
+        affiliation: 'Donquichote Pirates',
+        height: '181 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Punk Hazard'
     },
-    { 
-        name: 'Sugar', 
-        devilFruit: 'Hobi Hobi no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Donquichote Pirates', 
-        height: '110 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Sugar',
+        devilFruit: 'Hobi Hobi no Mi',
+        haki: 'Aucun',
+        affiliation: 'Donquichote Pirates',
+        height: '110 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Vergo', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement', 
-        affiliation: 'Donquichote Pirates', 
-        height: '247 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Punk Hazard' 
+    {
+        name: 'Vergo',
+        devilFruit: 'Aucun',
+        haki: 'Armement',
+        affiliation: 'Donquichote Pirates',
+        height: '247 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Punk Hazard'
     },
-    { 
-        name: 'Pekoms', 
-        devilFruit: 'Kame Kame no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: ' Équipage de Big Mom', 
-        height: '232 cm', 
-        gender: 'Masculin', 
-        bounty: '330,000,000 Berries', 
-        firstArc: 'Fishman Island' 
+    {
+        name: 'Pekoms',
+        devilFruit: 'Kame Kame no Mi',
+        haki: 'Armement, Vision',
+        affiliation: ' Équipage de Big Mom',
+        height: '232 cm',
+        gender: 'Masculin',
+        bounty: '330,000,000 Berries',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Tamago', 
-        devilFruit: 'Tama Tama no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: ' Équipage de Big Mom', 
-        height: '301 cm', 
-        gender: 'Masculin', 
-        bounty: '429,000,000 Berries', 
-        firstArc: 'Fishman Island' 
+    {
+        name: 'Tamago',
+        devilFruit: 'Tama Tama no Mi',
+        haki: 'Armement, Vision',
+        affiliation: ' Équipage de Big Mom',
+        height: '301 cm',
+        gender: 'Masculin',
+        bounty: '429,000,000 Berries',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Pica', 
-        devilFruit: 'Ishi Ishi no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Donquichote Pirates', 
-        height: '470 cm', 
-        gender: 'Masculin', 
-        bounty: '99,000,000 Berries', 
-        firstArc: 'Dressrosa' 
+    {
+        name: 'Pica',
+        devilFruit: 'Ishi Ishi no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Donquichote Pirates',
+        height: '470 cm',
+        gender: 'Masculin',
+        bounty: '99,000,000 Berries',
+        firstArc: 'Dressrosa'
     },
-    { 
-        name: 'Sabo', 
-        devilFruit: 'Mera Mera no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Armée Révolutionnaire', 
-        height: '187 cm', 
-        gender: 'Masculin', 
-        bounty: '602,000,000 Berries', 
-        firstArc: 'Post-War' 
+    {
+        name: 'Sabo',
+        devilFruit: 'Mera Mera no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Armée Révolutionnaire',
+        height: '187 cm',
+        gender: 'Masculin',
+        bounty: '602,000,000 Berries',
+        firstArc: 'Post-War'
     },
-    { 
+    {
         name: 'Basil Hawkins',
         aliases: ['Hawkins'],
-        devilFruit: 'Wara Wara no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Hawkins', 
-        height: '210 cm', 
-        gender: 'Masculin', 
-        bounty: '320,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
+        devilFruit: 'Wara Wara no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Hawkins',
+        height: '210 cm',
+        gender: 'Masculin',
+        bounty: '320,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
     },
-    { 
-        name: 'Spandam', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'CP-AIGIS0', 
-        height: '192 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Water 7' 
+    {
+        name: 'Spandam',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'CP-AIGIS0',
+        height: '192 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Water 7'
     },
-    { 
-        name: 'Sengoku', 
-        devilFruit: 'Hito Hito no Mi, Modèle: Daibutsu', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '278 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Jaya' 
+    {
+        name: 'Sengoku',
+        devilFruit: 'Hito Hito no Mi, Modèle: Daibutsu',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Marine',
+        height: '278 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Jaya'
     },
-    { 
-        name: 'Jesus Burgess', 
+    {
+        name: 'Jesus Burgess',
         aliases: ['Burgess'],
-        devilFruit: 'Riki Riki no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Barbe Noire', 
-        height: '355 cm', 
-        gender: 'Masculin', 
-        bounty: '20,000,000 Berries', 
-        firstArc: 'Jaya' 
+        devilFruit: 'Riki Riki no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Barbe Noire',
+        height: '355 cm',
+        gender: 'Masculin',
+        bounty: '20,000,000 Berries',
+        firstArc: 'Jaya'
     },
-    { 
-        name: 'Kureha', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Royaume des Cerisiers', 
-        height: '188 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Drum Island' 
+    {
+        name: 'Kureha',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Royaume des Cerisiers',
+        height: '188 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Drum Island'
     },
-    { 
-        name: 'Hiluluk', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Aucun', 
-        height: '213 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Drum Island' 
+    {
+        name: 'Hiluluk',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Aucun',
+        height: '213 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Drum Island'
     },
-    { 
-        name: 'Bentham (mr 2)', 
+    {
+        name: 'Bentham (mr 2)',
         aliases: ['MR2'],
-        devilFruit: 'Mane Mane no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Okamas', 
-        height: '238 cm', 
-        gender: 'Masculin', 
-        bounty: '32,000,000 Berries', 
-        firstArc: 'Little Garden' 
+        devilFruit: 'Mane Mane no Mi',
+        haki: 'Aucun',
+        affiliation: 'Okamas',
+        height: '238 cm',
+        gender: 'Masculin',
+        bounty: '32,000,000 Berries',
+        firstArc: 'Little Garden'
     },
-    { 
+    {
         name: 'Galdino (mr 3)',
         aliases: ['Mr3'],
-        devilFruit: 'Doru Doru no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Guilde de la Croix', 
-        height: '179 cm', 
-        gender: 'Masculin', 
-        bounty: '24,000,000 Berries', 
-        firstArc: 'Little Garden' 
+        devilFruit: 'Doru Doru no Mi',
+        haki: 'Aucun',
+        affiliation: 'Guilde de la Croix',
+        height: '179 cm',
+        gender: 'Masculin',
+        bounty: '24,000,000 Berries',
+        firstArc: 'Little Garden'
     },
-    { 
-        name: 'Daz Bonez (mr 1)', 
+    {
+        name: 'Daz Bonez (mr 1)',
         aliases: ['Mr1'],
-        devilFruit: 'Supa Supa no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Guilde de la Croix', 
-        height: '212 cm', 
-        gender: 'Masculin', 
-        bounty: '75,000,000 Berries', 
-        firstArc: 'Alabasta' 
+        devilFruit: 'Supa Supa no Mi',
+        haki: 'Aucun',
+        affiliation: 'Guilde de la Croix',
+        height: '212 cm',
+        gender: 'Masculin',
+        bounty: '75,000,000 Berries',
+        firstArc: 'Alabasta'
     },
-    { 
-        name: 'Crocodile', 
-        devilFruit: 'Suna Suna no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Guilde de la Croix', 
-        height: '253 cm', 
-        gender: 'Masculin', 
-        bounty: '1,965,000,000 Berries', 
-        firstArc: 'Little Garden' 
+    {
+        name: 'Crocodile',
+        devilFruit: 'Suna Suna no Mi',
+        haki: 'Aucun',
+        affiliation: 'Guilde de la Croix',
+        height: '253 cm',
+        gender: 'Masculin',
+        bounty: '1,965,000,000 Berries',
+        firstArc: 'Little Garden'
     },
-    { 
-        name: 'Wiper', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Shandias', 
-        height: '183 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Skypiea' 
+    {
+        name: 'Wiper',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Shandias',
+        height: '183 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Skypiea'
     },
-    { 
-        name: 'Monet', 
-        devilFruit: 'Yuki Yuki no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Donquichote Pirates', 
-        height: '227 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Punk Hazard' 
+    {
+        name: 'Monet',
+        devilFruit: 'Yuki Yuki no Mi',
+        haki: 'Aucun',
+        affiliation: 'Donquichote Pirates',
+        height: '227 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Punk Hazard'
     },
-    { 
-        name: 'César Clown', 
+    {
+        name: 'César Clown',
         aliases: ['Cesar'],
-        devilFruit: 'Gasu Gasu no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Royaume de Germa', 
-        height: '309 cm', 
-        gender: 'Masculin', 
-        bounty: '300,000,000 Berries', 
-        firstArc: 'Punk Hazard' 
-    },
-    
-    { 
-        name: 'Jewelry Bonney', 
-        aliases: ['Bonney'],
-        devilFruit: 'Toshi Toshi no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage de Bonney', 
-        height: '174 cm', 
-        gender: 'Féminin', 
-        bounty: '320,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
+        devilFruit: 'Gasu Gasu no Mi',
+        haki: 'Aucun',
+        affiliation: 'Royaume de Germa',
+        height: '309 cm',
+        gender: 'Masculin',
+        bounty: '300,000,000 Berries',
+        firstArc: 'Punk Hazard'
     },
 
-    { 
+    {
+        name: 'Jewelry Bonney',
+        aliases: ['Bonney'],
+        devilFruit: 'Toshi Toshi no Mi',
+        haki: 'Aucun',
+        affiliation: 'Équipage de Bonney',
+        height: '174 cm',
+        gender: 'Féminin',
+        bounty: '320,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
+    },
+
+    {
         name: 'Capone Bege',
-        aliases: ['Bege'], 
-        devilFruit: 'Shiro Shiro no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage du Fire Tank', 
-        height: '166 cm', 
-        gender: 'Masculin', 
-        bounty: '350,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
+        aliases: ['Bege'],
+        devilFruit: 'Shiro Shiro no Mi',
+        haki: 'Aucun',
+        affiliation: 'Équipage du Fire Tank',
+        height: '166 cm',
+        gender: 'Masculin',
+        bounty: '350,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
     },
-    { 
-        name: 'Vinsmoke Judge', 
+    {
+        name: 'Vinsmoke Judge',
         aliases: ['Judge'],
-        devilFruit: 'Aucun', 
-        haki: 'Armement', 
-        affiliation: 'Famille Vinsmoke', 
-        height: '272 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Aucun',
+        haki: 'Armement',
+        affiliation: 'Famille Vinsmoke',
+        height: '272 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
+    {
         name: 'Kozuki Hiyori',
-        aliases: ['Hiyori'], 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Kozuki', 
-        height: '170 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+        aliases: ['Hiyori'],
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Famille Kozuki',
+        height: '170 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Kozuki Toki', 
+    {
+        name: 'Kozuki Toki',
         aliases: ['Toki'],
-        devilFruit: 'Toki Toki no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Kozuki', 
-        height: '190 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+        devilFruit: 'Toki Toki no Mi',
+        haki: 'Aucun',
+        affiliation: 'Famille Kozuki',
+        height: '190 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Shinobu', 
-        devilFruit: 'Juku Juku no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Famille Kozuki', 
-        height: '180 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+    {
+        name: 'Shinobu',
+        devilFruit: 'Juku Juku no Mi',
+        haki: 'Aucun',
+        affiliation: 'Famille Kozuki',
+        height: '180 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Fukurokuju', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipe aux Cent Bêtes', 
-        height: '221 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+    {
+        name: 'Fukurokuju',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipe aux Cent Bêtes',
+        height: '221 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Shimotsuki Yasuie', 
+    {
+        name: 'Shimotsuki Yasuie',
         aliases: ['Yasuie'],
-        devilFruit: 'Smile', 
-        haki: 'Aucun', 
-        affiliation: 'Pays des Wa', 
-        height: '155 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+        devilFruit: 'Smile',
+        haki: 'Aucun',
+        affiliation: 'Pays des Wa',
+        height: '155 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Hyogoro', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Famille Hyogoro', 
-        height: '100 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+    {
+        name: 'Hyogoro',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Famille Hyogoro',
+        height: '100 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Toko', 
-        devilFruit: 'Smile', 
-        haki: 'Aucun', 
-        affiliation: 'Pays des Wa', 
-        height: '89 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Wano' 
+    {
+        name: 'Toko',
+        devilFruit: 'Smile',
+        haki: 'Aucun',
+        affiliation: 'Pays des Wa',
+        height: '89 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Wano'
     },
-    { 
-        name: 'Hogback', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Thriller Pirates de lécorce', 
-        height: '223 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Thriller Bark' 
+    {
+        name: 'Hogback',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Thriller Pirates de lécorce',
+        height: '223 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Thriller Bark'
     },
-    { 
-        name: 'Hody Jones', 
+    {
+        name: 'Hody Jones',
         aliases: ['Hody'],
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage des Nouveaux Hommes-Poissons', 
-        height: '331 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Fishman Island' 
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage des Nouveaux Hommes-Poissons',
+        height: '331 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Fisher Tiger', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage des Pirates du Soleil', 
-        height: '520 cm', 
-        gender: 'Masculin', 
-        bounty: '230,000,000 Berries', 
-        firstArc: 'Fishman Island' 
+    {
+        name: 'Fisher Tiger',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage des Pirates du Soleil',
+        height: '520 cm',
+        gender: 'Masculin',
+        bounty: '230,000,000 Berries',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Aladin', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage des Pirates du Soleil', 
-        height: '627 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Fishman Island' 
+    {
+        name: 'Aladin',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage des Pirates du Soleil',
+        height: '627 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Bellamy', 
-        devilFruit: 'Bane Bane no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Donquichote Pirates', 
-        height: '240 cm', 
-        gender: 'Masculin', 
-        bounty: '195,000,000 Berries', 
-        firstArc: 'Jaya' 
+    {
+        name: 'Bellamy',
+        devilFruit: 'Bane Bane no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Donquichote Pirates',
+        height: '240 cm',
+        gender: 'Masculin',
+        bounty: '195,000,000 Berries',
+        firstArc: 'Jaya'
     },
-    { 
-        name: 'Koby', 
-        devilFruit: 'Aucun', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '167 cm', 
-        gender: 'Masculin', 
-        bounty: '500,000,000 Berries', 
-        firstArc: 'Romance Dawn' 
+    {
+        name: 'Koby',
+        devilFruit: 'Aucun',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Marine',
+        height: '167 cm',
+        gender: 'Masculin',
+        bounty: '500,000,000 Berries',
+        firstArc: 'Romance Dawn'
     },
-    { 
-        name: 'Hermepp', 
-        devilFruit: 'Aucun', 
-        haki: 'Vision', 
-        affiliation: 'Marine', 
-        height: '179 cm', 
-        gender: 'Masculin', 
-        bounty: '100,000,000 Berries', 
-        firstArc: 'Romance Dawn' 
+    {
+        name: 'Hermepp',
+        devilFruit: 'Aucun',
+        haki: 'Vision',
+        affiliation: 'Marine',
+        height: '179 cm',
+        gender: 'Masculin',
+        bounty: '100,000,000 Berries',
+        firstArc: 'Romance Dawn'
     },
-    { 
-        name: 'Sentomaru', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '279 cm', 
-        gender: 'Masculin', 
-        bounty: '500.000.000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
+    {
+        name: 'Sentomaru',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Marine',
+        height: '279 cm',
+        gender: 'Masculin',
+        bounty: '500.000.000 Berries',
+        firstArc: 'Sabaody Archipelago'
     },
-    { 
-        name: 'Tsuru', 
-        devilFruit: 'Woshu Woshu no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Marine', 
-        height: '204 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Jaya' 
+    {
+        name: 'Tsuru',
+        devilFruit: 'Woshu Woshu no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Marine',
+        height: '204 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Jaya'
     },
-    { 
-        name: 'Killer', 
-        devilFruit: 'Smile', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Kid', 
-        height: '195 cm', 
-        gender: 'Masculin', 
-        bounty: '200,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
+    {
+        name: 'Killer',
+        devilFruit: 'Smile',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Kid',
+        height: '195 cm',
+        gender: 'Masculin',
+        bounty: '200,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
     },
-    { 
-        name: 'Scratchmen Apoo', 
+    {
+        name: 'Scratchmen Apoo',
         aliases: ['Apoo'],
-        devilFruit: 'Oto Oto no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipe aux Cent Bêtes', 
-        height: '256 cm', 
-        gender: 'Masculin', 
-        bounty: '350,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
+        devilFruit: 'Oto Oto no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipe aux Cent Bêtes',
+        height: '256 cm',
+        gender: 'Masculin',
+        bounty: '350,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
     },
-    { 
-        name: 'Koala', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Armée Révolutionnaire', 
-        height: '160 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Fishman Island' 
+    {
+        name: 'Koala',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Armée Révolutionnaire',
+        height: '160 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Fishman Island'
     },
-    { 
-        name: 'Baggy', 
-        devilFruit: 'Bara Bara no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Guilde de la Croix', 
-        height: '192 cm', 
-        gender: 'Masculin', 
-        bounty: '3,189,000,000 Berries', 
-        firstArc: 'Orange Town' 
+    {
+        name: 'Baggy',
+        devilFruit: 'Bara Bara no Mi',
+        haki: 'Aucun',
+        affiliation: 'Guilde de la Croix',
+        height: '192 cm',
+        gender: 'Masculin',
+        bounty: '3,189,000,000 Berries',
+        firstArc: 'Orange Town'
     },
-    { 
-        name: 'Alvida', 
-        devilFruit: 'Sube Sube no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Guilde de la Croix', 
-        height: '198 cm', 
-        gender: 'Féminin', 
-        bounty: '5,000,000 Berries', 
-        firstArc: 'Romance Dawn' 
+    {
+        name: 'Alvida',
+        devilFruit: 'Sube Sube no Mi',
+        haki: 'Aucun',
+        affiliation: 'Guilde de la Croix',
+        height: '198 cm',
+        gender: 'Féminin',
+        bounty: '5,000,000 Berries',
+        firstArc: 'Romance Dawn'
     },
-    { 
-        name: 'Morgans', 
-        devilFruit: 'Bara Bara no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Document dactualité sur léconomie mondiale', 
-        height: '305 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Tori Tori no Mi' 
+    {
+        name: 'Morgans',
+        devilFruit: 'Bara Bara no Mi',
+        haki: 'Aucun',
+        affiliation: 'Document dactualité sur léconomie mondiale',
+        height: '305 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Tori Tori no Mi'
     },
-    { 
-        name: 'Magellan', 
-        devilFruit: 'Doku Doku no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Impel Down', 
-        height: '491 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Impel Down' 
+    {
+        name: 'Magellan',
+        devilFruit: 'Doku Doku no Mi',
+        haki: 'Aucun',
+        affiliation: 'Impel Down',
+        height: '491 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Impel Down'
     },
-    { 
-        name: 'Bell-mère', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Marine', 
-        height: '186 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Arlong Park' 
+    {
+        name: 'Bell-mère',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Marine',
+        height: '186 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Arlong Park'
     },
-    { 
-        name: 'Nojiko', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Aucun', 
-        height: '170 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Arlong Park' 
+    {
+        name: 'Nojiko',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Aucun',
+        height: '170 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Arlong Park'
     },
-    { 
-        name: 'Camie', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Takoyaki 8', 
-        height: '197 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Sabaody Archipelago' 
+    {
+        name: 'Camie',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Takoyaki 8',
+        height: '197 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Sabaody Archipelago'
     },
-    { 
-        name: 'Bepo', 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage du Heart', 
-        height: '240 cm', 
-        gender: 'Masculin', 
-        bounty: '500,000,000 Berries', 
-        firstArc: 'Sabaody Archipelago' 
+    {
+        name: 'Bepo',
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage du Heart',
+        height: '240 cm',
+        gender: 'Masculin',
+        bounty: '500,000,000 Berries',
+        firstArc: 'Sabaody Archipelago'
     },
-    { 
-        name: 'Yasopp', 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage du Roux', 
-        height: '183 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Romance Dawn' 
+    {
+        name: 'Yasopp',
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage du Roux',
+        height: '183 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Romance Dawn'
     },
-    { 
+    {
         name: 'Lucky Roux',
-        aliases: ['Lucky'], 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage du Roux', 
-        height: '241 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Romance Dawn' 
+        aliases: ['Lucky'],
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage du Roux',
+        height: '241 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Romance Dawn'
     },
-    { 
+    {
         name: 'Benn Beckman',
-        aliases: ['Beckman'], 
-        devilFruit: 'Aucun', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage du Roux', 
-        height: '206 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Romance Dawn' 
+        aliases: ['Beckman'],
+        devilFruit: 'Aucun',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage du Roux',
+        height: '206 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Romance Dawn'
     },
-    { 
-        name: 'Uta', 
-        devilFruit: 'Uta Uta no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage du Roux', 
-        height: '169 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Film Red' 
+    {
+        name: 'Uta',
+        devilFruit: 'Uta Uta no Mi',
+        haki: 'Aucun',
+        affiliation: 'Équipage du Roux',
+        height: '169 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Film Red'
     },
-    { 
+    {
         name: 'Charlotte Pudding',
-        aliases: ['Pudding'], 
-        devilFruit: 'Memo Memo no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage de Big Mom', 
-        height: '166 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+        aliases: ['Pudding'],
+        devilFruit: 'Memo Memo no Mi',
+        haki: 'Aucun',
+        affiliation: 'Équipage de Big Mom',
+        height: '166 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Charlotte Brûlée', 
+    {
+        name: 'Charlotte Brûlée',
         aliases: ['Brulée'],
-        devilFruit: 'Mira Mira no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage de Big Mom', 
-        height: '350 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Mira Mira no Mi',
+        haki: 'Aucun',
+        affiliation: 'Équipage de Big Mom',
+        height: '350 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Charlotte Smoothie', 
+    {
+        name: 'Charlotte Smoothie',
         aliases: ['Smoothie'],
-        devilFruit: 'Shibo Shibo no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Big Mom', 
-        height: '464 cm', 
-        gender: 'Féminin', 
-        bounty: '932,000,000', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Shibo Shibo no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Big Mom',
+        height: '464 cm',
+        gender: 'Féminin',
+        bounty: '932,000,000',
+        firstArc: 'Whole Cake Island'
     },
-    { 
+    {
         name: 'Charlotte Chiffon',
-        aliases: ['Chiffon'], 
-        devilFruit: 'Aucun', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage du Fire Tank', 
-        height: '215 cm', 
-        gender: 'Féminin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+        aliases: ['Chiffon'],
+        devilFruit: 'Aucun',
+        haki: 'Aucun',
+        affiliation: 'Équipage du Fire Tank',
+        height: '215 cm',
+        gender: 'Féminin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Charlotte Mont dOr', 
+    {
+        name: 'Charlotte Mont dOr',
         aliases: ['Mont dor'],
-        devilFruit: 'Buku Buku no Mi', 
-        haki: 'Aucun', 
-        affiliation: 'Équipage de Big Mom', 
-        height: '260 cm', 
-        gender: 'Masculin', 
-        bounty: '0', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Buku Buku no Mi',
+        haki: 'Aucun',
+        affiliation: 'Équipage de Big Mom',
+        height: '260 cm',
+        gender: 'Masculin',
+        bounty: '0',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Charlotte Perospero', 
+    {
+        name: 'Charlotte Perospero',
         aliases: ['Perospero'],
-        devilFruit: 'Pero Pero no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Big Mom', 
-        height: '333 cm', 
-        gender: 'Masculin', 
-        bounty: '700,000,000 Berries', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Pero Pero no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Big Mom',
+        height: '333 cm',
+        gender: 'Masculin',
+        bounty: '700,000,000 Berries',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Charlotte Katakuri', 
+    {
+        name: 'Charlotte Katakuri',
         aliases: ['Katakuri'],
-        devilFruit: 'Mochi Mochi no Mi', 
-        haki: 'Rois, Armement, Vision', 
-        affiliation: 'Équipage de Big Mom', 
-        height: '509 cm', 
-        gender: 'Masculin', 
-        bounty: '1,100,000,000 Berries', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Mochi Mochi no Mi',
+        haki: 'Rois, Armement, Vision',
+        affiliation: 'Équipage de Big Mom',
+        height: '509 cm',
+        gender: 'Masculin',
+        bounty: '1,100,000,000 Berries',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Charlotte Oven', 
+    {
+        name: 'Charlotte Oven',
         aliases: ['Oven'],
-        devilFruit: 'Netsu Netsu no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Big Mom', 
-        height: '492 cm', 
-        gender: 'Masculin', 
-        bounty: '300,000,000 Berries', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Netsu Netsu no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Big Mom',
+        height: '492 cm',
+        gender: 'Masculin',
+        bounty: '300,000,000 Berries',
+        firstArc: 'Whole Cake Island'
     },
-    { 
-        name: 'Charlotte Cracker', 
+    {
+        name: 'Charlotte Cracker',
         aliases: ['Cracker'],
-        devilFruit: 'Bisu Bisu no Mi', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipage de Big Mom', 
-        height: '307 cm', 
-        gender: 'Masculin', 
-        bounty: '860,000,000 Berries', 
-        firstArc: 'Whole Cake Island' 
+        devilFruit: 'Bisu Bisu no Mi',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipage de Big Mom',
+        height: '307 cm',
+        gender: 'Masculin',
+        bounty: '860,000,000 Berries',
+        firstArc: 'Whole Cake Island'
     },
     {
         name: 'King',
@@ -1991,15 +1999,15 @@ const characters = [
         bounty: '546,000,000 Berries',
         firstArc: 'Wano'
     },
-    { 
-        name: 'Ulti', 
-        devilFruit: 'Ryu Ryu no Mi, Modèle: Pachycéphalosaure', 
-        haki: 'Armement, Vision', 
-        affiliation: 'Équipe aux Cent Bêtes', 
-        height: '173 cm', 
-        gender: 'Féminin', 
-        bounty: '400,000,000 Berries', 
-        firstArc: 'Wano' 
+    {
+        name: 'Ulti',
+        devilFruit: 'Ryu Ryu no Mi, Modèle: Pachycéphalosaure',
+        haki: 'Armement, Vision',
+        affiliation: 'Équipe aux Cent Bêtes',
+        height: '173 cm',
+        gender: 'Féminin',
+        bounty: '400,000,000 Berries',
+        firstArc: 'Wano'
     },
     {
         name: 'Page One',
@@ -2158,37 +2166,37 @@ const devilFruits = [
 // Fruits grouped by type
 const devilFruitsByType = {
     Logia: [
-        'Moku Moku no Mi', 'Magu Magu no Mi', 'Hie Hie no Mi', 'Mera Mera no Mi', 
-        'Pika Pika no Mi', 'Goro Goro no Mi', 'Yami Yami no Mi', 'Gasu Gasu no Mi', 
+        'Moku Moku no Mi', 'Magu Magu no Mi', 'Hie Hie no Mi', 'Mera Mera no Mi',
+        'Pika Pika no Mi', 'Goro Goro no Mi', 'Yami Yami no Mi', 'Gasu Gasu no Mi',
         'Yuki Yuki no Mi', 'Suna Suna no Mi', 'Numa Numa no Mi', 'Mori Mori no Mi'
     ],
     Paramecia: [
-        'Gomu Gomu no Mi', 'Bara Bara no Mi', 'Hana Hana no Mi', 'Yomi Yomi no Mi', 
-        'Toshi Toshi no Mi', 'Gura Gura no Mi', 'Ope Ope no Mi', 'Jiki Jiki no Mi', 
-        'String String Fruit', 'Soru Soru no Mi', 'Supa Supa no Mi', 'Doru Doru no Mi', 
-        'Mane Mane no Mi', 'Riki Riki no Mi', 'Wara Wara no Mi', 'Ishi Ishi no Mi', 
-        'Sui Sui no Mi', 'Horo Horo no Mi', 'Mero Mero no Mi', 'Fruit Urouge', 
-        'Zushi Zushi no Mi', 'Kage Kage no Mi', 'Maki Maki no Mi', 'Nagi Nagi no Mi', 
-        'Bari Bari no Mi', 'Nikyu Nikyu no Mi', 'Horu Horu no Mi', 'Noro Noro no Mi', 
-        'Bane Bane no Mi', 'Doku Doku no Mi', 'Awa Awa no Mi', 'Doa Doa no Mi', 
-        'Fuku Fuku no Mi', 'Mochi Mochi no Mi', 'Memo Memo no Mi', 'Mira Mira no Mi', 
-        'Buku Buku no Mi', 'Pero Pero no Mi', 'Bisu Bisu no Mi', 'Kibi Kibi no Mi', 
-        'Hira Hira no Mi', 'Giro Giro no Mi', 'Netsu Netsu no Mi', 'Shibo Shibo no Mi', 
-        'Sube Sube no Mi', 'Nomi Nomi no Mi', 'Beta Beta no Mi', 'Pamu Pamu no Mi', 
-        'Guru Guru no Mi', 'Buki Buki no Mi', 'Hobi Hobi no Mi', 'Nui Nui no Mi', 
-        'Oto Oto no Mi', 'Kira Kira no Mi', 'Toki Toki no Mi', 'Uta Uta no Mi', 
+        'Gomu Gomu no Mi', 'Bara Bara no Mi', 'Hana Hana no Mi', 'Yomi Yomi no Mi',
+        'Toshi Toshi no Mi', 'Gura Gura no Mi', 'Ope Ope no Mi', 'Jiki Jiki no Mi',
+        'String String Fruit', 'Soru Soru no Mi', 'Supa Supa no Mi', 'Doru Doru no Mi',
+        'Mane Mane no Mi', 'Riki Riki no Mi', 'Wara Wara no Mi', 'Ishi Ishi no Mi',
+        'Sui Sui no Mi', 'Horo Horo no Mi', 'Mero Mero no Mi', 'Fruit Urouge',
+        'Zushi Zushi no Mi', 'Kage Kage no Mi', 'Maki Maki no Mi', 'Nagi Nagi no Mi',
+        'Bari Bari no Mi', 'Nikyu Nikyu no Mi', 'Horu Horu no Mi', 'Noro Noro no Mi',
+        'Bane Bane no Mi', 'Doku Doku no Mi', 'Awa Awa no Mi', 'Doa Doa no Mi',
+        'Fuku Fuku no Mi', 'Mochi Mochi no Mi', 'Memo Memo no Mi', 'Mira Mira no Mi',
+        'Buku Buku no Mi', 'Pero Pero no Mi', 'Bisu Bisu no Mi', 'Kibi Kibi no Mi',
+        'Hira Hira no Mi', 'Giro Giro no Mi', 'Netsu Netsu no Mi', 'Shibo Shibo no Mi',
+        'Sube Sube no Mi', 'Nomi Nomi no Mi', 'Beta Beta no Mi', 'Pamu Pamu no Mi',
+        'Guru Guru no Mi', 'Buki Buki no Mi', 'Hobi Hobi no Mi', 'Nui Nui no Mi',
+        'Oto Oto no Mi', 'Kira Kira no Mi', 'Toki Toki no Mi', 'Uta Uta no Mi',
         'Juku Juku no Mi', 'Choki Choki no Mi', 'Mato Mato no Mi', 'Baku Baku no Mi', 'Shiro Shiro no Mi', 'Fude Fude no Mi',
         'Woshu Woshu no Mi'
     ],
     Zoan: [
-        'Inu Inu no Mi', 'Ryu Ryu no Mi', 'Ushi Ushi no Mi', 'Tori Tori no Mi', 
-        'Hito Hito no Mi', 'Uo Uo no Mi', 'Kame Kame no Mi', 'Neko Neko no Mi', 
-        'Fruit de Kozuki Momonosuke (Fruit Artificiel)', 'Ryu Ryu no Mi, Modèle: Pachycéphalosaure', 
-        'Neko Neko no Mi, Modèle: Tigre à dents de sabre', 'Ryu Ryu no Mi, Modèle: Spinosaurus', 
-        'Ryu Ryu no Mi, Modèle: Ptéranodon', 'Ryu Ryu no Mi, Modèle: Brachiosaure', 
-        'Zo Zo no Mi, Modèle: Mammouth', 'Ryu Ryu no Mi, Modèle: Tricératops', 
-        'Kumo Kumo no Mi, Modèle: Rosamygale Grauvogeli', 'Tama Tama no Mi', 
-        'Hebi Hebi no Mi, Modèle: Yamata no Orochi', 'Hito Hito no Mi, Modèle: Daibutsu', 
+        'Inu Inu no Mi', 'Ryu Ryu no Mi', 'Ushi Ushi no Mi', 'Tori Tori no Mi',
+        'Hito Hito no Mi', 'Uo Uo no Mi', 'Kame Kame no Mi', 'Neko Neko no Mi',
+        'Fruit de Kozuki Momonosuke (Fruit Artificiel)', 'Ryu Ryu no Mi, Modèle: Pachycéphalosaure',
+        'Neko Neko no Mi, Modèle: Tigre à dents de sabre', 'Ryu Ryu no Mi, Modèle: Spinosaurus',
+        'Ryu Ryu no Mi, Modèle: Ptéranodon', 'Ryu Ryu no Mi, Modèle: Brachiosaure',
+        'Zo Zo no Mi, Modèle: Mammouth', 'Ryu Ryu no Mi, Modèle: Tricératops',
+        'Kumo Kumo no Mi, Modèle: Rosamygale Grauvogeli', 'Tama Tama no Mi',
+        'Hebi Hebi no Mi, Modèle: Yamata no Orochi', 'Hito Hito no Mi, Modèle: Daibutsu',
         'Smile', 'Batto Batto no Mi'
     ]
 };
@@ -2341,9 +2349,9 @@ app.post("/api/reset-daily", (req, res) => {
     chooseDailyCharacter(); // 🔄 Re-génère un personnage
     console.log("🔄 Nouveau personnage généré :", dailyCharacter.name);
 
-    res.json({ 
-        message: "Personnage du jour réinitialisé", 
-        character: dailyCharacter 
+    res.json({
+        message: "Personnage du jour réinitialisé",
+        character: dailyCharacter
     });
 });
 
@@ -2410,7 +2418,104 @@ app.get('/api/devil-fruit-translation', (req, res) => {
 });
 
 
+// DAILY DEVIL FRUIT 
 
+// ✅ Fonction pour obtenir un fruit aléatoire du jour
+function getDailyDevilFruit() {
+    if (fs.existsSync(dailyDevilFruitFile)) {
+        const data = JSON.parse(fs.readFileSync(dailyDevilFruitFile, "utf8"));
+        const lastUpdated = new Date(data.date);
+        const today = new Date().toISOString().split("T")[0];
+
+        if (lastUpdated.toISOString().split("T")[0] === today) {
+            return data;
+        }
+    }
+
+    const randomFruit = devilFruits[Math.floor(Math.random() * devilFruits.length)].name;
+    // 🔍 Vérification du type de `randomFruit`
+    console.log("🎲 Fruit du démon tiré au hasard :", randomFruit);
+    console.log("🔍 Type de randomFruit :", typeof randomFruit);
+
+    const fruitType = Object.keys(devilFruitsByType).find(type => devilFruitsByType[type].includes(randomFruit));
+    const translationEntry = devilFruitsTranslated[fruitType].find(f => f.name === randomFruit);
+    const translation = translationEntry ? translationEntry.translation : "Traduction inconnue";
+
+    // ✅ Ajout du personnage correspondant au fruit
+    const character = getCharacterFromFruit(randomFruit);
+
+    const dailyFruit = {
+        fruit: randomFruit,
+        type: fruitType,
+        translation: translation,
+        character: character,  // Ajout ici
+        date: new Date().toISOString()
+    };
+
+    try {
+        fs.writeFileSync(dailyDevilFruitFile, JSON.stringify(dailyFruit, null, 2), "utf8");
+    } catch (error) {
+        console.error("❌ Erreur en écrivant dans dailyDevilFruit.json :", error);
+    }
+    
+    return dailyFruit;
+}
+
+
+function getCharacterFromFruit(fruitName) {
+    console.log("🧐 Vérification de `characters` :", Array.isArray(characters) ? `OK (${characters.length} personnages)` : "❌ ERREUR");
+
+    if (!characters || !Array.isArray(characters)) {
+        console.error("❌ ERREUR : `characters` est indéfini ou mal formaté !");
+        return "Inconnu";
+    }
+
+    console.log(`🔎 Recherche du personnage pour le fruit "${fruitName}"`);
+    const character = characters.find(char => char.devilFruit === fruitName);
+
+    console.log(`👤 Résultat trouvé : ${character ? character.name : "Aucun"}`);
+    
+    return character ? character.name : "Inconnu";
+}
+
+
+// ✅ API : Obtenir le fruit du jour
+app.get("/api/daily-devil-fruit", (req, res) => {
+    try {
+        const dailyFruit = getDailyDevilFruit();
+        res.json(dailyFruit);
+    } catch (error) {
+        console.error("❌ Erreur dans /api/daily-devil-fruit :", error);
+        res.status(500).json({ error: "Erreur interne du serveur" });
+    }
+});
+
+
+// ✅ API : Réinitialiser le fruit du jour (Admin/Test)
+app.post("/api/reset-daily-devil-fruit", (req, res) => {
+    const dailyFruit = getDailyDevilFruit();
+    res.json({ message: "Fruit du démon réinitialisé", fruit: dailyFruit });
+});
+
+// ✅ API : Soumettre une réponse (Vérifie si l'utilisateur a déjà joué)
+app.post("/api/submit-daily-guess", (req, res) => {
+    const { guess } = req.body;
+    const dailyFruit = getDailyDevilFruit();
+
+    const lastPlayedDate = req.headers["last-played-date"];
+    const today = new Date().toISOString().split("T")[0];
+
+    if (lastPlayedDate === today) {
+        return res.status(403).json({ message: "❌ Vous avez déjà joué aujourd'hui !" });
+    }
+
+    // ✅ Vérification avec insensibilité à la casse
+    if (!guess || guess.toLowerCase() !== dailyFruit.character.toLowerCase()) {
+        return res.json({ message: "❌ Mauvaise réponse ! Essayez encore demain." });
+    }
+
+    return res.json({ message: `✅ Bravo ! Ce fruit appartient à ${dailyFruit.character}.` });
+});
 
 // Démarrer le serveur
 app.listen(port, () => {

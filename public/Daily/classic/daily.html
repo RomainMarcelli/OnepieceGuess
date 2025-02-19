@@ -6,29 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../img/favicon-32x32.png" type="image/png">
     <title>One Piece Daily Guess</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../responsive.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/responsive.css">
     <link rel="stylesheet" href="daily.css">
 </head>
 
 <body>
-    <img class="logo_img" src="../img/One-Piece-Logo.png" alt="Logo">
+    <img class="logo_img" src="../../img/One-Piece-Logo.png" alt="Logo">
     <nav>
         <div class="progress_nav">
             <div class="background">
             </div>
             <div class="imagesJeu">
                 <div class="guessPerso">
-                    <img src="../img/guessPerso.png" alt="">
+                    <img src="/img/guessPerso.png" alt="">
                 </div>
                 <div class="devilFruit">
-                    <img src="../img/devilFruit.png" alt="">
+                    <a href="../DevilFruit/DailyDevilFruit.html">
+                        <img src="/img/devilFruit.png" alt="">
+                    </a>
                 </div>
                 <div class="vs">
-                    <img src="../img/vs.png" alt="">
+                    <img src="/img/vs.png" alt="">
                 </div>
                 <div class="characters">
-                    <img src="../img/logo_characters.png" alt="">
+                    <img src="/img/logo_characters.png" alt="">
                 </div>
             </div>
         </div>
@@ -46,12 +48,12 @@
                 <h4>Tape n'importe quel personnage pour commencer.</h4>
                 <div class="all_indice">
                     <div class="indice" id="firstArcHint">
-                        <img id="firstArcHintImage" src="../img/book.png" alt="Livre indice">
+                        <img id="firstArcHintImage" src="../../img/book.png" alt="Livre indice">
                         <p>Indice du premier arc</p>
                         <span class="hint-info" id="firstArcHintInfo" style="display: block;"></span>
                     </div>
                     <div class="indice" id="devilFruitHint">
-                        <img id="devilFruitHintImage" src="../img/fruit.png" alt="Fruit indice">
+                        <img id="devilFruitHintImage" src="../../img/fruit.png" alt="Fruit indice">
                         <p>Indice fruit du démon</p>
                         <span class="hint-info" id="devilFruitHintInfo" style="display: block;"></span>
                     </div>
@@ -64,7 +66,7 @@
             <div class="search">
                 <input type="text" id="characterInput" name="characterInput" autocomplete="off"
                     placeholder="Nom de personnage">
-                <button type="submit" id="button"><img src="../img/guess.png" alt=""></button>
+                <button type="submit" id="button"><img src="../../img/guess.png" alt=""></button>
             </div>
             <div id="suggestions"></div>
         </form>
@@ -98,8 +100,8 @@
     <button id="resetDailyButton">Réinitialiser le mode quotidien</button>
 
 
-    <script src="../script.js"></script>
-    <script src="../enterKeyHandler.js"></script>
+    <script src="../../script.js"></script>
+    <script src="../../enterKeyHandler.js"></script>
     <script src="daily_mode.js"></script> 
 </body>
 

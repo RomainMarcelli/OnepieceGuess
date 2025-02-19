@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../img/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="/img/favicon-32x32.png" type="image/png">
     <title>One Piece Guessing Game</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../responsive.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/responsive.css">
 </head>
 <body>
 
-    <img class="logo_img" src="../img/One-Piece-Logo.png" alt="Logo">
+    <img class="logo_img" src="/img/One-Piece-Logo.png" alt="Logo">
     <nav>
         <div class="progress_nav">
             <div class="background">
             </div>
             <div class="imagesJeu">
                 <div class="guessPerso">
-                    <img src="./img/guessPerso.png" alt="">
+                    <img src="/img/guessPerso.png" alt="">
                 </div>
                 <div class="devilFruit">
-                    <img src="./img/devilFruit.png" alt="">
+                    <img src="/img/devilFruit.png" alt="">
                 </div>
                 <div class="vs">
-                    <img src="./img/vs.png" alt="">
+                    <img src="/img/vs.png" alt="">
                 </div>
                 <div class="characters">
-                    <img src="../img/logo_characters.png" alt="">
+                    <img src="/img/logo_characters.png" alt="">
                 </div>
             </div>
             <!-- <a href="guessPerso.html" style="position: absolute;">Nouveau mode</a> -->
@@ -36,15 +36,15 @@
         <div class="title">
             <div class="descript">
                 <h3>Quel personnage a mangé ce Fruit du Démon ?</h3>
-                <p id="devil-fruit"></p> 
+                <p id="Dailydevil-fruit"></p> 
                 <div class="all_indice">
                     <div class="indice" id="typeHint" >
-                        <img id="typeHintImage" src="../img/Type.png" alt="Type indice">
+                        <img id="typeHintImage" src="/img/Type.png" alt="Type indice">
                         <p>Indice de Type</p>
                         <span class="hint-info" id="typeHintInfo" style="display: none;"></span>
                     </div>
                     <div class="indice" id="traduitFruitHint" >
-                        <img id="traduitFruitHintImage" src="../img/traduit.png" alt="traduction indice">
+                        <img id="traduitFruitHintImage" src="/img/traduit.png" alt="traduction indice">
                         <p>Indice de nom traduit</p>
                         <span class="hint-info" id="traduitFruitHintInfo" style="display: none;"></span>
                     </div>
@@ -66,12 +66,12 @@
         <form id="guessFruitForm">
             <div class="search">
                 <input type="text" id="characterInput" name="characterInput" autocomplete="off" placeholder="Nom de personnage">
-                <button type="submit" id="button"><img src="../img/guess.png" alt=""></button>
+                <button type="submit" id="button"><img src="/img/guess.png" alt=""></button>
             </div>
             <div id="suggestions"></div>
             <div id="result"></div>
         </form>
-        <div id="resultFruitContainer"></div>
+        <div id="DailyresultFruitContainer"></div>
         <div id="characterImageContainer" style="display:none;">
             <img id="characterImage" src="" alt="Character Image">
         </div>
@@ -79,7 +79,9 @@
     </div>
     
     <!-- Section pour l'historique des personnages -->
-    <div id="resultContainer"></div>
+    <!-- <div id="  resultContainer"></div> -->
+
+    <p id="countdownTimer">00:00:00</p>
 
     <br>
     <div class="all-legend">
@@ -94,9 +96,10 @@
             </div>
         </div>
     </div>
-    <script src="../../index.js"></script>
-    <script src="../script.js"></script>
-    <script src="./js/devilFruits.js"></script>
-    <script src="../enterKeyHandler.js"></script>
+    <script src="/index.js"></script>
+    <script src="/script.js"></script>
+    <script src="../../DevilFruit/js/devilFruits.js"></script>
+    <script src="/enterKeyHandler.js"></script>
+    <script src="DailyDevilFruit.js"></script>
 </body>
 </html>
