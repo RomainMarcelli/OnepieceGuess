@@ -189,7 +189,6 @@ async function fetchDevilFruit() {
         const isDailyMode = document.getElementById("Dailydevil-fruit") !== null;
 
         if (isDailyMode) {
-            console.log("🟢 Mode Daily activé : Exécution de fetchDailyDevilFruit()");
             await fetchDailyDevilFruit(); // Appelle la fonction du fichier `DailyDevilFruit.js`
             return; // Sortie de la fonction pour éviter d'exécuter le mode normal
         }
@@ -216,6 +215,8 @@ async function fetchDevilFruit() {
             console.error("❌ Aucun élément valide trouvé pour afficher le fruit !");
             return;
         }
+
+        window.isDailyMode = false;  // Désactiver le mode daily pour le mode normal
 
         fruitElement.innerText = `❝ ${data.fruit} ❞`;
         characterName = data.character;
@@ -375,8 +376,6 @@ function displaySuccessCard(characterName) {
     // Ajout de l'image et du nom au conteneur
     characterContainer.appendChild(characterImage);
     characterContainer.appendChild(nameSpan);
-
-    // Ajout du conteneur à la carte de succès
     successCard.appendChild(characterContainer);
 
     const attemptsMessage = document.createElement('p');

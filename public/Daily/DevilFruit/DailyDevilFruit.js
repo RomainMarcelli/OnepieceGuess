@@ -1,5 +1,3 @@
-// Daily/DevilFruit/DailyDevilFruit.js
-
 function getImagePath(characterName) {
     return `/img/${characterName}.png`;
 }
@@ -7,7 +5,6 @@ function getImagePath(characterName) {
 // ✅ Fonction pour récupérer le fruit du démon du jour
 async function fetchDailyDevilFruit() {
     try {
-        console.log("📡 Envoi de la requête à /api/daily-devil-fruit...");
         const response = await fetch("/api/daily-devil-fruit");
 
         if (!response.ok) {
@@ -15,7 +12,6 @@ async function fetchDailyDevilFruit() {
         }
 
         const data = await response.json();
-        console.log("📨 Réponse reçue :", data);
 
         // Vérifier que l'élément existe avant modification
         const fruitElement = document.getElementById("Dailydevil-fruit");
@@ -30,6 +26,7 @@ async function fetchDailyDevilFruit() {
         // ✅ Stockage des infos pour utilisation future
         window.dailyCharacter = data.character || "Personnage inconnu";
         window.dailyFruit = data.fruit;
+        window.isDailyMode = true;  // Activer le mode daily
 
         checkIfAlreadyPlayed();
     } catch (error) {
@@ -53,7 +50,6 @@ function checkIfAlreadyPlayed() {
     }
 }
 
-// ✅ Soumettre une réponse
 document.addEventListener("DOMContentLoaded", () => {
     const guessForm = document.getElementById("guessFruitForm");
 
@@ -63,18 +59,25 @@ document.addEventListener("DOMContentLoaded", () => {
             const guessInput = document.getElementById("characterInput");
             const resultContainer = document.getElementById("DailyresultFruitContainer");
 
-            if (!guessInput || !resultContainer) {
-                console.error("❌ Un élément nécessaire est introuvable !");
+            if (!guessInput) {
+                console.error("❌ L'élément #characterInput est introuvable !");
                 return;
             }
 
-            const guess = guessInput.value.trim();
-            console.log("📩 Envoi de la réponse au serveur :", guess);
+
+            let guess = guessInput.value.trim();
+            if (!guess && guessInput.dataset.actualName) {
+                console.warn("⚠️ `value` est vide, récupération via `dataset.actualName`");
+                guess = guessInput.dataset.actualName.trim();
+            }
+
 
             if (!guess) {
+                console.warn("❗ Le champ est vide !");
                 alert("Veuillez entrer un nom !");
                 return;
             }
+
 
             try {
                 const response = await fetch("/api/submit-daily-guess", {
@@ -87,53 +90,96 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 const data = await response.json();
-                console.log("📨 Réponse du serveur :", data);
 
-                // ✅ Vérification de l'existence du container avant modification
                 if (!resultContainer) {
                     console.error("❌ L'élément #DailyresultFruitContainer est introuvable !");
                     return;
                 }
 
-                // ✅ Affichage du message reçu
-                const messageElement = document.createElement("p");
-                messageElement.textContent = data.message;
-                resultContainer.appendChild(messageElement);
+                // 🔍 **Ajout des logs pour voir les valeurs comparées**
+                console.log("🎯 Comparaison du guess :", guess, "vs", window.dailyCharacter);
+                console.log("🧐 Type de guess :", typeof guess);
+                console.log("🧐 Type de dailyCharacter :", typeof window.dailyCharacter);
+                console.log("📝 dailyCharacter actuel :", window.dailyCharacter);
 
-                if (response.ok) {
-                    // ✅ Bonne réponse : empêcher de jouer à nouveau
-                    guessInput.disabled = true;
-                    document.getElementById("button").disabled = true;
-                    resultContainer.style.color = "green";
+                // ✅ Vérification si la réponse est correcte
+                if (guess.toLowerCase() === window.dailyCharacter.toLowerCase()) {
+                    displayDailySuccessCard(window.dailyCharacter); // Appel de la nouvelle fonction spécifique au mode Daily
                 } else {
-                    // ❌ Mauvaise réponse : ajout à l'historique et possibilité de rejouer
-                    addIncorrectGuess(guess);
-                    resultContainer.style.color = "red";
+                    console.log("🚀 guess envoyé à `updateIncorrectGuesses()` :", guess);
+                    updateIncorrectGuesses(guess);
                 }
+
             } catch (error) {
                 console.error("❌ Erreur lors de la soumission :", error);
             }
+
+            setTimeout(() => {
+            }, 500);
         });
     }
 });
 
-// ✅ Ajouter une mauvaise réponse dans l'historique
-function addIncorrectGuess(guess) {
+function displayCharacterDetails(name) {
+    const container = document.getElementById('DailyresultFruitContainer');
+
+    // Create and display the correct guess details
+    const characterElement = document.createElement('div');
+    characterElement.classList.add('correct-guess');
+
+    const img = document.createElement('img');
+    img.src = getImagePath(name);
+    img.alt = 'Character Image';
+    img.className = 'character-image';
+
+    const nameSpan = document.createElement('span');
+    nameSpan.innerText = name;
+    nameSpan.className = 'character-name';
+
+    characterElement.appendChild(img);
+    characterElement.appendChild(nameSpan);
+
+    // Append the correct guess at the end of the container
+    container.appendChild(characterElement);
+}
+
+// ✅ Afficher les mauvaises réponses
+function updateIncorrectGuesses(guess) {
     const container = document.getElementById("DailyresultFruitContainer");
 
-    if (!container) {
-        console.error("❌ L'élément #DailyresultFruitContainer est introuvable !");
+    console.log("📌 Fonction `updateIncorrectGuesses()` appelée pour le mode DAILY avec :", guess);
+
+    if (!guess) {
+        console.error("🚨 `guess` est vide ou indéfini !");
         return;
     }
 
-    // ✅ Création d'un élément pour afficher la mauvaise réponse
+    if (!window.isDailyMode) {
+        console.warn("⏳ Ignoré : Ce n'est pas le mode DAILY.");
+        return;
+    }
+
+    // Vérifier si cette réponse a déjà été ajoutée
+    const existingGuesses = Array.from(container.querySelectorAll('.incorrect-guess span')).map(el => el.textContent.trim());
+    if (existingGuesses.includes(guess)) {
+        console.warn("⚠️ La réponse existe déjà, on ne l'ajoute pas.");
+        return;
+    }
+
+    incorrectGuesses.push(guess);
+
     const guessElement = document.createElement("div");
     guessElement.classList.add("incorrect-guess");
-    guessElement.style.color = "red";
+
+    const img = document.createElement("img");
+    img.src = getImagePath(guess);
+    img.alt = "Character Image";
+    img.className = "suggestion-image";
 
     const nameSpan = document.createElement("span");
-    nameSpan.innerText = `❌ ${guess}`;
+    nameSpan.innerText = `${guess}`;
 
+    guessElement.appendChild(img);
     guessElement.appendChild(nameSpan);
     container.appendChild(guessElement);
 }
@@ -141,14 +187,13 @@ function addIncorrectGuess(guess) {
 // ✅ Charger le fruit du jour au démarrage
 document.addEventListener("DOMContentLoaded", fetchDailyDevilFruit);
 
-// ✅ Bouton de réinitialisation du fruit du jour
+// ✅ Réinitialisation du fruit du jour
 document.addEventListener("DOMContentLoaded", () => {
     const resetButton = document.getElementById("resetDailyFruitButton");
 
     if (resetButton) {
         resetButton.addEventListener("click", async () => {
             try {
-                console.log("🔄 Réinitialisation du fruit du jour en cours...");
 
                 const response = await fetch("/api/reset-daily-devil-fruit", {
                     method: "POST"
@@ -159,9 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 const data = await response.json();
-                console.log("✅ Nouveau fruit après réinitialisation :", data);
 
-                // ✅ Mise à jour du fruit et du personnage SANS recharger la page
                 const fruitElement = document.getElementById("Dailydevil-fruit");
                 if (fruitElement) {
                     fruitElement.textContent = `❝ ${data.fruit} ❞`;
@@ -169,6 +212,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 window.dailyCharacter = data.character || "Personnage inconnu";
                 window.dailyFruit = data.fruit;
+                incorrectGuesses = [];
+                document.getElementById("DailyresultFruitContainer").innerHTML = "";
 
             } catch (error) {
                 console.error("❌ Erreur lors de la réinitialisation :", error);
@@ -177,3 +222,61 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+
+
+
+function displayDailySuccessCard(characterName) {
+    console.log("🎉 Affichage de la carte de succès pour :", characterName);
+
+    // Vérifier si une carte de succès existe déjà et la supprimer
+    const existingSuccessCard = document.querySelector(".success-card");
+    if (existingSuccessCard) {
+        existingSuccessCard.remove();
+    }
+
+    const successCard = document.createElement("div");
+    successCard.className = "success-card";
+
+    const successTitle = document.createElement('h2');
+    successTitle.textContent = 'Bravo!';
+    successCard.appendChild(successTitle);
+
+    // Conteneur pour l’image et le nom du personnage
+    const characterContainer = document.createElement("div");
+    characterContainer.className = "character-container";
+
+    // Image du personnage
+    const characterImage = document.createElement("img");
+    characterImage.src = getImagePath(characterName);
+    characterImage.alt = "Character Image";
+    characterImage.className = "character-image";
+
+    // Nom du personnage
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "character-name";
+    nameSpan.textContent = characterName;
+
+    // Ajout des éléments au conteneur
+    characterContainer.appendChild(characterImage);
+    characterContainer.appendChild(nameSpan);
+    successCard.appendChild(characterContainer);
+
+    // Message de confirmation
+    const attemptsMessage = document.createElement('p');
+    attemptsMessage.textContent = `Nombre d'essais réalisés : ${attempts}`;
+    successCard.appendChild(attemptsMessage);
+
+    // Désactiver le formulaire après une bonne réponse
+    document.getElementById("guessFruitForm").style.display = "none";
+
+    // Ajout de la carte dans le conteneur des résultats
+    const resultContainer = document.getElementById("DailyresultFruitContainer");
+    if (!resultContainer) {
+        console.error("❌ Erreur : `DailyresultFruitContainer` est introuvable !");
+        return;
+    }
+    document.body.appendChild(successCard);
+
+    // Défilement automatique vers la carte de succès
+    successCard.scrollIntoView({ behavior: "smooth" });
+}

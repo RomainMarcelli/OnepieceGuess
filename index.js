@@ -2489,20 +2489,26 @@ function getCharacterFromFruit(fruitName) {
 app.get("/api/daily-devil-fruit", (req, res) => {
     try {
         console.log("📡 Lecture du fichier dailyDevilFruit.json...");
-        
+
         if (!fs.existsSync(dailyDevilFruitFile)) {
             return res.status(500).json({ error: "Fichier dailyDevilFruit.json introuvable !" });
         }
 
         const data = JSON.parse(fs.readFileSync(dailyDevilFruitFile, "utf8"));
-        console.log("📨 Fruit du jour (JSON) :", data);
+        
+        // ✅ Vérifier que `character` est bien retourné
+        if (!data.character) {
+            data.character = "Inconnu";
+        }
 
+        console.log("📨 Fruit du jour (JSON) :", data);
         res.json(data);
     } catch (error) {
         console.error("❌ Erreur dans /api/daily-devil-fruit :", error);
         res.status(500).json({ error: "Erreur interne du serveur" });
     }
 });
+
 
 
 // ✅ API : Réinitialiser le fruit du jour (Admin/Test)

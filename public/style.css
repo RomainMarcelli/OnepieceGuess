@@ -808,7 +808,7 @@ img {
     margin-top: 16px;
 }
 
-#resultFruitContainer .incorrect-guess{
+#resultFruitContainer .incorrect-guess, #DailyresultFruitContainer .incorrect-guess{
     width: 350px;
     margin: auto;
     background-color: #df5858;
@@ -829,7 +829,7 @@ img {
     color: #fff;
 }
 
-.incorrect-guess img, #resultFruitContainer .correct-guess img{
+.incorrect-guess img, #resultFruitContainer .correct-guess img, #DailyresultFruitContainer .correct-guess img{
     border: 2px solid #534e41;
     margin-bottom: 5px;
     width: 40px;
@@ -837,7 +837,7 @@ img {
     border-radius: 0;
 }
 
-#resultFruitContainer .correct-guess{
+#resultFruitContainer .correct-guess, #DailyresultFruitContainer .correct-guess{
     background-color: #35b956;
     border: 2px solid #fff;
     background-image: url(./img/AnswerGood.png);
@@ -858,16 +858,16 @@ img {
     margin-top: 10px;
 }
 
-#resultFruitContainer .correct-guess .character-name{
+#resultFruitContainer .correct-guess .character-name, #DailyresultFruitContainer .correct-guess .character-name{
     font-weight: 500;
     font-size: 17px;
 }
 
-#resultFruitContainer .incorrect-guess .suggestion-image{
+#resultFruitContainer .incorrect-guess .suggestion-image, #DailyresultFruitContainer .incorrect-guess .suggestion-image{
     margin: 0;
 }
 
-#resultFruitContainer{
+#resultFruitContainer, #DailyresultFruitContainer{
     display: flex;
     flex-direction: column-reverse;
 }
