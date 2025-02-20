@@ -185,10 +185,21 @@ function categorizeDevilFruit(devilFruit) {
 
 async function fetchDevilFruit() {
     try {
+        // 🔍 Vérifier si le mode Daily est activé
+        const isDailyMode = document.getElementById("Dailydevil-fruit") !== null;
+
+        if (isDailyMode) {
+            console.log("🟢 Mode Daily activé : Exécution de fetchDailyDevilFruit()");
+            await fetchDailyDevilFruit(); // Appelle la fonction du fichier `DailyDevilFruit.js`
+            return; // Sortie de la fonction pour éviter d'exécuter le mode normal
+        }
+
+        console.log("📡 Envoi de la requête à /api/random-devil-fruit...");
         const response = await fetch('/api/random-devil-fruit');
         const data = await response.json();
 
         while (data.fruit === 'Aucun' || data.fruit === 'Smile') {
+            console.log("🔄 Requête ignorée, retry...");
             const retryResponse = await fetch('/api/random-devil-fruit');
             const retryData = await retryResponse.json();
             if (retryData.fruit !== 'Aucun' && retryData.fruit !== 'Smile') {
@@ -198,7 +209,15 @@ async function fetchDevilFruit() {
             }
         }
 
-        document.getElementById('devil-fruit').innerText = `❝ ${data.fruit} ❞`;
+        // 🔍 Sélection dynamique de l'élément à modifier
+        const fruitElement = document.getElementById("devil-fruit");
+
+        if (!fruitElement) {
+            console.error("❌ Aucun élément valide trouvé pour afficher le fruit !");
+            return;
+        }
+
+        fruitElement.innerText = `❝ ${data.fruit} ❞`;
         characterName = data.character;
 
         fruitType = data.type || categorizeDevilFruit(data.fruit);
@@ -207,10 +226,12 @@ async function fetchDevilFruit() {
         attempts = 0;
         updateHintInfo();
     } catch (error) {
-        console.error('Erreur:', error);
+        console.error('❌ Erreur lors de la récupération du fruit du démon:', error);
         alert("Une erreur est survenue lors de la récupération du fruit du démon. Veuillez réessayer.");
     }
 }
+
+
 
 // Gestion de la navigation entre les modes de jeu
 document.addEventListener('DOMContentLoaded', () => {

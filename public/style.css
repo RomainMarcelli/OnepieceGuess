@@ -953,7 +953,7 @@ img {
 
 /* BTN 24H */
 
-#dailyModeButton {
+#dailyModeButton, #resetDailyFruitButton {
     display: block;
     margin: 20px auto;
     padding: 12px 20px;
@@ -969,11 +969,11 @@ img {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-#dailyModeButton:hover {
+#dailyModeButton:hover, #resetDailyFruitButton:hover {
     background: linear-gradient(45deg, #f57c00, #d53633);
     transform: scale(1.05);
 }
 
-#dailyModeButton:active {
+#dailyModeButton:active, #resetDailyFruitButton:active {
     transform: scale(0.95);
 }

@@ -7,6 +7,8 @@ const port = 3000;
 // Middleware pour servir des fichiers statiques depuis le répertoire 'public'
 app.use(express.static('public'));
 app.use('/img', express.static(path.join(__dirname, 'public/img')));
+app.use(express.json()); // Permet de lire les requêtes JSON
+app.use(express.urlencoded({ extended: true }));
 
 const dailyDevilFruitFile = path.join(__dirname, "public/data/dailyDevilFruit.json");
 
@@ -2421,43 +2423,47 @@ app.get('/api/devil-fruit-translation', (req, res) => {
 // DAILY DEVIL FRUIT 
 
 // ✅ Fonction pour obtenir un fruit aléatoire du jour
-function getDailyDevilFruit() {
-    if (fs.existsSync(dailyDevilFruitFile)) {
-        const data = JSON.parse(fs.readFileSync(dailyDevilFruitFile, "utf8"));
-        const lastUpdated = new Date(data.date);
-        const today = new Date().toISOString().split("T")[0];
+function getDailyDevilFruit(forceNew = false) {
+    if (fs.existsSync(dailyDevilFruitFile) && !forceNew) {
+        try {
+            const data = JSON.parse(fs.readFileSync(dailyDevilFruitFile, "utf8"));
+            const lastUpdated = new Date(data.date);
+            const today = new Date().toISOString().split("T")[0];
 
-        if (lastUpdated.toISOString().split("T")[0] === today) {
-            return data;
+            if (lastUpdated.toISOString().split("T")[0] === today) {
+                return data; // Ne change pas le fruit si c'est encore le même jour
+            }
+        } catch (error) {
+            console.error("❌ Erreur en lisant dailyDevilFruit.json :", error);
         }
     }
 
-    const randomFruit = devilFruits[Math.floor(Math.random() * devilFruits.length)].name;
-    // 🔍 Vérification du type de `randomFruit`
-    console.log("🎲 Fruit du démon tiré au hasard :", randomFruit);
-    console.log("🔍 Type de randomFruit :", typeof randomFruit);
+    // ✅ Vérifier que `devilFruits` contient bien des chaînes et non des objets
+    const randomFruitObject = devilFruits[Math.floor(Math.random() * devilFruits.length)];
+
+    // 🔥 Si `devilFruits` contient des objets, récupérer le nom du fruit
+    const randomFruit = typeof randomFruitObject === "object" ? randomFruitObject.name : randomFruitObject;
+
+    console.log("🎲 Nouveau fruit sélectionné :", randomFruit);
 
     const fruitType = Object.keys(devilFruitsByType).find(type => devilFruitsByType[type].includes(randomFruit));
-    const translationEntry = devilFruitsTranslated[fruitType].find(f => f.name === randomFruit);
+    const translationEntry = devilFruitsTranslated[fruitType]?.find(f => f.name === randomFruit);
     const translation = translationEntry ? translationEntry.translation : "Traduction inconnue";
 
-    // ✅ Ajout du personnage correspondant au fruit
     const character = getCharacterFromFruit(randomFruit);
 
     const dailyFruit = {
         fruit: randomFruit,
-        type: fruitType,
+        type: fruitType || "Inconnu",
         translation: translation,
-        character: character,  // Ajout ici
+        character: character || "Inconnu",
         date: new Date().toISOString()
     };
 
-    try {
-        fs.writeFileSync(dailyDevilFruitFile, JSON.stringify(dailyFruit, null, 2), "utf8");
-    } catch (error) {
-        console.error("❌ Erreur en écrivant dans dailyDevilFruit.json :", error);
-    }
-    
+    // ✅ Écriture du nouveau fruit dans le fichier JSON
+    fs.writeFileSync(dailyDevilFruitFile, JSON.stringify(dailyFruit, null, 2), "utf8");
+    console.log("✅ Nouveau fruit défini :", dailyFruit);
+
     return dailyFruit;
 }
 
@@ -2482,8 +2488,16 @@ function getCharacterFromFruit(fruitName) {
 // ✅ API : Obtenir le fruit du jour
 app.get("/api/daily-devil-fruit", (req, res) => {
     try {
-        const dailyFruit = getDailyDevilFruit();
-        res.json(dailyFruit);
+        console.log("📡 Lecture du fichier dailyDevilFruit.json...");
+        
+        if (!fs.existsSync(dailyDevilFruitFile)) {
+            return res.status(500).json({ error: "Fichier dailyDevilFruit.json introuvable !" });
+        }
+
+        const data = JSON.parse(fs.readFileSync(dailyDevilFruitFile, "utf8"));
+        console.log("📨 Fruit du jour (JSON) :", data);
+
+        res.json(data);
     } catch (error) {
         console.error("❌ Erreur dans /api/daily-devil-fruit :", error);
         res.status(500).json({ error: "Erreur interne du serveur" });
@@ -2493,8 +2507,16 @@ app.get("/api/daily-devil-fruit", (req, res) => {
 
 // ✅ API : Réinitialiser le fruit du jour (Admin/Test)
 app.post("/api/reset-daily-devil-fruit", (req, res) => {
-    const dailyFruit = getDailyDevilFruit();
-    res.json({ message: "Fruit du démon réinitialisé", fruit: dailyFruit });
+    try {
+        console.log("🔄 Réinitialisation forcée du fruit du jour...");
+
+        // ✅ On force la génération d'un nouveau fruit
+        const newDailyFruit = getDailyDevilFruit(true);
+        res.json(newDailyFruit);
+    } catch (error) {
+        console.error("❌ Erreur lors de la réinitialisation :", error);
+        res.status(500).json({ error: "Erreur interne du serveur lors de la réinitialisation." });
+    }
 });
 
 // ✅ API : Soumettre une réponse (Vérifie si l'utilisateur a déjà joué)
