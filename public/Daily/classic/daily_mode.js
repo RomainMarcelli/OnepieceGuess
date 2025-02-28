@@ -31,7 +31,7 @@ async function fetchDailyCharacter() {
 }
 
 function checkIfAlreadyPlayed() {
-    const lastPlayedDate = localStorage.getItem("lastPlayedDate");
+    const lastPlayedDate = localStorage.getItem("lastPlayedDate_dailyMode");
     const today = new Date().toISOString().split('T')[0];
     
     if (lastPlayedDate === today) {
@@ -65,8 +65,8 @@ document.getElementById("guessForm").addEventListener("submit", async (event) =>
     if (guessedCharacter.name === window.dailyCharacter.name) {
         document.getElementById("guessForm").style.display = "none"; // Cache l'input uniquement si c'est correct
         const today = new Date().toISOString().split('T')[0];
-        localStorage.setItem("lastPlayedDate", today);
-    } else {
+        localStorage.setItem("lastPlayedDate_dailyMode", today);
+        } else {
         document.getElementById("characterInput").value = ""; // Efface seulement l'input pour une nouvelle tentative
     }
 });

@@ -197,6 +197,13 @@ async function fetchDevilFruit() {
         const response = await fetch('/api/random-devil-fruit');
         const data = await response.json();
 
+        console.log("📥 Fruit reçu :", data);
+
+        if (!data.fruit || data.fruit === 'Aucun' || data.fruit === 'Smile') {
+            console.warn("⚠️ Requête ignorée, fruit invalide.");
+            return;
+        }
+
         while (data.fruit === 'Aucun' || data.fruit === 'Smile') {
             console.log("🔄 Requête ignorée, retry...");
             const retryResponse = await fetch('/api/random-devil-fruit');
@@ -221,9 +228,15 @@ async function fetchDevilFruit() {
         fruitElement.innerText = `❝ ${data.fruit} ❞`;
         characterName = data.character;
 
+        if (!data.fruit) {
+            console.error("🚨 Erreur : Aucun fruit reçu !");
+            return;
+        }
+
         fruitType = data.type || categorizeDevilFruit(data.fruit);
         selectedFruit = { name: data.fruit, type: fruitType }; // Mise à jour de selectedFruit
 
+        console.log("🔍 selectedFruit après mise à jour :", selectedFruit);
         attempts = 0;
         updateHintInfo();
     } catch (error) {

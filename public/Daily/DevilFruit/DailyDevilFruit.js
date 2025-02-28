@@ -2,8 +2,10 @@ function getImagePath(characterName) {
     return `/img/${characterName}.png`;
 }
 
+
 // ✅ Fonction pour récupérer le fruit du démon du jour
 async function fetchDailyDevilFruit() {
+    document.getElementById("characterInput").disabled = false;
     try {
         const response = await fetch("/api/daily-devil-fruit");
 
@@ -29,6 +31,9 @@ async function fetchDailyDevilFruit() {
         window.isDailyMode = true;  // Activer le mode daily
 
         checkIfAlreadyPlayed();
+        updateHintInfo(); // ✅ Ajout de l'affichage des indices ici !
+        
+        console.log("🔍 Statut de l'input après chargement :", document.getElementById("characterInput").disabled);
     } catch (error) {
         console.error("❌ Erreur lors de la récupération du fruit du démon :", error);
     }
@@ -36,17 +41,22 @@ async function fetchDailyDevilFruit() {
 
 // ✅ Vérifier si l'utilisateur a déjà joué aujourd'hui
 function checkIfAlreadyPlayed() {
-    const lastPlayedDate = localStorage.getItem("lastPlayedDate");
+    const lastPlayedDate = localStorage.getItem("lastPlayedDate_dailyDevilFruit"); // Utilisation d'une clé spécifique
     const today = new Date().toISOString().split("T")[0];
 
-    if (lastPlayedDate === today) {
-        const guessForm = document.getElementById("guessFruitForm");
-        const resultContainer = document.getElementById("DailyresultFruitContainer");
+    console.log("📌 Date stockée pour DailyDevilFruit :", lastPlayedDate);
+    console.log("📆 Date d’aujourd’hui :", today);
 
-        if (guessForm) guessForm.style.display = "none";
-        if (resultContainer) {
-            resultContainer.innerHTML = `<p>❌ Vous avez déjà joué aujourd'hui ! Revenez demain.</p>`;
-        }
+    // ✅ S'assurer que l'input est bien activé au départ
+    document.getElementById("characterInput").disabled = false;
+    document.getElementById("guessFruitForm").style.display = "block";
+
+    if (lastPlayedDate === today) {
+        console.warn("🚫 Joueur déjà identifié pour DailyDevilFruit !");
+        document.getElementById("guessFruitForm").style.display = "none";
+        document.getElementById("DailyresultFruitContainer").innerHTML = `<p>❌ Vous avez déjà joué aujourd'hui ! Revenez demain.</p>`;
+    } else {
+        console.log("✅ Joueur autorisé à jouer sur DailyDevilFruit aujourd’hui !");
     }
 }
 
@@ -64,13 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
             let guess = guessInput.value.trim();
             if (!guess && guessInput.dataset.actualName) {
                 console.warn("⚠️ `value` est vide, récupération via `dataset.actualName`");
                 guess = guessInput.dataset.actualName.trim();
             }
-
 
             if (!guess) {
                 console.warn("❗ Le champ est vide !");
@@ -78,13 +86,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
             try {
                 const response = await fetch("/api/submit-daily-guess", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "last-played-date": localStorage.getItem("lastPlayedDate") || ""
+                        "last-played-date": localStorage.getItem("lastPlayedDate_dailyDevilFruit") || ""
                     },
                     body: JSON.stringify({ guess })
                 });
@@ -102,12 +109,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("🧐 Type de dailyCharacter :", typeof window.dailyCharacter);
                 console.log("📝 dailyCharacter actuel :", window.dailyCharacter);
 
-                // ✅ Vérification si la réponse est correcte
+                // ✅ **Vérification si la réponse est correcte**
                 if (guess.toLowerCase() === window.dailyCharacter.toLowerCase()) {
-                    displayDailySuccessCard(window.dailyCharacter); // Appel de la nouvelle fonction spécifique au mode Daily
+                    console.log("✅ Bonne réponse !");
+                    
+                    // ✅ **Stocker la date pour empêcher de rejouer aujourd'hui**
+                    localStorage.setItem("lastPlayedDate_dailyDevilFruit", new Date().toISOString().split("T")[0]);
+                    
+                    displayDailySuccessCard(window.dailyCharacter); // ✅ Affichage de la carte de succès
                 } else {
                     console.log("🚀 guess envoyé à `updateIncorrectGuesses()` :", guess);
-                    updateIncorrectGuesses(guess);
+                    updateIncorrectGuesses(guess); // Ajoute la mauvaise réponse à l'historique
                 }
 
             } catch (error) {
@@ -158,6 +170,9 @@ function updateIncorrectGuesses(guess) {
         console.warn("⏳ Ignoré : Ce n'est pas le mode DAILY.");
         return;
     }
+
+    // ✅ Vérifier si l'input est activé après une mauvaise réponse
+    document.getElementById("characterInput").disabled = false;
 
     // Vérifier si cette réponse a déjà été ajoutée
     const existingGuesses = Array.from(container.querySelectorAll('.incorrect-guess span')).map(el => el.textContent.trim());
@@ -227,6 +242,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function displayDailySuccessCard(characterName) {
     console.log("🎉 Affichage de la carte de succès pour :", characterName);
+
+    // ✅ Réactiver l'input après succès
+    document.getElementById("characterInput").disabled = false;
+    document.getElementById("guessFruitForm").style.display = "block";
 
     // Vérifier si une carte de succès existe déjà et la supprimer
     const existingSuccessCard = document.querySelector(".success-card");
