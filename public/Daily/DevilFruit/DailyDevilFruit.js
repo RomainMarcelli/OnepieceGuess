@@ -30,10 +30,14 @@ async function fetchDailyDevilFruit() {
         window.dailyFruit = data.fruit;
         window.isDailyMode = true;  // Activer le mode daily
 
+        window.dailyFruitInfo = data; // ✅ pour que updateHintInfo ait accès aux infos
+        updateHintInfo();
+
         checkIfAlreadyPlayed();
         updateHintInfo(); // ✅ Ajout de l'affichage des indices ici !
 
         console.log("🔍 Statut de l'input après chargement :", document.getElementById("characterInput").disabled);
+        console.log("📦 Données récupérées :", data);
     } catch (error) {
         console.error("❌ Erreur lors de la récupération du fruit du démon :", error);
     }
@@ -309,3 +313,133 @@ function displayDailySuccessCard(characterName) {
     // Défilement automatique vers la carte de succès
     successCard.scrollIntoView({ behavior: "smooth" });
 }
+
+async function updateHintInfo() {
+    const typeHintInfo = document.getElementById('typeHintInfo');
+    const traduitFruitHintInfo = document.getElementById('traduitFruitHintInfo');
+
+    const typeHint = document.getElementById('typeHint');
+    const traduitFruitHint = document.getElementById('traduitFruitHint');
+    const typeHintP = document.querySelector('#typeHint p');
+    const traduitFruitHintP = document.querySelector('#traduitFruitHint p');
+
+    const typeHintImage = document.getElementById('typeHintImage');
+    const traduitFruitHintImage = document.getElementById('traduitFruitHintImage');
+
+    const typeHintDisplay = document.getElementById('typeHintDisplay');
+    const traduitFruitHintDisplay = document.getElementById('traduitFruitHintDisplay');
+
+    const attemptsForTypeHint = 4;
+    const remainingAttemptsForTypeHint = Math.max(0, attemptsForTypeHint - attempts);
+
+    const attemptsForTraduitHint = 7;
+    const remainingAttemptsForTraduitHint = Math.max(0, attemptsForTraduitHint - attempts);
+
+    // ✅ Cacher les indices si aucun essai encore
+    if (attempts < 1) {
+        typeHintInfo.style.display = 'none';
+        traduitFruitHintInfo.style.display = 'none';
+        return;
+    }
+
+    // ✅ Indice de type
+    if (remainingAttemptsForTypeHint > 0) {
+        typeHintInfo.textContent = `Dans ${remainingAttemptsForTypeHint} essais`;
+        typeHintInfo.style.display = 'block';
+        typeHintDisplay.style.display = 'none';
+        typeHintImage.style.filter = '';
+    } else {
+        typeHintInfo.style.display = 'none';
+        typeHintDisplay.innerHTML = `<strong>Type du fruit :</strong> ${window.dailyFruitInfo.type}`;
+        typeHintDisplay.style.display = 'none';
+        typeHint.style.border = '2px solid #928157';
+        typeHintP.style.color = '#928157';
+        typeHintImage.style.filter =
+            'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
+    }
+
+    // ✅ Indice de traduction
+    if (remainingAttemptsForTraduitHint > 0) {
+        traduitFruitHintInfo.textContent = `Dans ${remainingAttemptsForTraduitHint} essais`;
+        traduitFruitHintInfo.style.display = 'block';
+        traduitFruitHintDisplay.style.display = 'none';
+        traduitFruitHintImage.style.filter = '';
+    } else {
+        traduitFruitHintInfo.style.display = 'none';
+        traduitFruitHintDisplay.textContent = 'Chargement...';
+        traduitFruitHintDisplay.style.display = 'none';
+
+        traduitFruitHint.style.border = '2px solid #928157';
+        traduitFruitHintP.style.color = '#928157';
+        traduitFruitHintImage.style.filter =
+            'brightness(0) saturate(100%) invert(27%) sepia(60%) saturate(2369%) hue-rotate(353deg) brightness(100%) contrast(102%)';
+
+        try {
+            const translation = await fetchDevilFruitTranslation(window.dailyFruitInfo.fruit);
+            if (translation) {
+                traduitFruitHintDisplay.innerHTML = `<strong>Traduction du fruit :</strong> ${translation}`;
+            } else {
+                traduitFruitHintDisplay.textContent = 'Traduction non disponible.';
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération de la traduction :', error);
+            traduitFruitHintDisplay.textContent = 'Erreur lors de la récupération.';
+        }
+    }
+}
+
+function toggleHint(hintType) {
+    const typeHintDisplay = document.getElementById("typeHintDisplay");
+    const traduitFruitHintDisplay = document.getElementById("traduitFruitHintDisplay");
+
+    if (!window.dailyFruitInfo) return;
+
+    if (hintType === 'type') {
+        if (attempts < 4) {
+            console.log('Indice de type non encore disponible.');
+            return;
+        }
+
+        traduitFruitHintDisplay.style.display = 'none';
+
+        typeHintDisplay.innerHTML = `<strong>Type du fruit :</strong> ${window.dailyFruitInfo.type}`;
+        typeHintDisplay.style.display =
+            typeHintDisplay.style.display === 'none' || typeHintDisplay.style.display === ''
+                ? 'block'
+                : 'none';
+    }
+
+    if (hintType === 'translation') {
+        if (attempts < 7) {
+            console.log('Indice de traduction non encore disponible.');
+            return;
+        }
+
+        typeHintDisplay.style.display = 'none';
+
+        traduitFruitHintDisplay.innerHTML = `<strong>Traduction du fruit :</strong> ${window.dailyFruitInfo.translation}`;
+        traduitFruitHintDisplay.style.display =
+            traduitFruitHintDisplay.style.display === 'none' || traduitFruitHintDisplay.style.display === ''
+                ? 'block'
+                : 'none';
+    }
+}
+
+// 🔁 Appelé à chaque tentative
+function updateHints() {
+    updateHintInfo();
+}
+
+// 🖱️ Clics pour afficher les indices
+document.getElementById('typeHint').addEventListener('click', () => {
+    toggleHint('type');
+});
+document.getElementById('traduitFruitHint').addEventListener('click', () => {
+    toggleHint('translation');
+});
+
+// 🚀 Initialisation
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("typeHintInfo").style.display = "none";
+    document.getElementById("traduitFruitHintInfo").style.display = "none";
+});
