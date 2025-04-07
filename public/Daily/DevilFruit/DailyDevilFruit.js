@@ -32,7 +32,7 @@ async function fetchDailyDevilFruit() {
 
         checkIfAlreadyPlayed();
         updateHintInfo(); // ✅ Ajout de l'affichage des indices ici !
-        
+
         console.log("🔍 Statut de l'input après chargement :", document.getElementById("characterInput").disabled);
     } catch (error) {
         console.error("❌ Erreur lors de la récupération du fruit du démon :", error);
@@ -112,10 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 // ✅ **Vérification si la réponse est correcte**
                 if (guess.toLowerCase() === window.dailyCharacter.toLowerCase()) {
                     console.log("✅ Bonne réponse !");
-                    
+
                     // ✅ **Stocker la date pour empêcher de rejouer aujourd'hui**
                     localStorage.setItem("lastPlayedDate_dailyDevilFruit", new Date().toISOString().split("T")[0]);
-                    
+
                     displayDailySuccessCard(window.dailyCharacter); // ✅ Affichage de la carte de succès
                 } else {
                     console.log("🚀 guess envoyé à `updateIncorrectGuesses()` :", guess);
@@ -209,7 +209,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (resetButton) {
         resetButton.addEventListener("click", async () => {
             try {
-
                 const response = await fetch("/api/reset-daily-devil-fruit", {
                     method: "POST"
                 });
@@ -225,10 +224,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     fruitElement.textContent = `❝ ${data.fruit} ❞`;
                 }
 
+                // ✅ On met à jour les données du nouveau fruit
                 window.dailyCharacter = data.character || "Personnage inconnu";
                 window.dailyFruit = data.fruit;
                 incorrectGuesses = [];
+
+                // ✅ On vide les anciens résultats
                 document.getElementById("DailyresultFruitContainer").innerHTML = "";
+
+                // ✅ Permettre au joueur de rejouer
+                localStorage.removeItem("lastPlayedDate_dailyDevilFruit"); // on retire la date enregistrée
+                document.getElementById("characterInput").disabled = false;
+                document.getElementById("guessFruitForm").style.display = "block";
+
+                // ✅ Re-check pour réactiver l’état visuel
+                checkIfAlreadyPlayed();
 
             } catch (error) {
                 console.error("❌ Erreur lors de la réinitialisation :", error);
