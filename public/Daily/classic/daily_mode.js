@@ -1,5 +1,7 @@
 // Daily/daily_mode.js 
 
+window.attempts = 0; // Initialiser le compteur d'essais
+
 function getImagePath(characterName) {
     return `/img/${characterName}.png`;
 }
@@ -33,7 +35,7 @@ async function fetchDailyCharacter() {
 function checkIfAlreadyPlayed() {
     const lastPlayedDate = localStorage.getItem("lastPlayedDate_dailyMode");
     const today = new Date().toISOString().split('T')[0];
-    
+
     if (lastPlayedDate === today) {
         document.getElementById("guessForm").style.display = "none";
         document.getElementById("resultContainer").innerHTML = `<p>❌ Vous avez déjà joué aujourd'hui ! Revenez demain.</p>`;
@@ -61,14 +63,19 @@ document.getElementById("guessForm").addEventListener("submit", async (event) =>
 
     displayDailyResult(guessedCharacter, window.dailyCharacter);
 
+    
     // ✅ Si la réponse est correcte, empêcher de rejouer
     if (guessedCharacter.name === window.dailyCharacter.name) {
         document.getElementById("guessForm").style.display = "none"; // Cache l'input uniquement si c'est correct
         const today = new Date().toISOString().split('T')[0];
         localStorage.setItem("lastPlayedDate_dailyMode", today);
-        } else {
+    } else {
         document.getElementById("characterInput").value = ""; // Efface seulement l'input pour une nouvelle tentative
     }
+
+    window.attempts++; // Incrémentation des essais
+    updateHintInfo();
+
 });
 
 
@@ -94,7 +101,7 @@ document.getElementById("resetDailyButton").addEventListener("click", async () =
 
             localStorage.clear();
             document.cookie = "dailyPlayed=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            
+
             setTimeout(() => {
                 location.reload();
             }, 500);
@@ -106,7 +113,7 @@ document.getElementById("resetDailyButton").addEventListener("click", async () =
 });
 
 async function displayDailyResult(guessedCharacter, selectedCharacter) {
-    const hakiImages = await fetchHakiImages();
+    // const hakiImages = await fetchHakiImages();
 
     const dailyResultContainer = document.getElementById('dailyResultContainer'); // ✅ Nouvelle div pour les résultats Daily Mode
 
@@ -128,7 +135,7 @@ async function displayDailyResult(guessedCharacter, selectedCharacter) {
     ];
 
     const resultDiv = document.createElement('div');
-    resultDiv.className = 'resultat'; 
+    resultDiv.className = 'resultat';
     resultDiv.dataset.character = guessedCharacter.name; // ✅ Ajoute un attribut pour éviter les doublons
 
     if (guessedCharacter.name === selectedCharacter.name) {
@@ -162,7 +169,7 @@ async function displayDailyResult(guessedCharacter, selectedCharacter) {
                 if (field.key === 'name') {
                     // ✅ Afficher l'image du personnage à la place du texte
                     const img = document.createElement('img');
-                    img.src = getImagePath(guessedCharacter[field.key]); 
+                    img.src = getImagePath(guessedCharacter[field.key]);
                     img.alt = 'Character Image';
                     img.className = 'character-image';
                     itemDiv.appendChild(img);
@@ -217,6 +224,10 @@ async function displayDailyResult(guessedCharacter, selectedCharacter) {
         document.getElementById('restartGameButton').style.display = 'block';
         document.querySelector('.success-card').scrollIntoView({ behavior: 'smooth' });
     }
+
+    window.attempts++; // Augmenter le compteur d'essais
+    updateHintInfo(); // Mettre à jour les indices
+
 }
 
 

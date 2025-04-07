@@ -235,6 +235,7 @@ document.getElementById('characterInput').addEventListener('input', async (event
 });
 
 function updateHintInfo() {
+    console.log("🔍 Mise à jour des indices...");
     const firstArcHintInfo = document.getElementById('firstArcHintInfo');
     const devilFruitHintInfo = document.getElementById('devilFruitHintInfo');
     const firstArcHintImage = document.getElementById('firstArcHintImage');
@@ -243,6 +244,21 @@ function updateHintInfo() {
     const devilFruitHint = document.querySelector('#devilFruitHint');
     const firstArcHintP = document.querySelector('#firstArcHint p');
     const devilFruitHintP = document.querySelector('#devilFruitHint p');
+
+
+    // ✅ Vérifier si le mode daily est activé
+    const isDailyMode = window.isDailyMode || false;
+    console.log("🌟 Mode Daily activé :", isDailyMode);
+
+    // ✅ Récupérer le personnage en fonction du mode (daily ou normal)
+    const character = isDailyMode ? window.dailyCharacter : window.selectedCharacter;
+
+    if (!character) {
+        console.error("🚨 Erreur : Le personnage sélectionné est introuvable !");
+        return;
+    }
+
+    console.log("🔎 Personnage sélectionné :", character);
 
     const attemptsForFirstArcHint = 6; // Affichage au bout de 2 essais
     const attemptsForDevilFruitHint = 9; // Affichage au bout de 3 essais
@@ -354,13 +370,14 @@ document.getElementById('guessForm').addEventListener('submit', async (event) =>
 
 // Événements pour afficher ou cacher les indices
 document.getElementById('firstArcHint').addEventListener('click', () => {
+    console.log("📌 Clic sur `firstArcHint` détecté !");
     toggleHint('firstArcHintDisplay');
 });
 
 document.getElementById('devilFruitHint').addEventListener('click', () => {
+    console.log("📌 Clic sur `devilFruitHint` détecté !");
     toggleHint('devilFruitHintDisplay');
-});
-
+})
 
 async function startNewGame() {
     resetGame();
@@ -408,19 +425,19 @@ function resetGame() {
 
 
 // Fonction pour récupérer les images des Haki depuis le serveur
-async function fetchHakiImages() {
-    try {
-        const response = await fetch('/api/haki-images');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching haki images:', error);
-        return {}; // Retourne un objet vide en cas d'erreur
-    }
-}
+// async function fetchHakiImages() {
+//     try {
+//         const response = await fetch('/api/haki-images');
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         const data = await response.json();
+//         return data;
+//     } catch (error) {
+//         console.error('Error fetching haki images:', error);
+//         return {}; // Retourne un objet vide en cas d'erreur
+//     }
+// }
 
 function compareValues(correctValue, guessedValue) {
     if (!correctValue || !guessedValue) return '';
@@ -543,7 +560,7 @@ function updateHistory() {
 }
 
 async function displayResult(guessedCharacter, selectedCharacter) {
-    const hakiImages = await fetchHakiImages();
+    // const hakiImages = await fetchHakiImages();
 
     const resultContainer = document.getElementById('resultContainer');
 
@@ -732,22 +749,22 @@ function displaySuccessCard(characterName) {
         <div class="imagesJeu">
             <div class="guessPerso">
                 <a href="index.html">
-                    <img src="../img/guessPerso.png" alt="Deviner un personnage">
+                    <img src="/img/guessPerso.png" alt="Deviner un personnage">
                 </a>
             </div>
             <div class="devilFruit">
                 <a href="DevilFruit/devilFruit.html">
-                    <img src="../img/devilFruit.png" alt="Jeu des Fruits du Démon">
+                    <img src="/img/devilFruit.png" alt="Jeu des Fruits du Démon">
                 </a>
             </div>
             <div class="vs">
                 <a href="Alphabet/alphabet.html">
-                    <img src="../img/vs.png" alt="Mode VS">
+                    <img src="/img/vs.png" alt="Mode VS">
                 </a>
             </div>
             <div class="characters">
                 <a href="Characters/character.html">
-                    <img src="../img/logo_characters.png" alt="Liste des personnages">
+                    <img src="/img/logo_characters.png" alt="Liste des personnages">
                 </a>
             </div>
         </div>
@@ -765,7 +782,7 @@ function displaySuccessCard(characterName) {
         restartGame(); // Appel de restartGame pour réinitialiser le jeu
     });
 
-    successCard.appendChild(restartButton); 
+    successCard.appendChild(restartButton);
 
 
     // A voir si il faut le mettre : 
@@ -796,7 +813,7 @@ function displaySuccessCard(characterName) {
 
 function restartGame() {
     console.log("🔄 Rechargement de la page...");
-    
+
     // ✅ Recharge toute la page pour tout réinitialiser
     location.reload();
 }
